@@ -2,19 +2,24 @@
 	"name": "fractalstyler2",
 	"version": "0.0.1",
 	"description": "A fractal-composition styling system for SvelteKit — every style unit is a SASS mixin, and components and layouts are recipes of smaller fractals.",
+	"bin": {
+		"fractalstyler2": "./dist/cli.js",
+		"fractalstyler": "./dist/cli.js"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "svelte-kit sync && svelte-package && publint",
+		"prepack": "svelte-kit sync && svelte-package && chmod +x dist/cli.js && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
+		"!dist/**/*.spec.*",
+		"templates"
 	],
 	"sideEffects": [
 		"**/*.css"
@@ -28,8 +33,9 @@
 			"svelte": "./dist/index.js"
 		},
 		"./styles": "./dist/styles/index.sass",
-		"./fractals": "./dist/fractals/index.sass",
-		"./tokens": "./dist/fractals/_tokens.sass",
+		"./styles/*": "./dist/styles/*",
+		"./fractals": "./dist/styles/_fractals.sass",
+		"./tokens": "./dist/styles/_tokens.sass",
 		"./package.json": "./package.json"
 	},
 	"peerDependencies": {
@@ -40,6 +46,7 @@
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"@types/node": "^26.2.0",
 		"publint": "^0.3.21",
 		"sass": "^1.102.0",
 		"svelte": "^5.56.1",

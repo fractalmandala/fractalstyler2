@@ -1,0 +1,78 @@
+// =============================================================================
+// CONFIG — the finite vocabulary every fractal draws from.
+// -----------------------------------------------------------------------------
+// Scales live here as Sass data; resolvers turn a keyword-or-raw value into the
+// right token var() or unit. Fractals never hardcode a px or a token name —
+// they route through space(), radius(), etc. so the system speaks one language.
+// =============================================================================
+
+@use 'sass:map'
+@use 'sass:math'
+@use 'sass:meta'
+@use 'sass:list'
+
+// --- Scales (mirror the custom properties in _tokens.sass) --------------------
+$breakpoints: (sm: 640px, md: 768px, lg: 1024px, xl: 1240px)
+
+$space-steps: 3xs 2xs xs s m l xl 2xl 3xl s-l
+$radius-steps: 0 2 4 6 8 12 16 24 full
+$text-steps: xs sm md lg xl 2xl 3xl 4xl
+$shadow-steps: sm md lg
+$surface-roles: bg surface raised
+$ink-roles: primary secondary muted inverse
+
+$align-map: (start: flex-start, end: flex-end, center: center, between: space-between, around: space-around, evenly: space-evenly, stretch: stretch, baseline: baseline)
+
+// --- Resolvers ----------------------------------------------------------------
+
+// space(m) → var(--space-m) | space(18) → 18px | space(2rem) → 2rem
+@function space($v)
+	@if $v == null
+		@return null
+	@else if list.index($space-steps, $v)
+		@return var(--space-#{$v})
+	@else if meta.type-of($v) == number and math.is-unitless($v)
+		@return #{$v}px
+	@else
+		@return $v
+
+@function radius($v)
+	@if list.index($radius-steps, $v)
+		@return var(--radius-#{$v})
+	@else if meta.type-of($v) == number and math.is-unitless($v)
+		@return #{$v}px
+	@else
+		@return $v
+
+@function text-size($v)
+	@if list.index($text-steps, $v)
+		@return var(--text-#{$v})
+	@else
+		@return $v
+
+@function shadow($v)
+	@if list.index($shadow-steps, $v)
+		@return var(--shadow-#{$v})
+	@else
+		@return $v
+
+@function surface($role)
+	@if $role == bg
+		@return var(--bg)
+	@else
+		@return var(--bg-#{$role})
+
+@function ink($role)
+	@if $role == primary
+		@return var(--text-primary)
+	@else
+		@return var(--text-#{$role})
+
+@function align($v)
+	$m: map.get($align-map, $v)
+	@if $m
+		@return $m
+	@return $v
+
+@function bp($name)
+	@return map.get($breakpoints, $name)

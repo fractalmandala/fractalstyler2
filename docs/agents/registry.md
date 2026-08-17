@@ -15,6 +15,7 @@ they are not repeated in each entry.
 
 | Command | Use when the user wants to… | Primary docs |
 | --- | --- | --- |
+| [`fs2:init`](#fs2init) | scaffold SASS design system into a project | 03, README |
 | [`fs2:page`](#fs2page) | build a whole page/route | 03, 07, 08 |
 | [`fs2:component`](#fs2component) | build a reusable block | 04, 07 |
 | [`fs2:layout`](#fs2layout) | build a page-layout template | 04, 07 |
@@ -39,11 +40,23 @@ Applied to every command:
 4. **Markup stays thin and semantic.** Prefer one component class over a long
    utility string once the string recurs or carries meaning.
 5. **Mobile-first.** Base styles first; grow with `+at(md/lg/xl)` and `+cols`.
-6. **Don't touch `dist/`.** It is generated. Edit `src/lib/**` only.
-7. **Verify.** Run `npx sass src/lib/styles/index.sass:/tmp/check.css` (or
+6. **Don't touch `dist/`.** It is generated. Edit `src/lib/**` and `templates/**` only.
+7. **Verify.** Run `npx sass src/lib/styles/index.sass /tmp/check.css` (or
    `npm run dev` / `pnpm dev`) and confirm zero errors before declaring done.
 8. **Stay inside the vocabulary.** If a needed primitive is missing, propose a
    new fractal (`fs2:fractal`) rather than inlining CSS across call sites.
+
+---
+
+## fs2:init
+
+> **Goal:** scaffold the entire editable SASS design system into the user's project.
+>
+> **Procedure:**
+> 1. Run `npx fractalstyler2 init [dest]` (default destination: `src/lib/styles`).
+> 2. Ensure `sass` is installed in `devDependencies`.
+> 3. Verify `import '$lib/styles/index.sass'` in `src/routes/+layout.svelte`.
+> 4. Verify `@use '$lib/styles/fractals' as *` in component `<style lang="sass">` blocks.
 
 ---
 
@@ -77,16 +90,16 @@ Applied to every command:
 > **Goal:** author a reusable block component as a fractal recipe.
 >
 > **Inputs:** component name, its states/variants, where it lives (scoped in a
-> `.svelte` file, or shared in `src/lib/components/_blocks.sass`).
+> `.svelte` file, or shared in `src/lib/styles/_blocks.sass`).
 >
 > **Procedure:**
 > 1. Start from `+surface(...)` if it's a material (card-like) or `+stack/+cluster`
 >    if it's an arrangement.
 > 2. Add skin/spacing/type via atoms — never raw `display:flex`, `padding:16px`.
 > 3. Express every variant/state with `&[data-*]`.
-> 4. Import the API: `@use 'fractalstyler2/fractals' as *`.
+> 4. Import the API: `@use '$lib/styles/fractals' as *` (or `@use 'fractalstyler2/fractals' as *`).
 >
-> **Output:** a SASS recipe (scoped or in `_blocks.sass`). If shared, note that a
+> **Output:** a SASS recipe (scoped or in `_blocks.sass`). If shared in the library, note that a
 > repack is needed before other projects see it (DEVELOPERS.md).
 >
 > **Example skeleton:**
@@ -113,7 +126,7 @@ Applied to every command:
 >    `+cols` for column changes.
 > 3. Keep it skin-free — composition only. No colors/shadows in a layout.
 >
-> **Output:** a recipe in `src/lib/components/_layouts.sass` (or scoped).
+> **Output:** a recipe in `src/lib/styles/_layouts.sass` (or scoped).
 >
 > **Guardrails:** layouts must not set `background`/`box-shadow`/`color`; that's a
 > block's job. Sticky rails use `+sticky`.
@@ -128,11 +141,12 @@ Applied to every command:
 > decision) or molecule (composes atoms).
 >
 > **Procedure:**
-> 1. Atom → `src/lib/fractals/_atoms.sass`; molecule → `_molecules.sass`.
+> 1. Atom → `src/lib/styles/_atoms.sass`; molecule → `_molecules.sass`.
 > 2. Route values through resolvers (`space()`, `radius()`, …). If it introduces a
 >    new scale keyword, add it to `_config.sass` and `_tokens.sass` together.
 > 3. If it should be usable from markup, project it in `_utilities.sass`.
-> 4. Document it in docs/04; if agent-relevant, mention it here.
+> 4. Keep `templates/` in sync.
+> 5. Document it in docs/04; if agent-relevant, mention it here.
 >
 > **Output:** the mixin, optional utility projection, doc entry. A repack is
 > required before external consumers get it.
@@ -192,6 +206,6 @@ Applied to every command:
 > - [ ] Layouts carry no skin; blocks carry no page structure.
 > - [ ] Markup class strings aren't a de-facto un-named component.
 > - [ ] New scale keywords exist in BOTH `_tokens.sass` and `_config.sass`.
-> - [ ] `dist/` untouched; only `src/lib/**` edited.
+> - [ ] `dist/` untouched; only `src/lib/**` and `templates/**` edited.
 >
 > **Output:** findings grouped by severity with file:line and the idiomatic fix.

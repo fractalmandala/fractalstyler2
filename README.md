@@ -3,11 +3,81 @@
 A fractal-composition styling system for SvelteKit. **Every style unit is a SASS
 mixin ("a fractal"), and components and layouts are recipes of smaller fractals.**
 
-This is a standalone package with no relationship to any earlier styler. The
-product is framework-agnostic SASS surfaced through a SvelteKit library; the JS
-runtime is just a tiny mode helper.
+Use it either as a **shadcn-style scaffolder** (copying editable SASS into your project's `src/lib/styles`) or as a **direct package dependency**.
 
-## The idea
+---
+
+## Quickstart (shadcn-style Scaffolding)
+
+Scaffold the complete, customizable SASS design system directly into your project's `src/lib/styles`:
+
+```bash
+# Scaffold into src/lib/styles
+npx fractalstyler2 init
+
+# Or using pnpm
+pnpm dlx fractalstyler2 init
+```
+
+### Next Steps in Your Project
+
+**1. Import the stylesheet in your root `+layout.svelte`:**
+```svelte
+<script>
+	import '$lib/styles/index.sass';
+</script>
+```
+
+**2. Compose your components using the fractals:**
+```svelte
+<style lang="sass">
+	@use '$lib/styles/fractals' as *
+
+	.pricing-card
+		+surface(surface, l, 16, md)   // bg + border + radius + pad + shadow
+		+stack(m, center)              // flex-column + gap + centered
+		text-align: center
+</style>
+```
+
+---
+
+## Alternative: Direct Package Dependency
+
+If you prefer importing from `node_modules` instead of scaffolding local files:
+
+```bash
+npm install fractalstyler2
+# or
+pnpm add fractalstyler2
+```
+
+Your app also needs `sass`:
+```bash
+npm install -D sass
+# or
+pnpm add -D sass
+```
+
+### Use from `node_modules`:
+
+```svelte
+<script>
+	import 'fractalstyler2/styles';
+</script>
+
+<style lang="sass">
+	@use 'fractalstyler2/fractals' as *
+
+	.card
+		+surface(surface, s, 12)
+		+stack(s)
+</style>
+```
+
+---
+
+## The Model
 
 A fractal is a mixin: a tiny reusable styling decision that composes other
 fractals. They form four self-similar tiers — each tier is "a recipe of the one
@@ -26,101 +96,34 @@ The one idea that makes it click:
 > `.gap-m { +gap(m) }` binds the fractal to markup; `.hero { +cover; +stack(m) }`
 > composes it into a component. One vocabulary, you pick where each is used.
 
-## Install
+---
 
-[NPM](https://www.npmjs.com/package/fractalstyler2)
+## Color Mode
 
-```bash
-npm install fractalstyler2
-# or
-pnpm add fractalstyler2
-```
-
-Your app also needs `sass` (the package ships `.sass` source):
-
-```bash
-npm install -D sass
-# or
-pnpm add -D sass
-```
-
-## Use
-
-**1 — Emit the ready-made stylesheet** (tokens, base reset, utility classes,
-blocks, layouts). Import once, globally (e.g. in your root `+layout.svelte`):
-
-```svelte
-<script>
-	import 'fractalstyler2/styles';
-</script>
-```
-
-Then write thin, semantic markup:
-
-```svelte
-<div class="grid-3">
-	<article class="card"><h3 class="text-lg">Composable</h3></article>
-	<article class="card" data-elevated><h3 class="text-lg">Elevated</h3></article>
-	<article class="card"><h3 class="text-lg">Semantic</h3></article>
-</div>
-```
-
-**2 — Compose your own components from the fractals.** Import the pure API
-(emits nothing until called) inside any component's SASS:
-
-```svelte
-<style lang="sass">
-	@use 'fractalstyler2/fractals' as *
-
-	.pricing-card
-		+surface(surface, l, 16, md)   // bg + border + radius + pad + shadow
-		+stack(m, center)              // flex-column + gap + centered
-		text-align: center
-</style>
-```
-
-Values prefer the finite token scale and fall back to raw units in the same
-call: `+gap(m)` → `var(--space-m)`, `+gap(16)` → `16px`. No JIT class explosion.
-
-## What ships
-
-```
-fractalstyler2/
-├─ styles         → the full emitted stylesheet (import 'fractalstyler2/styles')
-├─ fractals       → the mixin/function API (@use 'fractalstyler2/fractals' as *)
-├─ tokens         → just the custom properties (@use 'fractalstyler2/tokens')
-└─ (default)      → { version, setMode, toggleMode }
-```
-
-Source layout: `src/lib/fractals/` (config, tokens, base, responsive, atoms,
-molecules, utilities), `src/lib/components/` (blocks, layouts),
-`src/lib/styles/` (the emit entry).
-
-## Color mode
-
-Light is the marker-free default (SSR-safe). Dark comes from
-`prefers-color-scheme` and from an explicit `data-mode="dark"` on `<html>`:
+Light is the marker-free default (SSR-safe). Dark comes from `prefers-color-scheme` and from an explicit `data-mode="dark"` on `<html>`:
 
 ```js
 import { toggleMode, setMode } from 'fractalstyler2';
 toggleMode();       // flip light/dark
-setMode('dark');    // force
+setMode('dark');    // force mode
 ```
 
-## Included layouts
+---
 
-`.grid-3` (responsive 1→2→3), `.card-grid` (intrinsic auto-fit), `.hero`,
-`.holy-grail`, `.docs`, `.app-shell` — each a few fractal calls in
-`src/lib/components/_layouts.sass`.
-
-## Develop
+## CLI Options
 
 ```bash
-# npm                    # pnpm
-npm install              # pnpm install
-npm run dev              # pnpm dev        — demo showcase at /
-npm run prepack          # pnpm run prepack — build the package into dist/
+fractalstyler2 init [dest] [options]
+
+Arguments:
+  dest          Target directory for SASS partials (default: src/lib/styles)
+
+Options:
+  -f, --force   Overwrite files if they already exist
+  -h, --help    Show help message
 ```
+
+---
 
 ## License
 

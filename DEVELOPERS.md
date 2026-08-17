@@ -10,19 +10,22 @@ How to build, edit, and maintain the package itself. If you want to build UI
 
 ## Mental model
 
-- **Source of truth: `src/lib/**`.** All authoring happens here.
+- **Source of truth: `src/lib/**` and `templates/**`.** All authoring happens here.
 - **`dist/` is generated. Never edit it, never commit it by hand.** It is
   produced by `svelte-package` and is what consumers actually import (the
-  `exports` map points at `dist/…`).
+  `exports` and `bin` maps point at `dist/…`).
+- **Templates: `templates/`** contains the self-contained SASS partials that the CLI
+  (`dist/cli.js`) copies when running `npx fractalstyler2 init`. Keep `templates/` in sync
+  with `src/lib/styles/`.
 - **The demo app (`src/routes/**`) is not shipped.** It exists to develop and
-  visually verify the library. `files` in `package.json` publishes only `dist`.
+  visually verify the library.
 - **The product is SASS.** `src/lib/index.ts` is a tiny runtime (`version`,
-  `setMode`, `toggleMode`) — no CSS-in-JS.
+  `setMode`, `toggleMode`) — no CSS-in-JS. `src/lib/cli.ts` provides the `init` command.
 
 ```
-src/lib/  ── svelte-package ──▶  dist/  ── exports map ──▶  consumers
-   ▲                                                          ▲
-  edit here                            import 'fractalstyler2/styles' etc.
+src/lib/styles/  ── svelte-package ──▶  dist/styles/  ── exports map ──▶  consumers
+       │                                     ▲
+       └── copy to templates/ ──▶ npx fractalstyler2 init ──▶ scaffolds to $lib/styles/
 ```
 
 ## Toolchain
@@ -36,20 +39,12 @@ src/lib/  ── svelte-package ──▶  dist/  ── exports map ──▶  
 | `svelte-check` | type/diagnostics for `.svelte`/`.ts` |
 | adapter-auto | builds the demo site only (not the library) |
 
-> Note on this scaffold: the Svelte CLI **inlines** Svelte config inside
-> `vite.config.ts` (there is no `svelte.config.js`), and the preprocessor is
-> added there as `sveltekit({ preprocess: vitePreprocess() })`. Build approval
-> for `@parcel/watcher` lives in `pnpm-workspace.yaml` (`allowBuilds`) — this is
-> pnpm-only; npm runs dependency build scripts by default and needs no approval.
-
 ## Scripts (`package.json`)
-
-Use whichever package manager you prefer — npm and pnpm both work.
 
 | npm | pnpm | Runs | When you use it |
 | --- | --- | --- | --- |
 | `npm run dev` | `pnpm dev` | `vite dev` | daily authoring + visual verification (HMR) |
-| `npm run prepack` | `pnpm run prepack` | `svelte-kit sync && svelte-package && publint` | **the library build** — refresh `dist/` |
+| `npm run prepack` | `pnpm run prepack` | `svelte-kit sync && svelte-package && chmod +x dist/cli.js && publint` | **the library build** — refresh `dist/` |
 | `npm run build` | `pnpm build` | `vite build && prepack` | build the demo **site** and then the library |
 | `npm run preview` | `pnpm preview` | `vite preview` | preview the built demo site |
 | `npm run check` | `pnpm check` | `svelte-kit sync && svelte-check` | types/diagnostics |
@@ -59,7 +54,7 @@ Use whichever package manager you prefer — npm and pnpm both work.
 - **"Rebuild" (recompile CSS)** happens automatically. `npm run dev` (pnpm:
   `pnpm dev`) compiles the SASS on every save via HMR; you never manually
   rebuild to *see* a change in the demo. A fast headless check:
-  `npx sass src/lib/styles/index.sass:/tmp/check.css`.
+  `npx sass src/lib/styles/index.sass /tmp/check.css`.
 - **"Repack" (regenerate `dist/`)** = `npm run prepack` (pnpm: `pnpm run
   prepack`). This is what makes your `src/lib` edits visible to **consumers**
   (published npm, `npm link` / `pnpm link`, or a `file:` dependency). Editing
@@ -70,23 +65,21 @@ Use whichever package manager you prefer — npm and pnpm both work.
 - Anyone outside this repo needs the change → **repack**.
 - Publishing → repack (and `prepack` also runs automatically on `npm publish` / `pnpm publish`).
 
-`vite build` is only for deploying the **demo site**; it is not part of shipping
-the library.
-
 ## Change matrix — what to touch, and whether to repack
 
 | You want to… | Edit | Also update | Repack before publish? |
 | --- | --- | --- | --- |
-| Change a token value | `src/lib/fractals/_tokens.sass` | — | yes |
-| Add a **new scale keyword** (e.g. `space-4xl`) | `_tokens.sass` **and** `_config.sass` (its `$*-steps` list) | docs/05 | yes |
-| Add an atom/molecule mixin | `_atoms.sass` / `_molecules.sass` | project in `_utilities.sass` if markup-usable; docs/04 | yes |
-| Add a utility class | `_utilities.sass` | docs/06 | yes |
-| Add a block/layout | `components/_blocks.sass` / `_layouts.sass` | docs/07 | yes |
-| Change the emitted CSS or cascade order | `src/lib/styles/index.sass` | — | yes |
-| Change the reset | `_base.sass` | — | yes |
+| Change a token value | `src/lib/styles/_tokens.sass` | `templates/_tokens.sass` | yes |
+| Add a **new scale keyword** (e.g. `space-4xl`) | `_tokens.sass` **and** `_config.sass` (its `$*-steps` list) | `templates/`, docs/05 | yes |
+| Add an atom/molecule mixin | `_atoms.sass` / `_molecules.sass` | `templates/`, `_utilities.sass`, docs/04 | yes |
+| Add a utility class | `_utilities.sass` | `templates/`, docs/06 | yes |
+| Add a block/layout | `_blocks.sass` / `_layouts.sass` | `templates/`, docs/07 | yes |
+| Change the emitted CSS or cascade order | `src/lib/styles/index.sass` | `templates/index.sass` | yes |
+| Change the reset | `_base.sass` | `templates/_base.sass` | yes |
+| Update CLI scaffolder | `src/lib/cli.ts` | README | yes |
 | Add/rename a public import path | `package.json` `exports` **and** ensure the file lands in `dist` | docs/02, README | yes |
 | Change runtime JS/TS | `src/lib/index.ts` | regenerates `dist/index.d.ts` on repack | yes |
-| Add a theme | `_tokens.sass` (`[data-theme]` block) | docs/05 | yes |
+| Add a theme | `_tokens.sass` (`[data-theme]` block) | `templates/_tokens.sass`, docs/05 | yes |
 | Edit the demo | `src/routes/**` | — | no (not shipped) |
 | Edit docs/agents | `docs/**`, `AGENTS.md` | — | no |
 
@@ -94,30 +87,17 @@ Golden constraint: **any new scale keyword must exist in BOTH `_tokens.sass`
 (the CSS var) and `_config.sass` (the resolver's step list).** Miss one and
 `space(newkey)` silently falls through to raw units.
 
-## Adding a public export (worked example)
-
-To expose `fractalstyler2/base`:
-
-1. The file already exists at `src/lib/fractals/_base.sass` → it will be copied to
-   `dist/fractals/_base.sass` on repack.
-2. Add to `package.json` `exports`:
-   ```json
-   "./base": "./dist/fractals/_base.sass"
-   ```
-3. `npm run prepack` (pnpm: `pnpm run prepack`) → confirm `dist/fractals/_base.sass`
-   exists and publint is clean.
-4. Document the new import in docs/02 and the README table.
-
 ## Verification workflow
 
 Before committing or publishing:
 
-1. `npx sass src/lib/styles/index.sass:/tmp/check.css` → SASS compiles, **zero
+1. `npx sass src/lib/styles/index.sass /tmp/check.css` → SASS compiles, **zero
    warnings**.
 2. `npm run dev` (pnpm: `pnpm dev`) → the demo renders; check light/dark and a narrow + wide viewport.
 3. `npm run check` (pnpm: `pnpm check`) → no type errors.
 4. `npm run prepack` (pnpm: `pnpm run prepack`) → svelte-package succeeds and **publint says "All good!"**.
-5. Inspect `dist/` → the files your `exports` reference are present.
+5. Test CLI init: `node ./dist/cli.js init /tmp/test-init && npx sass /tmp/test-init/index.sass /tmp/test-init/output.css`.
+6. Inspect `dist/` → the files your `exports` and `bin` reference are present.
 
 ## Release checklist
 
@@ -132,8 +112,7 @@ Before committing or publishing:
 ## Conventions
 
 - **Indented SASS, tabs.** No SCSS braces, no CSS `{}`.
-- **One entry file per surface.** `fractals/index.sass` = pure API (emits
-  nothing); `styles/index.sass` = the emitted stylesheet. Partials start with `_`.
+- **Single directory for partials.** All SASS partials live in `styles/` (`_fractals.sass` forwards API, `index.sass` emits full CSS). Partials start with `_`.
 - **No hardcoded values in fractals.** Always route through a resolver.
 - **Atoms are one decision; molecules compose atoms; components compose
   molecules.** If a mixin sets three unrelated properties, it's a molecule.
@@ -141,15 +120,3 @@ Before committing or publishing:
   utilities → blocks → layouts. Don't reorder casually.
 - **`:root` light palette must stay marker-free** (the SSR/no-JS contract). Add
   dark/theme as additional blocks, never by moving light behind an attribute.
-
-## Gotchas
-
-- Editing `src/lib` but a linked consumer sees nothing new → you forgot to
-  **repack**.
-- `space(foo)` renders `foo px`-ish garbage or passes through unexpectedly → the
-  keyword isn't in `_config.sass`'s step list.
-- `<style lang="sass">` throws "did you forget a sass preprocessor?" → the
-  preprocessor wiring in `vite.config.ts` is missing or `sass` isn't installed.
-- `pnpm install`/`dev` fails with `ERR_PNPM_IGNORED_BUILDS` → approve the build
-  in `pnpm-workspace.yaml` (`allowBuilds`). pnpm-only; npm does not gate build
-  scripts this way.

@@ -1,0 +1,43 @@
+// =============================================================================
+// BASE — a minimal, opinionated reset so the tokens actually reach the page.
+// Kept tiny: box model, sane media defaults, and wiring body to the palette.
+// =============================================================================
+
+*, *::before, *::after
+	box-sizing: border-box
+
+html
+	-webkit-text-size-adjust: 100%
+
+body
+	margin: 0
+	min-height: 100vh
+	font-family: var(--font-sans)
+	font-size: var(--text-md)
+	line-height: 1.5
+	color: var(--text-primary)
+	background-color: var(--bg)
+	-webkit-font-smoothing: antialiased
+
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote)
+	margin: 0
+
+:where(h1, h2, h3, h4)
+	line-height: 1.15
+	text-wrap: balance
+
+:where(img, picture, video, canvas, svg)
+	display: block
+	max-width: 100%
+
+:where(a)
+	color: inherit
+	text-decoration-color: var(--border-strong)
+
+:where(button, input, select, textarea)
+	font: inherit
+	color: inherit
+
+:where(:focus-visible)
+	outline: 2px solid var(--ring)
+	outline-offset: 2px

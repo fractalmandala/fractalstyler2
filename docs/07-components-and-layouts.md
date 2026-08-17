@@ -3,7 +3,7 @@ title: Components & layouts
 description: The shipped blocks and layout templates, their markup contracts, and how to author new ones.
 ---
 
-Everything here is authored in `src/lib/components/` by composing fractals. Each
+Everything here is authored in `src/lib/styles/` (or `$lib/styles/`) by composing fractals. Each
 class is a short recipe; state rides on `data-*`.
 
 ## Blocks (`_blocks.sass`)
@@ -57,7 +57,7 @@ class is a short recipe; state rides on `data-*`.
 
 ## Authoring a new block
 
-1. Open `src/lib/components/_blocks.sass`.
+1. Open `src/lib/styles/_blocks.sass` (or your local `$lib/styles/_blocks.sass`).
 2. Compose from fractals; write raw CSS only for genuinely unique declarations.
 3. Put variants/states on `data-*`, not modifier classes.
 
@@ -72,7 +72,7 @@ class is a short recipe; state rides on `data-*`.
 
 ## Authoring a new layout
 
-1. Open `src/lib/components/_layouts.sass`.
+1. Open `src/lib/styles/_layouts.sass` (or your local `$lib/styles/_layouts.sass`).
 2. Start from a grid or `+box`, name child slots as plain descendant classes.
 3. Reshape at breakpoints with `+at()`; keep the mobile-first base first.
 

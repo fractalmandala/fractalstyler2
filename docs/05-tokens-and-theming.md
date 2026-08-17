@@ -8,7 +8,7 @@ through a resolver. Edit a scale value in one place and it cascades everywhere.
 
 ## The scales
 
-Defined in `src/lib/fractals/_tokens.sass` as CSS custom properties, and mirrored
+Defined in `src/lib/styles/_tokens.sass` as CSS custom properties, and mirrored
 in `_config.sass` as Sass data so resolvers know which keywords are "on scale".
 
 | Scale | Keywords | Token pattern |
@@ -59,7 +59,7 @@ job — read your stored value in `app.html` or an early inline script and set
 
 `data-mode` is the binary light/dark axis. For a distinct palette (a brand skin,
 a high-contrast set), introduce your own attribute and redefine only the tokens
-that differ. Add this to your app, or extend `_tokens.sass` in a fork:
+that differ. Add this to your app, or extend `_tokens.sass`:
 
 ```sass
 [data-theme='sunset']
@@ -75,6 +75,56 @@ that differ. Add this to your app, or extend `_tokens.sass` in a fork:
 
 Because fractals reference `var(--theme)` etc. rather than literals, every
 component re-skins automatically — no component edits.
+
+## Pairing with `fractalthemer` (42 Curated Themes, Auras & Patterns)
+
+For complete out-of-the-box multi-theme switching, atmospheric GPU auras, gradients, and CSS patterns, pair `fractalstyler2` with the [`fractalthemer`](https://www.npmjs.com/package/fractalthemer) npm package.
+
+### 1. Install `fractalthemer`
+
+```bash
+# pnpm
+pnpm add fractalthemer
+
+# npm
+npm install fractalthemer
+```
+
+### 2. Wire in `src/routes/+layout.svelte`
+
+```svelte
+<script lang="ts">
+	// 1. Structure, layout, and fractal mixins (scaffolded via CLI)
+	import '$lib/styles/index.sass';
+
+	// 2. Curated theme palettes, aura blends, and picker styles from npm
+	import 'fractalthemer/styles.css';
+	import { AuraBackground, ThemePicker } from 'fractalthemer';
+
+	let { children } = $props();
+</script>
+
+<!-- Ambient GPU background layer (Plain, Aura, Gradient, Pattern) -->
+<AuraBackground />
+
+<div class="app-shell">
+	<header class="app-header row ycenter xbetween">
+		<strong>My App</strong>
+		<!-- Theme picker drawer button -->
+		<ThemePicker />
+	</header>
+
+	<main class="app-main">
+		{@render children()}
+	</main>
+</div>
+```
+
+### 3. How they integrate
+
+- **Seamless Token Sharing:** `fractalthemer` drives the 22 semantic CSS variables (`--bg`, `--bg-surface`, `--bg-raised`, `--text-primary`, `--border`, `--theme`).
+- **Instant Re-Skinning:** Whenever a user selects a theme (e.g. *Emerald Light*, *Dracula Dark*, *Catppuccin Mocha*, *Nord Dark*, *Sunset Amber*), all `fractalstyler2` cards, surfaces (`+surface`), and buttons update dynamically in real time without extra configuration.
+- **Ambient GPU Backdrops:** In `aura`, `gradient`, or `pattern` mode, `<AuraBackground />` renders at `z-index: -1` while `fractalstyler2` components float above with clean contrast and isolated pointer events.
 
 ## Why fluid tokens
 

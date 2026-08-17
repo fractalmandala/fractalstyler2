@@ -77,7 +77,7 @@
 </div>
 
 <style lang="sass">
-	@use '../lib/fractals' as *
+	@use '$lib/styles/fractals' as *
 
 	// A component the system doesn't ship — composed straight from fractals.
 	// No new tokens, no BEM, no utility soup in the markup.

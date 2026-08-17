@@ -1,24 +1,39 @@
 ---
 title: Getting started
-description: Install fractalstyler2, wire it into SvelteKit, and build your first page.
+description: Install fractalstyler2, scaffold via CLI or install package, wire into SvelteKit, and build your first page.
 ---
 
-To install:
+## Option A: Scaffold via CLI (shadcn-style, Recommended)
+
+Scaffold the complete, editable SASS design system into your project's `src/lib/styles`:
 
 ```bash
-npm install fractalstyler2
-# or
-pnpm add fractalstyler2
+# npm
+npx fractalstyler2 init
+
+# pnpm
+pnpm dlx fractalstyler2 init
 ```
 
-You also need `sass` in the consuming project (the package ships `.sass` source,
-compiled by your app's build):
+Install `sass` as a dev dependency if you haven't already:
+```bash
+pnpm add -D sass
+# or
+npm install -D sass
+```
+
+---
+
+## Option B: Direct Package Dependency
+
+If you prefer to import from `node_modules` without scaffolding files:
 
 ```bash
-npm install -D sass
-# or
+pnpm add fractalstyler2
 pnpm add -D sass
 ```
+
+---
 
 ## Wire into SvelteKit
 
@@ -39,7 +54,12 @@ export default defineConfig({
 
 ```svelte
 <script lang="ts">
-	import 'fractalstyler2/styles';
+	// If scaffolded via CLI:
+	import '$lib/styles/index.sass';
+
+	// Or if using node_modules package:
+	// import 'fractalstyler2/styles';
+
 	let { children } = $props();
 </script>
 
@@ -51,7 +71,7 @@ layouts) and injects it as global CSS. You only do it once.
 
 ## Your first page
 
-Markup stays thin and semantic — the recipes live in the package:
+Markup stays thin and semantic:
 
 ```svelte
 <div class="app-shell">
@@ -98,7 +118,11 @@ scoped `<style lang="sass">`:
 </div>
 
 <style lang="sass">
-	@use 'fractalstyler2/fractals' as *
+	// If scaffolded:
+	@use '$lib/styles/fractals' as *
+
+	// If using package:
+	// @use 'fractalstyler2/fractals' as *
 
 	.pricing-card
 		+surface(surface, l, 16, md)   // bg + border + radius + pad + shadow
@@ -106,10 +130,6 @@ scoped `<style lang="sass">`:
 		text-align: center
 </style>
 ```
-
-> Inside SvelteKit, `@use 'fractalstyler2/fractals' as *` resolves through Vite.
-> If your setup can't resolve the bare specifier in SASS, use a relative path to
-> `node_modules/fractalstyler2/dist/fractals`, or add a SASS load path.
 
 ## Color mode
 

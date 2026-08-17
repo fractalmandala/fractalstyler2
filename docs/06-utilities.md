@@ -4,7 +4,7 @@ description: The markup classes projected from atom fractals, and when to reach 
 ---
 
 Utility classes are the *projection* of atom fractals into markup, generated in
-`src/lib/fractals/_utilities.sass`. They ship in `fractalstyler2/styles`. Use
+`src/lib/styles/_utilities.sass`. They ship in `fractalstyler2/styles` (or `$lib/styles/index.sass`). Use
 them for quick composition in markup; reach for [component recipes](07-components-and-layouts.md)
 when a class string recurs.
 

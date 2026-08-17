@@ -14,7 +14,13 @@ the [command registry](docs/agents/registry.md), which sends you to the exact
 
 A styling system where **a fractal is a SASS mixin**. Components and layouts are
 recipes of smaller fractals. You build UI by *composing fractals*, not by writing
-raw CSS or long utility strings. Source of truth is `src/lib/**`; `dist/` is
+raw CSS or long utility strings.
+
+It operates in two modes:
+1. **Scaffold mode (shadcn-style)**: `npx fractalstyler2 init` copies the full, editable SASS design system into your project's `src/lib/styles`.
+2. **Library mode**: Direct import via `import 'fractalstyler2/styles'` and `@use 'fractalstyler2/fractals' as *`.
+
+Source of truth inside the package is `src/lib/**` and `templates/**`; `dist/` is
 generated — never edit it.
 
 ## The golden rules (always)
@@ -23,7 +29,7 @@ generated — never edit it.
 2. Compose fractals; write raw CSS only for genuinely unique lines.
 3. State on `data-*` / `aria-*`, never modifier classes.
 4. Markup stays thin and semantic; mobile-first, grow with `+at()`.
-5. Edit `src/lib/**` only. Verify with `npx sass src/lib/styles/index.sass:/tmp/check.css` or `npm run dev` (pnpm: `pnpm dev`).
+5. Edit `src/lib/styles/**` only. Verify with `npx sass src/lib/styles/index.sass /tmp/check.css` or `npm run dev` (pnpm: `pnpm dev`).
 
 (Full text: [registry → Golden rules](docs/agents/registry.md#golden-rules).)
 
@@ -40,6 +46,7 @@ generated — never edit it.
 
 | The user asks to… | Command | Then read |
 | --- | --- | --- |
+| scaffold styles into a project | [`fs2:init`](docs/agents/registry.md#fs2init) | docs/03, README |
 | build a page or route | [`fs2:page`](docs/agents/registry.md#fs2page) | docs/03, 07, 08 |
 | build a reusable component/block | [`fs2:component`](docs/agents/registry.md#fs2component) | docs/04, 07 |
 | build a page layout/template | [`fs2:layout`](docs/agents/registry.md#fs2layout) | docs/04, 07 |
@@ -53,9 +60,10 @@ the closest command.
 
 ## Minimal quickstart (for any build task)
 
+### Scaffolded project:
 ```sass
-// compose your own from the API — emits nothing until called
-@use 'fractalstyler2/fractals' as *
+// In Svelte component (<style lang="sass">)
+@use '$lib/styles/fractals' as *
 
 .thing
 	+surface(surface, s, 12)   // material: bg + border + radius + pad
@@ -65,7 +73,12 @@ the closest command.
 ```
 
 ```svelte
-<!-- or use shipped classes; markup stays semantic -->
+<!-- Global stylesheet in src/routes/+layout.svelte -->
+<script>
+	import '$lib/styles/index.sass';
+</script>
+
+<!-- Markup stays semantic -->
 <section class="grid-3">
 	<article class="card" data-elevated><h3 class="text-lg">…</h3></article>
 </section>
