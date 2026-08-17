@@ -1,0 +1,19 @@
+// =============================================================================
+// STYLES ENTRY — the full emitted stylesheet in cascade order.
+// -----------------------------------------------------------------------------
+//   1. tokens      the CSS custom properties (only literal values)
+//   2. utilities   atom fractals projected to markup classes (optional layer)
+//   3. blocks      components composed from fractals
+//   4. layouts     page templates composed from fractals
+//
+// Consume from a SvelteKit app:  import 'fractalstyler2/styles'
+// or, from SASS:                 @use 'fractalstyler2/styles'
+// The fractal mixins/functions themselves emit nothing until called, so output
+// contains only what you use.
+// =============================================================================
+
+@use '../fractals/tokens'
+@use '../fractals/base'
+@use '../fractals/utilities'
+@use '../components/blocks'
+@use '../components/layouts'
