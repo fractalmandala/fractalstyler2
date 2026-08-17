@@ -35,6 +35,59 @@ pnpm add -D sass
 
 ---
 
+## Option C: Install as an Agent Plugin (Codex, Claude, Gemini, OpenCode)
+
+`fractalstyler2` implements the [agent-plugins.org](https://agent-plugins.org/specification) standard. You can install it directly into your AI coding agent or design tool to enable design token queries, live SASS compilation, and automated component generation:
+
+### OpenCode
+Add to `~/.config/opencode/opencode.json`:
+```json
+{
+  "mcp": {
+    "fractalstyler2": {
+      "type": "local",
+      "command": ["npx", "-y", "fractalstyler2-mcp"],
+      "enabled": true
+    }
+  }
+}
+```
+
+### Gemini / Antigravity
+Run the one-command installer:
+```bash
+npx fractalstyler2 mcp:install
+```
+
+### Claude Desktop / Claude Code
+Add to `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "fractalstyler2": {
+      "command": "npx",
+      "args": ["-y", "fractalstyler2-mcp"]
+    }
+  }
+}
+```
+
+### Codex
+Add to your Codex configuration:
+```json
+{
+  "mcpServers": {
+    "fractalstyler2": {
+      "command": "npx",
+      "args": ["-y", "fractalstyler2-mcp"]
+    }
+  }
+}
+```
+
+---
+
+
 ## Wire into SvelteKit
 
 **1. Enable the SASS preprocessor.** In `vite.config.ts` (or `svelte.config.js`

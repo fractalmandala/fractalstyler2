@@ -124,8 +124,8 @@ Options:
   -h, --help    Show help message
 ```
 
-### Model Context Protocol (MCP) Server
-Use `fractalstyler2` directly with AI canvas tools (e.g. **OpenDesign**, **Pencil**), IDEs (**Cursor**, **Antigravity**), and assistants (**Claude Desktop**):
+### Model Context Protocol (MCP) Server & Agent Plugin
+`fractalstyler2` implements the [agent-plugins.org](https://agent-plugins.org/specification) v1.0.0 standard, providing design tokens, mixin compilation, and component generation across all AI hosts:
 
 ```bash
 # Start MCP server over stdio
@@ -134,7 +134,36 @@ npx fractalstyler2-mcp
 npx fractalstyler2 mcp
 ```
 
-Exposes tools to compile fractals to live CSS, snap arbitrary canvas values to Utopia tokens, generate Svelte 5 + SASS components, and lint recipes. See [docs/10-mcp-server.md](docs/10-mcp-server.md) for configuration details.
+#### Install into your AI Host:
+
+* **OpenCode**: Add to `~/.config/opencode/opencode.json`:
+  ```json
+  "fractalstyler2": {
+    "type": "local",
+    "command": ["npx", "-y", "fractalstyler2-mcp"],
+    "enabled": true
+  }
+  ```
+* **Gemini / Antigravity**: Run the automated installer:
+  ```bash
+  npx fractalstyler2 mcp:install
+  ```
+* **Claude (Claude Desktop / Claude Code)**: Add to `claude_desktop_config.json`:
+  ```json
+  "fractalstyler2": {
+    "command": "npx",
+    "args": ["-y", "fractalstyler2-mcp"]
+  }
+  ```
+* **Codex**: Add to your Codex MCP configuration:
+  ```json
+  "fractalstyler2": {
+    "command": "npx",
+    "args": ["-y", "fractalstyler2-mcp"]
+  }
+  ```
+
+See [docs/10-mcp-server.md](docs/10-mcp-server.md) and [docs/11-agent-plugin.md](docs/11-agent-plugin.md) for full architecture details.
 
 ---
 

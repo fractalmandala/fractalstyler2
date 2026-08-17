@@ -1,6 +1,6 @@
 {
 	"name": "fractalstyler2",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A fractal-composition styling system for SvelteKit — every style unit is a SASS mixin, and components and layouts are recipes of smaller fractals.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
@@ -20,7 +20,10 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"templates"
+		"templates",
+		"skills",
+		"plugin.json",
+		"mcp.json"
 	],
 	"sideEffects": [
 		"**/*.css"
