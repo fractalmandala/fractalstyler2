@@ -1,0 +1,45 @@
+{
+  "name": "generate_component",
+  "description": "Generates a production-ready Svelte 5 component with runes and scoped SASS fractal mixins.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Component name (e.g. PricingCard, UserAvatar, HeroBanner)"
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "card",
+          "panel",
+          "button",
+          "badge",
+          "modal",
+          "hero",
+          "nav",
+          "custom"
+        ],
+        "description": "Type of component recipe."
+      },
+      "elevation": {
+        "type": "string",
+        "enum": [
+          "none",
+          "sm",
+          "md",
+          "lg"
+        ],
+        "description": "Surface elevation."
+      },
+      "description": {
+        "type": "string",
+        "description": "Detailed description of component purpose and props."
+      }
+    },
+    "required": [
+      "name",
+      "type"
+    ]
+  }
+}

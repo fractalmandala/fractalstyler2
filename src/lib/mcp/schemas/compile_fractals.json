@@ -1,0 +1,20 @@
+{
+  "name": "compile_fractals",
+  "description": "Compiles indented SASS fractal mixins into CSS. Useful for live preview in OpenDesign, web apps, or verifying style output.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "sassCode": {
+        "type": "string",
+        "description": "Indented SASS code. Can use any fractal mixin (+surface, +stack, +gap, etc.)."
+      },
+      "className": {
+        "type": "string",
+        "description": "Optional CSS class name to wrap the mixins under (e.g. 'preview-card'). Defaults to 'element'."
+      }
+    },
+    "required": [
+      "sassCode"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "css_to_fractals",
+  "description": "Converts raw CSS declarations (from Figma/OpenDesign inspection) into idiomatic fractalstyler2 SASS mixin recipes (+surface, +stack, +cluster, etc.).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": "string",
+        "description": "Raw CSS block or declaration lines"
+      }
+    },
+    "required": [
+      "css"
+    ]
+  }
+}

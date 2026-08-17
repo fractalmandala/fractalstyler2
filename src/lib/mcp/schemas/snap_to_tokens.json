@@ -1,0 +1,25 @@
+{
+  "name": "snap_to_tokens",
+  "description": "Takes raw pixel values (e.g. from canvas elements in OpenDesign / Figma) and snaps them to the nearest fractalstyler2 design tokens, CSS variables, and suggested mixins.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "gap": {
+        "type": "number",
+        "description": "Gap in pixels (e.g. 16)"
+      },
+      "padding": {
+        "type": "number",
+        "description": "Padding in pixels (e.g. 24)"
+      },
+      "radius": {
+        "type": "number",
+        "description": "Border radius in pixels (e.g. 10)"
+      },
+      "fontSize": {
+        "type": "number",
+        "description": "Font size in pixels (e.g. 18)"
+      }
+    }
+  }
+}

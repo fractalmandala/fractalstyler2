@@ -20,6 +20,8 @@ Read in order if you're new; jump directly if you know what you need.
 | 06 | [Utilities](06-utilities.md) | The projected markup classes |
 | 07 | [Components & layouts](07-components-and-layouts.md) | Shipped blocks/layouts and how to author new ones |
 | 08 | [Recipes](08-recipes.md) | Worked builds: 3-col grid, hero, docs page, dashboard |
+| 09 | [Migration from v1](09-migration-from-v1.md) | Breaking changes and migration from fractals-styler v1 |
+| 10 | [MCP Server](10-mcp-server.md) | Model Context Protocol server for OpenDesign, Claude, and AI tools |
 
 For agents: start at [`AGENTS.md`](../AGENTS.md) → [agent registry](agents/registry.md).
 For maintainers: [`DEVELOPERS.md`](../DEVELOPERS.md).

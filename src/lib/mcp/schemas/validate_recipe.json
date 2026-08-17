@@ -1,0 +1,16 @@
+{
+  "name": "validate_recipe",
+  "description": "Lints a SASS snippet or Svelte component against fractalstyler2 golden rules (flags legacy v1 classes like gap8/pad16, hardcoded pixels, modifier classes).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "description": "The SASS or Svelte code to validate."
+      }
+    },
+    "required": [
+      "code"
+    ]
+  }
+}

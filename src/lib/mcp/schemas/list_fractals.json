@@ -1,0 +1,19 @@
+{
+  "name": "list_fractals",
+  "description": "Returns the catalog of all available atom & molecule mixins and layout templates with their signatures and descriptions.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "tier": {
+        "type": "string",
+        "enum": [
+          "all",
+          "atoms",
+          "molecules",
+          "layouts"
+        ],
+        "description": "Filter by fractal tier (all, atoms, molecules, layouts)."
+      }
+    }
+  }
+}

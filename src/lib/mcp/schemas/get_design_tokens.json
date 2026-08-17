@@ -1,0 +1,23 @@
+{
+  "name": "get_design_tokens",
+  "description": "Returns the complete structured JSON design tokens (fluid Utopia space scales, typography, radii, shadows, surfaces, ink colors, breakpoints).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "category": {
+        "type": "string",
+        "enum": [
+          "all",
+          "space",
+          "typography",
+          "radius",
+          "shadows",
+          "surfaces",
+          "ink",
+          "breakpoints"
+        ],
+        "description": "Optional category filter (all, space, typography, radius, shadows, surfaces, ink, breakpoints). Defaults to 'all'."
+      }
+    }
+  }
+}

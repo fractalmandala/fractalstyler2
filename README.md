@@ -110,8 +110,9 @@ setMode('dark');    // force mode
 
 ---
 
-## CLI Options
+## CLI & MCP Server
 
+### Scaffolder CLI
 ```bash
 fractalstyler2 init [dest] [options]
 
@@ -122,6 +123,18 @@ Options:
   -f, --force   Overwrite files if they already exist
   -h, --help    Show help message
 ```
+
+### Model Context Protocol (MCP) Server
+Use `fractalstyler2` directly with AI canvas tools (e.g. **OpenDesign**, **Pencil**), IDEs (**Cursor**, **Antigravity**), and assistants (**Claude Desktop**):
+
+```bash
+# Start MCP server over stdio
+npx fractalstyler2-mcp
+# or
+npx fractalstyler2 mcp
+```
+
+Exposes tools to compile fractals to live CSS, snap arbitrary canvas values to Utopia tokens, generate Svelte 5 + SASS components, and lint recipes. See [docs/10-mcp-server.md](docs/10-mcp-server.md) for configuration details.
 
 ---
 

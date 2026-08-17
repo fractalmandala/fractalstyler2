@@ -24,22 +24,29 @@ function getTemplatesDir(): string {
 
 function printUsage(): void {
 	console.log(`
-fractalstyler2 — SASS fractal design system scaffolder
+fractalstyler2 — SASS fractal design system scaffolder & MCP server
 
 Usage:
   npx fractalstyler2 init [dest] [options]
+  npx fractalstyler2 mcp
+  npx fractalstyler2 mcp:install
+  npx fractalstyler2 mcp:export [dest]
 
-Arguments:
-  dest          Target directory for SASS partials (default: src/lib/styles)
+Commands:
+  init [dest]         Scaffold SASS partials into target directory (default: src/lib/styles)
+  mcp                 Start the Model Context Protocol (MCP) server for OpenDesign, Claude, etc.
+  mcp:install         Automatically install MCP schemas & config into Antigravity & OpenCode
+  mcp:export [dest]   Export static MCP tool schema JSON files to target directory (default: .mcp)
 
 Options:
-  -f, --force   Overwrite files if they already exist
-  -h, --help    Show this help message
+  -f, --force         Overwrite files if they already exist
+  -h, --help          Show this help message
 
 Examples:
   npx fractalstyler2 init
-  npx fractalstyler2 init src/lib/styles --force
-  npx fractalstyler2 init src/styles
+  npx fractalstyler2 mcp
+  npx fractalstyler2 mcp:install
+  npx fractalstyler2 mcp:export ~/.gemini/antigravity/mcp/fractalstyler2
 `);
 }
 
@@ -108,12 +115,44 @@ const force = args.includes('-f') || args.includes('--force');
 const positional = args.filter((a: string) => !a.startsWith('-'));
 const command = positional[0];
 
-if (showHelp || (command && command !== 'init')) {
-	if (command && command !== 'init') {
+const VALID_COMMANDS = ['init', 'mcp', 'mcp:export', 'mcp:install'];
+
+if (showHelp || (command && !VALID_COMMANDS.includes(command))) {
+	if (command && !VALID_COMMANDS.includes(command)) {
 		console.error(`Unknown command: ${command}`);
 	}
 	printUsage();
-	process.exit(command && command !== 'init' ? 1 : 0);
+	process.exit(command && !VALID_COMMANDS.includes(command) ? 1 : 0);
+} else if (command === 'mcp') {
+	import('./mcp/server.js');
+} else if (command === 'mcp:export') {
+	import('./mcp/export.js').then(({ exportSchemas }) => {
+		const dest = positional[1] || '.mcp/fractalstyler2';
+		const { created, dir } = exportSchemas(dest);
+		console.log(`\n▲ Exported ${created} MCP schema files to: ${dir}\n`);
+	});
+} else if (command === 'mcp:install') {
+	import('./mcp/export.js').then(({ installToAntigravity, installToOpenCode }) => {
+		console.log(`\n▲ Installing fractalstyler2 MCP schemas & configuration...\n`);
+		try {
+			const agy = installToAntigravity();
+			console.log(`  \x1b[32m✔\x1b[0m Antigravity MCP schemas: ${agy.dir}`);
+		} catch (e: any) {
+			console.log(`  \x1b[90m-\x1b[0m Antigravity install skipped (${e.message})`);
+		}
+
+		try {
+			const oc = installToOpenCode();
+			if (oc.success) {
+				console.log(`  \x1b[32m✔\x1b[0m OpenCode MCP configured: ${oc.configPath}`);
+			} else {
+				console.log(`  \x1b[90m-\x1b[0m OpenCode config not found (skipped)`);
+			}
+		} catch (e: any) {
+			console.log(`  \x1b[90m-\x1b[0m OpenCode install skipped (${e.message})`);
+		}
+		console.log(`\nDone! fractalstyler2 MCP is ready.\n`);
+	});
 } else if (command === 'init') {
 	init(positional[1], force);
 } else {
