@@ -39,31 +39,36 @@ src/lib/  ── svelte-package ──▶  dist/  ── exports map ──▶  
 > Note on this scaffold: the Svelte CLI **inlines** Svelte config inside
 > `vite.config.ts` (there is no `svelte.config.js`), and the preprocessor is
 > added there as `sveltekit({ preprocess: vitePreprocess() })`. Build approval
-> for `@parcel/watcher` lives in `pnpm-workspace.yaml` (`allowBuilds`).
+> for `@parcel/watcher` lives in `pnpm-workspace.yaml` (`allowBuilds`) — this is
+> pnpm-only; npm runs dependency build scripts by default and needs no approval.
 
 ## Scripts (`package.json`)
 
-| Script | Runs | When you use it |
-| --- | --- | --- |
-| `pnpm dev` | `vite dev` | daily authoring + visual verification (HMR) |
-| `pnpm run prepack` | `svelte-kit sync && svelte-package && publint` | **the library build** — refresh `dist/` |
-| `pnpm build` | `vite build && prepack` | build the demo **site** and then the library |
-| `pnpm preview` | `vite preview` | preview the built demo site |
-| `pnpm check` | `svelte-kit sync && svelte-check` | types/diagnostics |
+Use whichever package manager you prefer — npm and pnpm both work.
+
+| npm | pnpm | Runs | When you use it |
+| --- | --- | --- | --- |
+| `npm run dev` | `pnpm dev` | `vite dev` | daily authoring + visual verification (HMR) |
+| `npm run prepack` | `pnpm run prepack` | `svelte-kit sync && svelte-package && publint` | **the library build** — refresh `dist/` |
+| `npm run build` | `pnpm build` | `vite build && prepack` | build the demo **site** and then the library |
+| `npm run preview` | `pnpm preview` | `vite preview` | preview the built demo site |
+| `npm run check` | `pnpm check` | `svelte-kit sync && svelte-check` | types/diagnostics |
 
 ## Build vs repack — the distinction that matters
 
-- **"Rebuild" (recompile CSS)** happens automatically. `pnpm dev` compiles the
-  SASS on every save via HMR; you never manually rebuild to *see* a change in
-  the demo. A fast headless check: `npx sass src/lib/styles/index.sass:/tmp/check.css`.
-- **"Repack" (regenerate `dist/`)** = `pnpm run prepack`. This is what makes your
-  `src/lib` edits visible to **consumers** (published npm, `pnpm link`, or a
-  `file:` dependency). Editing `src/lib` does **not** update `dist` on its own.
+- **"Rebuild" (recompile CSS)** happens automatically. `npm run dev` (pnpm:
+  `pnpm dev`) compiles the SASS on every save via HMR; you never manually
+  rebuild to *see* a change in the demo. A fast headless check:
+  `npx sass src/lib/styles/index.sass:/tmp/check.css`.
+- **"Repack" (regenerate `dist/`)** = `npm run prepack` (pnpm: `pnpm run
+  prepack`). This is what makes your `src/lib` edits visible to **consumers**
+  (published npm, `npm link` / `pnpm link`, or a `file:` dependency). Editing
+  `src/lib` does **not** update `dist` on its own.
 
 **Rule of thumb:**
-- Iterating in the demo → just `pnpm dev`, no repack.
+- Iterating in the demo → just `npm run dev` / `pnpm dev`, no repack.
 - Anyone outside this repo needs the change → **repack**.
-- Publishing → repack (and `prepack` also runs automatically on `npm/pnpm publish`).
+- Publishing → repack (and `prepack` also runs automatically on `npm publish` / `pnpm publish`).
 
 `vite build` is only for deploying the **demo site**; it is not part of shipping
 the library.
@@ -99,8 +104,8 @@ To expose `fractalstyler2/base`:
    ```json
    "./base": "./dist/fractals/_base.sass"
    ```
-3. `pnpm run prepack` → confirm `dist/fractals/_base.sass` exists and publint is
-   clean.
+3. `npm run prepack` (pnpm: `pnpm run prepack`) → confirm `dist/fractals/_base.sass`
+   exists and publint is clean.
 4. Document the new import in docs/02 and the README table.
 
 ## Verification workflow
@@ -109,9 +114,9 @@ Before committing or publishing:
 
 1. `npx sass src/lib/styles/index.sass:/tmp/check.css` → SASS compiles, **zero
    warnings**.
-2. `pnpm dev` → the demo renders; check light/dark and a narrow + wide viewport.
-3. `pnpm check` → no type errors.
-4. `pnpm run prepack` → svelte-package succeeds and **publint says "All good!"**.
+2. `npm run dev` (pnpm: `pnpm dev`) → the demo renders; check light/dark and a narrow + wide viewport.
+3. `npm run check` (pnpm: `pnpm check`) → no type errors.
+4. `npm run prepack` (pnpm: `pnpm run prepack`) → svelte-package succeeds and **publint says "All good!"**.
 5. Inspect `dist/` → the files your `exports` reference are present.
 
 ## Release checklist
@@ -120,8 +125,8 @@ Before committing or publishing:
 2. Bump `version` in `package.json` (semver: patch = fixes, minor = additive
    fractals/tokens, major = renamed/removed public API or changed cascade).
 3. Update the README/docs if the public surface changed.
-4. `pnpm run prepack` (also runs automatically on publish, but run it to inspect).
-5. `pnpm publish` (or `npm publish`). The `prepack` lifecycle regenerates `dist`.
+4. `npm run prepack` / `pnpm run prepack` (also runs automatically on publish, but run it to inspect).
+5. `npm publish` (or `pnpm publish`). The `prepack` lifecycle regenerates `dist`.
 6. Tag the release in git.
 
 ## Conventions
@@ -146,4 +151,5 @@ Before committing or publishing:
 - `<style lang="sass">` throws "did you forget a sass preprocessor?" → the
   preprocessor wiring in `vite.config.ts` is missing or `sass` isn't installed.
 - `pnpm install`/`dev` fails with `ERR_PNPM_IGNORED_BUILDS` → approve the build
-  in `pnpm-workspace.yaml` (`allowBuilds`).
+  in `pnpm-workspace.yaml` (`allowBuilds`). pnpm-only; npm does not gate build
+  scripts this way.

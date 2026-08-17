@@ -3,8 +3,6 @@ title: Tokens & theming
 description: The token scales, the color-mode contract, and how to add named themes.
 ---
 
-# Tokens & theming
-
 Tokens are the only place literal values live. Every fractal consumes them
 through a resolver. Edit a scale value in one place and it cascades everywhere.
 

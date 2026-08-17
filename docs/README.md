@@ -3,8 +3,6 @@ title: fractalstyler2 documentation
 description: Index of all user docs — philosophy, structure, usage, reference, and recipes.
 ---
 
-# fractalstyler2 docs
-
 A fractal-composition styling system for SvelteKit. Every style unit is a SASS
 mixin ("a fractal"); components and layouts are recipes of smaller fractals.
 

@@ -3,8 +3,6 @@ title: Agent command registry
 description: Named, self-contained agent prompts that direct an agent to build pages, components, layouts, fractals, themes, and audits with fractalstyler2.
 ---
 
-# Agent command registry
-
 Each entry is a **command**: a reusable prompt that directs an agent to do one
 kind of work with fractalstyler2. `AGENTS.md` routes a user request to a command;
 this file is the command body. Hosts may wire these as slash commands (e.g.
@@ -43,7 +41,7 @@ Applied to every command:
 5. **Mobile-first.** Base styles first; grow with `+at(md/lg/xl)` and `+cols`.
 6. **Don't touch `dist/`.** It is generated. Edit `src/lib/**` only.
 7. **Verify.** Run `npx sass src/lib/styles/index.sass:/tmp/check.css` (or
-   `pnpm dev`) and confirm zero errors before declaring done.
+   `npm run dev` / `pnpm dev`) and confirm zero errors before declaring done.
 8. **Stay inside the vocabulary.** If a needed primitive is missing, propose a
    new fractal (`fs2:fractal`) rather than inlining CSS across call sites.
 

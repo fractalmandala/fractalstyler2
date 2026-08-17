@@ -23,7 +23,7 @@ generated — never edit it.
 2. Compose fractals; write raw CSS only for genuinely unique lines.
 3. State on `data-*` / `aria-*`, never modifier classes.
 4. Markup stays thin and semantic; mobile-first, grow with `+at()`.
-5. Edit `src/lib/**` only. Verify with `npx sass src/lib/styles/index.sass:/tmp/check.css` or `pnpm dev`.
+5. Edit `src/lib/**` only. Verify with `npx sass src/lib/styles/index.sass:/tmp/check.css` or `npm run dev` (pnpm: `pnpm dev`).
 
 (Full text: [registry → Golden rules](docs/agents/registry.md#golden-rules).)
 

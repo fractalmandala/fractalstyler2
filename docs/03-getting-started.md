@@ -3,11 +3,11 @@ title: Getting started
 description: Install fractalstyler2, wire it into SvelteKit, and build your first page.
 ---
 
-# Getting started
-
-## Install
+To install:
 
 ```bash
+npm install fractalstyler2
+# or
 pnpm add fractalstyler2
 ```
 
@@ -15,6 +15,8 @@ You also need `sass` in the consuming project (the package ships `.sass` source,
 compiled by your app's build):
 
 ```bash
+npm install -D sass
+# or
 pnpm add -D sass
 ```
 

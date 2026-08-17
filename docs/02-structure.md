@@ -3,9 +3,7 @@ title: Structure
 description: File and folder anatomy, the four tiers, import surface, and cascade order.
 ---
 
-# Structure
-
-## Source layout
+The source layout:
 
 ```
 src/lib/

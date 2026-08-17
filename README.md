@@ -28,8 +28,20 @@ The one idea that makes it click:
 
 ## Install
 
+[NPM](https://www.npmjs.com/package/fractalstyler2)
+
 ```bash
+npm install fractalstyler2
+# or
 pnpm add fractalstyler2
+```
+
+Your app also needs `sass` (the package ships `.sass` source):
+
+```bash
+npm install -D sass
+# or
+pnpm add -D sass
 ```
 
 ## Use
@@ -104,9 +116,10 @@ setMode('dark');    // force
 ## Develop
 
 ```bash
-pnpm install
-pnpm dev          # demo showcase at /
-pnpm run prepack  # build the distributable package into dist/
+# npm                    # pnpm
+npm install              # pnpm install
+npm run dev              # pnpm dev        — demo showcase at /
+npm run prepack          # pnpm run prepack — build the package into dist/
 ```
 
 ## License

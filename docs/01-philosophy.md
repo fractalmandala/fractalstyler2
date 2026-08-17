@@ -3,9 +3,7 @@ title: Philosophy
 description: The fractal model — self-similarity, dual consumption, resolvers, and why it sits on CUBE CSS.
 ---
 
-# Philosophy
-
-## 1. A fractal is a mixin
+> A fractal is a mixin
 
 The atomic idea of the system: **a fractal is a SASS mixin that encodes one
 reusable styling decision and can compose other fractals.** In indented SASS a

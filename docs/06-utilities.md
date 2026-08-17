@@ -3,8 +3,6 @@ title: Utilities
 description: The markup classes projected from atom fractals, and when to reach for them.
 ---
 
-# Utilities
-
 Utility classes are the *projection* of atom fractals into markup, generated in
 `src/lib/fractals/_utilities.sass`. They ship in `fractalstyler2/styles`. Use
 them for quick composition in markup; reach for [component recipes](07-components-and-layouts.md)

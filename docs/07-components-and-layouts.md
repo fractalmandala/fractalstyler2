@@ -3,8 +3,6 @@ title: Components & layouts
 description: The shipped blocks and layout templates, their markup contracts, and how to author new ones.
 ---
 
-# Components & layouts
-
 Everything here is authored in `src/lib/components/` by composing fractals. Each
 class is a short recipe; state rides on `data-*`.
 

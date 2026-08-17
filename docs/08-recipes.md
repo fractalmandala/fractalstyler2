@@ -3,8 +3,6 @@ title: Recipes
 description: Complete worked builds — responsive grid, hero, docs page, dashboard, and a bespoke component.
 ---
 
-# Recipes
-
 Copy-paste starting points. Each shows the markup and, where relevant, the SASS
 recipe behind it.
 

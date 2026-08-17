@@ -3,8 +3,6 @@ title: Fractals reference
 description: Every atom and molecule mixin, its arguments and defaults, plus the config resolvers.
 ---
 
-# Fractals reference
-
 Import the API in any SASS context:
 
 ```sass
