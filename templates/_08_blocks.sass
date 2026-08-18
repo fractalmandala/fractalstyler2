@@ -1,0 +1,433 @@
+// =============================================================================
+// 08_BLOCKS — baseline semantic classes composed from fractal recipes.
+// -----------------------------------------------------------------------------
+// Blocks provide convenient markup classes without locking down arbitrary
+// paddings or scale tokens. State is expressed via data-*/aria-* attributes.
+// =============================================================================
+
+@use 'fractals' as *
+
+.surface
+	+surface(surface, null, 6)
+	+box(stretch, start)
+	&[data-role='raised']
+		+bg(raised)
+	&[data-role='bg']
+		+bg(bg)
+	&[data-role='panel']
+		+bg(panel)
+	&[data-role='popover']
+		+bg(popover)
+	&[data-role='dialog']
+		+bg(dialog)
+
+.card
+	+card($pad: null, $radius: 6)
+	&[data-elevated]
+		+shadow(md)
+	> :is(footer, .card-footer, .meta-bottom)
+		margin-top: auto
+		padding-top: var(--space-xs)
+		border-top: 1px solid var(--border)
+
+.panel
+	+surface(panel, null, 4)
+
+.popover
+	+surface(popover, null, 6, md)
+
+.dialog
+	+surface(dialog, null, 6, lg)
+
+.terminal
+	+surface(terminal, null, 4)
+	font-family: var(--font-mono)
+	color: var(--text-inverse)
+
+.canvas
+	+bg(canvas)
+
+.badge
+	+badge
+	&[data-status='released']
+		color: var(--theme-color)
+		background: rgba(16, 185, 129, 0.1)
+		border-color: rgba(16, 185, 129, 0.25)
+	&[data-status='wip']
+		color: #d97706
+		background: rgba(245, 158, 11, 0.1)
+		border-color: rgba(245, 158, 11, 0.25)
+	&[data-status='archived']
+		+ink(muted)
+	&[data-status='planned']
+		color: #6366f1
+		background: rgba(99, 102, 241, 0.1)
+		border-color: rgba(99, 102, 241, 0.25)
+
+.avatar
+	+center
+	+square(var(--avatar-size, 40px))
+	+radius(full)
+	+bg(raised)
+	+ink(secondary)
+	+border(all, var(--border))
+	overflow: hidden
+
+.input
+	+input
+
+.select
+	+select(md)
+	&.sm
+		+select(sm)
+	&.lg
+		+select(lg)
+
+.divider
+	+divider
+
+.kbd
+	+kbd
+
+.button
+	+button(md, 4)
+	background: var(--bg-surface)
+	&.sm
+		+control(sm, 4)
+		justify-content: center
+	&.lg
+		+control(lg, 4)
+		justify-content: center
+	&.primary
+		background: var(--theme-color)
+		color: var(--text-inverse)
+		border-color: var(--theme-color)
+		&:hover
+			background: var(--theme-color-alt)
+			border-color: var(--theme-color-alt)
+	&.ghost
+		background: transparent
+		+ink(secondary)
+		border-color: var(--border)
+		&:hover
+			+bg(raised)
+			+ink(primary)
+			border-color: var(--border-subtle)
+	&[data-active]
+		+bg(bg)
+		+ink(primary)
+		border-color: var(--border-subtle)
+		+shadow(sm)
+
+button.is-icon, a.is-icon
+	+row(center, center)
+	background: none
+	border: none
+	padding: 0
+	+ink(secondary)
+	cursor: pointer
+	text-decoration: none
+	transition: color 120ms ease
+	&:hover
+		+ink(primary)
+	svg
+		height: 16px
+		width: 16px
+
+// --- Accordion ---------------------------------------------------------------
+.accordion
+	+box
+	+border(all, var(--border))
+	+radius(6)
+	+bg(surface)
+	overflow: hidden
+
+.accordion-item
+	+border(bottom, var(--border))
+	&:last-child
+		border-bottom: none
+
+.accordion-trigger
+	+row(between, center)
+	width: 100%
+	padding: var(--space-xs) var(--space-s)
+	+bg(surface)
+	+ink(primary)
+	+type(sm)
+	+weight(500)
+	border: none
+	cursor: pointer
+	user-select: none
+	text-align: left
+	transition: background 120ms ease
+	&:hover
+		+bg(raised)
+	.accordion-icon
+		transition: transform 140ms ease
+		+ink(muted)
+
+.accordion-item[data-open='true']
+	.accordion-trigger .accordion-icon
+		transform: rotate(180deg)
+		+ink(primary)
+
+.accordion-content
+	+collapsible
+	.accordion-body
+		padding: 0 var(--space-s) var(--space-s) var(--space-s)
+		+type(sm)
+		+ink(secondary)
+		line-height: 1.6
+
+// --- Dialog Modal ------------------------------------------------------------
+dialog.dialog-modal
+	position: fixed
+	inset: 0
+	margin: auto
+	border: none
+	background: transparent
+	padding: 0
+	max-width: min(92vw, 520px)
+	width: 100%
+	z-index: var(--z-modal, 200)
+
+	&::backdrop
+		background: rgba(0, 0, 0, 0.55)
+		backdrop-filter: blur(4px)
+		-webkit-backdrop-filter: blur(4px)
+
+	> .dialog-card
+		+dialog-surface
+		+box
+		+gap(m)
+		+pad(m)
+
+// --- Drawer ------------------------------------------------------------------
+.drawer
+	position: fixed
+	top: 0
+	bottom: 0
+	z-index: var(--z-modal, 200)
+	width: min(85vw, 360px)
+	+bg(surface)
+	+border(all, var(--border))
+	+shadow(lg)
+	transition: transform 200ms ease-out
+	&.right
+		right: 0
+		transform: translateX(105%)
+		+border(left, var(--border))
+	&.left
+		left: 0
+		transform: translateX(-105%)
+		+border(right, var(--border))
+	&[data-open='true']
+		transform: translateX(0)
+
+// --- Tabs --------------------------------------------------------------------
+.tab-list
+	+row(null, center)
+	+gap(3xs)
+	+pad(3xs)
+	+radius(4)
+	+bg(raised)
+	width: fit-content
+	max-width: 100%
+
+.tab-trigger
+	+row(center, center)
+	+px(xs)
+	+type(xs)
+	+weight(500)
+	+radius(3)
+	height: var(--control-h-sm, 26px)
+	border: none
+	background: transparent
+	+ink(secondary)
+	cursor: pointer
+	user-select: none
+	white-space: nowrap
+	transition: all 120ms ease
+	&:hover
+		+ink(primary)
+	&[data-active='true'], &[aria-selected='true']
+		+bg(surface)
+		+ink(primary)
+		+border(all, var(--border))
+		+shadow(sm)
+
+// --- Switch ------------------------------------------------------------------
+.switch-track
+	position: relative
+	display: inline-flex
+	align-items: center
+	flex-shrink: 0
+	width: 36px
+	height: 20px
+	+radius(full)
+	+bg(raised)
+	+border(all, var(--border))
+	cursor: pointer
+	user-select: none
+	padding: 2px
+	transition: background 140ms ease, border-color 140ms ease
+
+	&[data-checked='true']
+		background: var(--theme-color)
+		border-color: var(--theme-color)
+
+.switch-thumb
+	display: block
+	width: 14px
+	height: 14px
+	+radius(full)
+	background: var(--text-primary)
+	transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), background 140ms ease
+	will-change: transform
+
+.switch-track[data-checked='true'] .switch-thumb
+	transform: translateX(16px)
+	background: var(--text-inverse)
+
+// --- Field -------------------------------------------------------------------
+.field
+	+box
+	+gap(3xs)
+	width: 100%
+
+.field-label
+	+type(xs)
+	+weight(600)
+	text-transform: uppercase
+	letter-spacing: 0.05em
+	+ink(secondary)
+
+.field-error
+	+type(xs)
+	color: #dc2626
+	margin-top: 2px
+
+// --- Marquee -----------------------------------------------------------------
+.marquee, [data-slot="marquee"]
+	overflow: hidden
+	display: flex
+	user-select: none
+	gap: var(--marquee-gap, 1rem)
+	position: relative
+	width: 100%
+
+	&[data-fade="true"]
+		mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)
+
+	[data-slot="marquee-track"]
+		display: flex
+		flex-shrink: 0
+		justify-content: space-around
+		gap: var(--marquee-gap, 1rem)
+		min-width: 100%
+		animation: marquee-scroll var(--marquee-speed, 30s) linear infinite
+
+	&[data-pause="true"]:hover [data-slot="marquee-track"]
+		animation-play-state: paused
+
+	&[data-vertical="true"]
+		flex-direction: column
+		height: 300px
+		&[data-fade="true"]
+			mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)
+		[data-slot="marquee-track"]
+			flex-direction: column
+			min-height: 100%
+			animation-name: marquee-scroll-vertical
+
+@keyframes marquee-scroll
+	from
+		transform: translateX(0)
+	to
+		transform: translateX(calc(-100% - var(--marquee-gap, 1rem)))
+
+@keyframes marquee-scroll-vertical
+	from
+		transform: translateY(0)
+	to
+		transform: translateY(calc(-100% - var(--marquee-gap, 1rem)))
+
+// --- Animated Badge ----------------------------------------------------------
+[data-slot="badge"]
+	position: relative
+	display: inline-flex
+	align-items: center
+	overflow: hidden
+	border: 1px solid var(--border)
+	border-radius: var(--radius-full)
+	font-weight: 500
+	white-space: nowrap
+	color: var(--text-secondary)
+	background: var(--bg-surface)
+
+	&[data-size="sm"]
+		height: 1.5rem
+		gap: var(--space-3xs)
+		padding: 0 var(--space-2xs)
+		font-size: var(--text-xs)
+	&[data-size="md"]
+		height: 1.75rem
+		gap: var(--space-2xs)
+		padding: 0 var(--space-xs)
+		font-size: var(--text-xs)
+
+	&[data-status="info"], &[data-status="loading"]
+		border-color: var(--theme-color)
+		color: var(--theme-color)
+		background: var(--bg-raised)
+	&[data-status="success"]
+		border-color: #10b981
+		color: #10b981
+	&[data-status="warning"]
+		border-color: #f59e0b
+		color: #f59e0b
+	&[data-status="danger"]
+		border-color: #ef4444
+		color: #ef4444
+
+[data-slot="badge-icon"], [data-slot="badge-label"]
+	position: relative
+	z-index: 1
+	display: inline-flex
+	animation: badge-roll 0.42s cubic-bezier(0.16, 1, 0.3, 1)
+
+[data-slot="badge-icon"]
+	align-items: center
+	justify-content: center
+
+[data-status="loading"] [data-slot="badge-icon"]
+	animation: badge-spin 1s linear infinite
+
+[data-slot="badge-pulse"]
+	position: absolute
+	inset: 0
+	border-radius: inherit
+	background: currentColor
+	animation: badge-pulse 1.6s ease-in-out infinite
+
+@keyframes badge-roll
+	from
+		transform: translateY(80%)
+		opacity: 0
+		filter: blur(4px)
+
+@keyframes badge-spin
+	to
+		transform: rotate(360deg)
+
+@keyframes badge-pulse
+	0%, 100%
+		opacity: 0.08
+		transform: scale(0.94)
+	50%
+		opacity: 0.18
+		transform: scale(1.08)
+
+@media (prefers-reduced-motion: reduce)
+	[data-slot="badge-icon"], [data-slot="badge-label"], [data-slot="badge-pulse"], [data-slot="marquee-track"]
+		animation: none !important

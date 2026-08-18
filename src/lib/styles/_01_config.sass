@@ -1,5 +1,5 @@
 // =============================================================================
-// CONFIG — the finite vocabulary every fractal draws from.
+// 01_CONFIG — the finite vocabulary every fractal draws from.
 // -----------------------------------------------------------------------------
 // Scales live here as Sass data; resolvers turn a keyword-or-raw value into the
 // right token var() or unit. Fractals never hardcode a px or a token name —
@@ -11,14 +11,16 @@
 @use 'sass:meta'
 @use 'sass:list'
 
-// --- Scales (mirror the custom properties in _tokens.sass) --------------------
+// --- Scales (mirror the custom properties in _00_tokens.sass) ----------------
 $breakpoints: (sm: 640px, md: 768px, lg: 1024px, xl: 1240px)
 
 $space-steps: 3xs 2xs xs s m l xl 2xl 3xl s-l
-$radius-steps: 0 2 4 6 8 12 16 24 full
+$radius-steps: 0 2 3 4 6 8 12 16 24 full
 $text-steps: xs sm md lg xl 2xl 3xl 4xl
 $shadow-steps: sm md lg
-$surface-roles: bg surface raised
+
+// Surfaces mapped to the 21 theme token contract
+$surface-roles: bg surface raised panel footer popover dialog terminal input canvas
 $ink-roles: primary secondary muted inverse
 
 $align-map: (start: flex-start, end: flex-end, center: center, between: space-between, around: space-around, evenly: space-evenly, stretch: stretch, baseline: baseline)
@@ -59,12 +61,16 @@ $align-map: (start: flex-start, end: flex-end, center: center, between: space-be
 @function surface($role)
 	@if $role == bg
 		@return var(--bg)
+	@else if list.index($surface-roles, $role)
+		@return var(--bg-#{$role})
 	@else
 		@return var(--bg-#{$role})
 
 @function ink($role)
 	@if $role == primary
 		@return var(--text-primary)
+	@else if list.index($ink-roles, $role)
+		@return var(--text-#{$role})
 	@else
 		@return var(--text-#{$role})
 

@@ -1,13 +1,14 @@
 // =============================================================================
-// FRACTALS — the pure API barrel. Emits NO css on its own.
+// FRACTALS — the pure API barrel. Emits NO CSS on its own.
 // -----------------------------------------------------------------------------
 // In any component partial or Svelte component:
 //   @use '$lib/styles/fractals' as *
 //   (or @use './fractals' as *)
-// then call fractals freely:  +surface(...)  +stack(...)  space(m) ...
+// then call fractals freely:  +surface(...)  +stack(...)  +card(...)
 // =============================================================================
 
-@forward 'config'
-@forward 'responsive'
-@forward 'atoms'
-@forward 'molecules'
+@forward '01_config'
+@forward '03_responsive'
+@forward '04_atoms'
+@forward '05_molecules'
+@forward '06_recipes'

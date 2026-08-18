@@ -1,140 +1,169 @@
 ---
-title: Recipes
-description: Complete worked builds — responsive grid, hero, docs page, dashboard, and a bespoke component.
+title: Recipes & Patterns
+description: Step-by-step practical component patterns with Svelte 5 runes and indented SASS.
 ---
 
-Copy-paste starting points. Each shows the markup and, where relevant, the SASS
-recipe behind it.
+# Recipes & Patterns
 
-## Responsive 3-column grid
+Practical, copy-pasteable components built with **Svelte 5 runes** and **fractalstyler2**.
 
-Markup only — `.grid-3` ships with the package:
+---
 
-```svelte
-<section class="grid-3">
-	{#each items as item}
-		<article class="card"><h3 class="text-lg">{item.title}</h3></article>
-	{/each}
-</section>
-```
+## 1. Feature / Pricing Card
 
-Rolling your own column rhythm (e.g. 1 → 2 → 4):
-
-```sass
-.gallery
-	+cols((base: 1, sm: 2, lg: 4), s)
-```
-
-## Hero section
+An anchored vertical card with category badge, feature checklist, and pinned button:
 
 ```svelte
-<section class="hero">
-	<div class="center">
-		<h1 class="text-4xl">Ship faster.</h1>
-		<p class="body muted">One vocabulary from atoms to pages.</p>
-		<div class="row gap-s">
-			<a class="button" data-variant="primary" href="/start">Start</a>
-			<a class="button" data-variant="ghost" href="/docs">Docs</a>
+<script lang="ts">
+	interface Props {
+		title: string;
+		price: string;
+		description: string;
+		features: string[];
+		popular?: boolean;
+	}
+
+	let { title, price, description, features, popular = false }: Props = $props();
+</script>
+
+<article class="card pad-m radius-6 box ybetween gap-m" data-elevated={popular ? true : undefined}>
+	<div class="box gap-s">
+		<header class="row ycenter xbetween">
+			<span class="eyebrow text-xs" style="color: var(--theme-color)">{title}</span>
+			{#if popular}
+				<span class="badge" data-status="released">Popular</span>
+			{/if}
+		</header>
+
+		<div class="box gap-3xs">
+			<h3 class="text-2xl font-bold">{price}</h3>
+			<p class="muted text-sm">{description}</p>
+		</div>
+
+		<ul class="box gap-2xs text-sm" style="list-style: none; padding: 0;">
+			{#each features as feat}
+				<li class="row ycenter gap-2xs">
+					<span style="color: var(--theme-color)">✓</span>
+					<span>{feat}</span>
+				</li>
+			{/each}
+		</ul>
+	</div>
+
+	<!-- Pinned Footer Action -->
+	<footer class="row wrap ycenter pad-top-s border-top">
+		<button
+			type="button"
+			class="button text-sm wfull"
+			class:primary={popular}
+			class:ghost={!popular}
+		>
+			Get Started
+		</button>
+	</footer>
+</article>
+```
+
+---
+
+## 2. Accessible Native Dialog Modal
+
+Leverages the top-layer native `<dialog>` with backdrop blur and token surfaces:
+
+```svelte
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	interface Props {
+		open?: boolean;
+		title: string;
+		children: Snippet;
+	}
+
+	let { open = $bindable(false), title, children }: Props = $props();
+	let dialogEl = $state<HTMLDialogElement>();
+
+	$effect(() => {
+		if (open) dialogEl?.showModal();
+		else dialogEl?.close();
+	});
+</script>
+
+<dialog
+	bind:this={dialogEl}
+	class="dialog-modal"
+	onclose={() => (open = false)}
+>
+	<div class="dialog-card">
+		<header class="row ycenter xbetween">
+			<h2 class="text-lg font-semibold">{title}</h2>
+			<button type="button" class="is-icon" onclick={() => (open = false)} aria-label="Close">
+				✕
+			</button>
+		</header>
+
+		<div class="box gap-s">
+			{@render children()}
+		</div>
+
+		<footer class="row ycenter xbetween pad-top-s border-top">
+			<button type="button" class="button ghost sm" onclick={() => (open = false)}>Cancel</button>
+			<button type="button" class="button primary sm" onclick={() => (open = false)}>Confirm</button>
+		</footer>
+	</div>
+</dialog>
+```
+
+---
+
+## 3. Filter & Search Toolbar
+
+Combines search input, native select, and layout switchers with zero layout thrashing:
+
+```svelte
+<script lang="ts">
+	let search = $state('');
+	let category = $state('all');
+	let view = $state<'grid' | 'list'>('grid');
+</script>
+
+<div class="panel pad-xs radius-6 row ycenter xbetween wrap gap-s">
+	<!-- Search Box -->
+	<div class="row ycenter gap-2xs grow min0" style="max-width: 320px;">
+		<input
+			type="text"
+			bind:value={search}
+			placeholder="Filter items..."
+			class="input text-xs wfull"
+		/>
+	</div>
+
+	<!-- Controls Cluster -->
+	<div class="row ycenter gap-xs">
+		<select bind:value={category} class="select text-xs">
+			<option value="all">All Categories</option>
+			<option value="core">Core UI</option>
+			<option value="motion">Motion</option>
+		</select>
+
+		<div class="row ycenter gap-3xs panel pad-3xs radius-4">
+			<button
+				type="button"
+				class="button ghost text-xs radius-4"
+				data-active={view === 'grid' ? true : undefined}
+				onclick={() => (view = 'grid')}
+			>
+				Grid
+			</button>
+			<button
+				type="button"
+				class="button ghost text-xs radius-4"
+				data-active={view === 'list' ? true : undefined}
+				onclick={() => (view = 'list')}
+			>
+				List
+			</button>
 		</div>
 	</div>
-</section>
-```
-
-## Docs page
-
-```svelte
-<div class="docs">
-	<nav class="docs-nav">
-		<a class="body" href="/a">Section A</a>
-		<a class="body" href="/b">Section B</a>
-	</nav>
-	<main class="docs-main">
-		<h1 class="text-3xl">Page title</h1>
-		<p class="body">Reading column, constrained to a comfortable measure.</p>
-	</main>
-	<aside class="docs-toc">
-		<p class="eyebrow">On this page</p>
-		<a class="body muted" href="#intro">Intro</a>
-	</aside>
 </div>
 ```
-
-## Dashboard shell with stat cards
-
-```svelte
-<div class="app-shell">
-	<header class="app-header">
-		<strong>Dashboard</strong>
-		<div class="row gap-s" style="margin-inline-start:auto">
-			<span class="badge">live</span>
-			<button class="button" data-variant="ghost">Settings</button>
-		</div>
-	</header>
-	<main class="app-main box gap-l" style="padding:var(--space-l)">
-		<div class="card-grid">
-			<div class="panel stat"><p class="eyebrow">Revenue</p><p class="text-2xl">$48k</p></div>
-			<div class="panel stat"><p class="eyebrow">Users</p><p class="text-2xl">12.3k</p></div>
-			<div class="panel stat"><p class="eyebrow">Churn</p><p class="text-2xl">1.2%</p></div>
-		</div>
-	</main>
-</div>
-```
-
-Optional bespoke `.stat` recipe (scoped or in `_blocks.sass`):
-
-```sass
-@use 'fractalstyler2/fractals' as *
-
-.stat
-	+stack(3xs)
-	+ink(primary)
-```
-
-## Bespoke component — a tag row
-
-Authored entirely from fractals, no shipped class:
-
-```svelte
-<div class="tag-row">
-	{#each tags as t}<span class="tag">{t}</span>{/each}
-</div>
-
-<style lang="sass">
-	@use 'fractalstyler2/fractals' as *
-
-	.tag-row
-		+cluster(2xs)
-		.tag
-			+row(center, center)
-			+px(s)
-			+py(3xs)
-			+radius(full)
-			+bg(raised)
-			+ink(secondary)
-			+type(sm)
-			+border
-			+transition(transform)
-			&:hover
-				transform: translateY(-2px)
-</style>
-```
-
-## Media card with fixed aspect ratio
-
-```svelte
-<article class="card">
-	<div class="media"><img src={src} alt="" /></div>
-	<h3 class="text-lg">{title}</h3>
-</article>
-
-<style lang="sass">
-	@use 'fractalstyler2/fractals' as *
-
-	.media
-		+frame(16 / 9)
-		+radius(8)
-</style>
-```
-
-For the model behind these, return to [Philosophy](01-philosophy.md); for every
-mixin, [Fractals reference](04-fractals-reference.md).

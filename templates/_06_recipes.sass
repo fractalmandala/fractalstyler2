@@ -1,0 +1,189 @@
+// =============================================================================
+// 06_RECIPES — macro mixins. Compositions of molecules and atoms.
+// -----------------------------------------------------------------------------
+// Recipes are mixins, NOT locked CSS classes. They take arguments and allow
+// custom components to compose standard patterns with flexible parameters.
+// =============================================================================
+
+@use '01_config' as *
+@use '04_atoms' as *
+@use '05_molecules' as *
+
+// Universal interactive control primitive (Button, Select trigger, Accordion header)
+=control($size: md, $radius: 4)
+	+row(null, center)
+	+gap(2xs)
+	+radius($radius)
+	+border(all, var(--border))
+	+bg(surface)
+	+ink(primary)
+	+weight(500)
+	user-select: none
+	cursor: pointer
+	text-decoration: none
+	transition: background 120ms ease, border-color 120ms ease, transform 80ms ease
+
+	@if $size == sm
+		height: var(--control-h-sm, 26px)
+		+px(2xs)
+		+type(xs)
+	@else if $size == lg
+		height: var(--control-h-lg, 38px)
+		+px(s)
+		+type(md)
+	@else
+		height: var(--control-h-md, 32px)
+		+px(xs)
+		+type(sm)
+
+	&:hover
+		+bg(raised)
+		border-color: var(--border-subtle)
+
+	&:active
+		transform: scale(0.985)
+
+	&:focus-visible
+		+ring
+
+	&:disabled, &[aria-disabled='true']
+		opacity: 0.5
+		cursor: not-allowed
+		pointer-events: none
+
+// Select input recipe (with embedded SVG chevron and optical line-height)
+=select($size: md, $radius: 4)
+	+control($size, $radius)
+	appearance: none
+	-webkit-appearance: none
+	padding-right: 28px
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237F91AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")
+	background-repeat: no-repeat
+	background-position: right 8px center
+	line-height: 1.2
+	cursor: pointer
+	width: 100%
+
+// Partition divider recipe with guaranteed breathing room
+=partition($side: top, $pad: s)
+	@if $side == top
+		margin-top: auto
+		padding-top: space($pad)
+		border-top: 1px solid var(--border)
+	@else if $side == bottom
+		margin-bottom: space($pad)
+		padding-bottom: space($pad)
+		border-bottom: 1px solid var(--border)
+
+// Pure CSS collapsible transition (0fr -> 1fr grid transition)
+=collapsible
+	display: grid
+	grid-template-rows: 0fr
+	transition: grid-template-rows 140ms cubic-bezier(0.16, 1, 0.3, 1)
+
+	&[data-open='true'], &[aria-expanded='true']
+		grid-template-rows: 1fr
+
+	> .collapsible-inner
+		overflow: hidden
+		min-height: 0
+
+// Marquee animation recipe
+=marquee($speed: 30s, $gap: 1rem)
+	overflow: hidden
+	display: flex
+	user-select: none
+	gap: $gap
+	position: relative
+
+	&[data-fade='true']
+		mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)
+
+	> [data-slot='marquee-track']
+		display: flex
+		flex-shrink: 0
+		justify-content: space-around
+		gap: $gap
+		min-width: 100%
+		animation: marquee-scroll $speed linear infinite
+
+	&[data-pause='true']:hover > [data-slot='marquee-track']
+		animation-play-state: paused
+
+// Card recipe — surface material + top-anchored vertical stack
+=card($bg: surface, $pad: null, $radius: 6, $elevation: none)
+	+surface($bg, $pad, $radius, $elevation)
+	+box(stretch, start)
+	+gap(s)
+	height: 100%
+	text-align: left
+
+// Button recipe
+=button($size: md, $radius: 4)
+	+control($size, $radius)
+	justify-content: center
+
+// Badge recipe — compact pill chip with subtle border
+=badge
+	+row(center, center)
+	display: inline-flex
+	+gap(3xs)
+	+px(2xs)
+	+type(xs)
+	+weight(500)
+	+radius(3)
+	+bg(raised)
+	+ink(secondary)
+	+border(all, var(--border))
+	padding-block: 2px
+
+// Input recipe — text entry field
+=input
+	display: block
+	+w(100%)
+	+px(xs)
+	+type(sm)
+	+leading(1.5)
+	+border(all, var(--border))
+	+radius(4)
+	+bg(input)
+	+ink(primary)
+	height: var(--control-h-md, 32px)
+	transition: border-color 120ms ease, box-shadow 120ms ease
+	&:focus-visible, &:focus
+		outline: none
+		border-color: var(--theme-color)
+		box-shadow: 0 0 0 2px var(--ring)
+
+// Keycap recipe
+=kbd
+	display: inline-block
+	+px(3xs)
+	+type(xs)
+	+leading(1)
+	+radius(3)
+	+bg(raised)
+	border: 1px solid var(--border)
+	font-family: var(--font-mono)
+	padding-block: 2px
+
+// Overlay & Dialog surfaces
+=dialog-surface
+	+bg(dialog)
+	+border(all, var(--border))
+	+radius(6)
+	+shadow(lg)
+	max-width: min(92vw, 540px)
+	width: 100%
+
+=popover-surface
+	+bg(popover)
+	+border(all, var(--border))
+	+radius(6)
+	+shadow(md)
+
+// Divider recipe
+=divider
+	border: none
+	+border(top)
+	margin-block: space(s)

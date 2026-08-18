@@ -1,161 +1,111 @@
 ---
-title: Fractals reference
-description: Every atom and molecule mixin, its arguments and defaults, plus the config resolvers.
+title: Fractals Reference
+description: Complete manual of every atom, molecule, and macro recipe mixin, their signatures, resolvers, and examples.
 ---
 
-Import the API in any SASS context:
+# Fractals Reference
+
+Import the pure API in any SASS file or Svelte component `<style lang="sass">`:
 
 ```sass
-@use 'fractalstyler2/fractals' as *
+@use '$lib/styles/fractals' as *
+// Or when using package dependency:
+// @use 'fractalstyler2/fractals' as *
 ```
-
-Argument conventions: a **step** is a scale keyword (`xs s m l xl…`) that resolves
-to a token, or a bare number that becomes `px`, or any explicit unit that passes
-through (see [resolvers](#resolvers)). An **align** value is a semantic keyword
-(`start end center between around evenly stretch baseline`).
 
 ---
 
-## Resolvers (functions)
+## 1. Resolvers (Functions)
 
-| Function | Returns | Example |
-| --- | --- | --- |
-| `space($v)` | token or px | `space(m)` → `var(--space-m)`; `space(18)` → `18px` |
-| `radius($v)` | token or px | `radius(12)` → `var(--radius-12)` |
-| `text-size($v)` | token | `text-size(lg)` → `var(--text-lg)` |
-| `shadow($v)` | token | `shadow(md)` → `var(--shadow-md)` |
-| `surface($role)` | bg var | `surface(raised)` → `var(--bg-raised)` |
-| `ink($role)` | text var | `ink(secondary)` → `var(--text-secondary)` |
-| `align($v)` | flex value | `align(between)` → `space-between` |
-| `bp($name)` | length | `bp(md)` → `768px` |
+Resolvers accept tokens (`m`, `s`, `md`, `surface`) or raw unit/numeric values (`18`, `2rem`), normalizing them to CSS custom properties or valid units:
 
----
-
-## Atoms
-
-### Flow
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+box` | `($x: null, $y: null)` | flex column; `$x` → align-items, `$y` → justify-content |
-| `+row` | `($x: null, $y: null)` | flex row; `$x` → justify-content, `$y` → align-items |
-| `+wrap` | | `flex-wrap: wrap` |
-| `+grid` | `($cols: 1)` | grid with N equal `minmax(0,1fr)` columns |
-| `+auto-grid` | `($min: 15rem, $gap: s)` | auto-fit grid, tracks ≥ `$min` |
-| `+center` | | `display:grid; place-items:center` |
-
-```sass
-.toolbar
-	+row(between, center)   // spread on main axis, centered on cross axis
-	+wrap
-```
-
-### Spacing
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+gap` | `($v: s)` | `gap` |
-| `+pad` | `($v: s)` | `padding` |
-| `+px` | `($v: s)` | `padding-inline` |
-| `+py` | `($v: s)` | `padding-block` |
-| `+mx-auto` | | `margin-inline: auto` |
-| `+my-auto` | | `margin-block: auto` |
-
-### Size
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+w` | `($v: 100%)` | `width` |
-| `+h` | `($v: 100%)` | `height` |
-| `+full` | | width + height 100% |
-| `+square` | `($v)` | width = height = `$v` |
-| `+grow` | `($n: 1)` | `flex-grow` |
-| `+shrink` | `($n: 0)` | `flex-shrink` |
-| `+min0` | | `min-width:0; min-height:0` (flex/grid overflow fix) |
-
-### Surface & skin
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+bg` | `($role: surface)` | `background-color` from `bg`/`surface`/`raised` |
-| `+ink` | `($role: primary)` | text `color` from `primary`/`secondary`/`muted`/`inverse` |
-| `+border` | `($side: all, $color: var(--border))` | 1px border, all sides or one |
-| `+radius` | `($v: 12)` | `border-radius` |
-| `+shadow` | `($v: md)` | `box-shadow` from `sm`/`md`/`lg` |
-
-### Position
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+relative` | | `position: relative` |
-| `+absolute` | `($inset: null)` | `position: absolute` (+ optional `inset`) |
-| `+sticky` | `($top: 0)` | `position: sticky; top` |
-| `+fill` | | `position:absolute; inset:0` |
-
-### Type
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+type` | `($v)` | `font-size` from the text scale |
-| `+weight` | `($w: 500)` | `font-weight` |
-| `+leading` | `($lh: 1.5)` | `line-height` |
-| `+truncate` | | single-line ellipsis |
-| `+clamp-lines` | `($n: 2)` | multi-line clamp to `$n` lines |
-
-### Motion
-
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+transition` | `($props: all, $dur: 150ms, $ease: ease)` | `transition` shorthand |
-| `+ring` | `($color: var(--ring))` | focus outline (2px + offset) |
+| Function | Accepts | Returns | Example |
+|---|---|---|---|
+| `space($v)` | `3xs` `2xs` `xs` `s` `m` `l` `xl` `2xl` `3xl` `s-l` \| Number | Token or px | `space(m)` $\to$ `var(--space-m)`; `space(18)` $\to$ `18px` |
+| `radius($v)` | `0` `2` `3` `4` `6` `8` `12` `16` `24` `full` \| Number | Token or px | `radius(6)` $\to$ `var(--radius-6)` |
+| `surface($role)` | `bg` `surface` `raised` `panel` `footer` `popover` `dialog` `terminal` `input` `canvas` | Token var | `surface(panel)` $\to$ `var(--bg-panel)` |
+| `ink($role)` | `primary` `secondary` `muted` `inverse` | Token var | `ink(secondary)` $\to$ `var(--text-secondary)` |
+| `text-size($v)`| `xs` `sm` `md` `lg` `xl` `2xl` `3xl` `4xl` | Token var | `text-size(md)` $\to$ `var(--text-md)` |
+| `shadow($v)` | `sm` `md` `lg` | Token var | `shadow(md)` $\to$ `var(--shadow-md)` |
+| `align($v)` | `start` `end` `center` `between` `around` `evenly` `stretch` `baseline` | CSS flex keyword | `align(between)` $\to$ `space-between` |
+| `bp($name)` | `sm` `md` `lg` `xl` | Breakpoint width | `bp(lg)` $\to$ `1024px` |
 
 ---
 
-## Molecules
+## 2. Atoms (Single-Decision Primitives)
 
-| Mixin | Signature | Composes |
-| --- | --- | --- |
-| `+stack` | `($gap: xs, $x: null)` | `+box($x)` + `+gap` — vertical rhythm |
-| `+cluster` | `($gap: xs, $x: start, $y: center)` | `+row` + `+wrap` + `+gap` — chip rows |
-| `+center-column` | `($max: var(--measure,60ch), $pad: s)` | max-width measure + `+mx-auto` + `+px` |
-| `+cover` | `($min: 100vh, $pad: s)` | `+box` filling min-height; `.center` child gets `+my-auto` |
-| `+frame` | `($ratio: 16/9)` | aspect-ratio media box; child img/video `object-fit:cover` |
-| `+reel` | `($gap: xs)` | `+row` horizontal scroll-snap rail |
-| `+with-sidebar` | `($rail: 240px, $gap: s, $min: 60%)` | intrinsic rail + fluid `.flow` |
-| `+surface` | `($bg: surface, $pad: s, $radius: 12, $elevation: none)` | `+bg` + `+border` + `+radius` + `+pad` (+ `+shadow` if elevated) |
-| `+cols` | `($map, $gap: s)` | responsive column grid from a per-breakpoint map |
+### Flow & Alignment
+- `+box($x: null, $y: null)` — Flex column. `$x` controls `align-items`, `$y` controls `justify-content`.
+- `+row($x: null, $y: null)` — Flex row. `$x` controls `justify-content`, `$y` controls `align-items`.
+- `+wrap` — `flex-wrap: wrap`.
+- `+grid($cols: 1)` — CSS Grid with $N$ equal `minmax(0, 1fr)` tracks.
+- `+auto-grid($min: 15rem, $gap: s)` — Responsive auto-fitting grid without media queries.
+- `+center` — Dead center single child via `display: grid; place-items: center`.
 
-```sass
-// A responsive 3-column grid, one call:
-.grid-3
-	+cols((base: 1, sm: 2, lg: 3), m)
+### Spacing & Sizing
+- `+gap($v: s)` — `gap: space($v)`.
+- `+pad($v: s)` — `padding: space($v)`.
+- `+px($v: s)` — `padding-inline: space($v)`.
+- `+py($v: s)` — `padding-block: space($v)`.
+- `+mx-auto` / `+my-auto` — Auto margins for centering.
+- `+w($v: 100%)` / `+h($v: 100%)` / `+full` — Width and height constraints.
+- `+min0` — `min-width: 0; min-height: 0` (prevents flex and grid child overflow).
 
-// A card material in one call:
-.tile
-	+surface(surface, m, 16, md)
-```
+### Surface & Skin
+- `+bg($role: surface)` — Background color from the 21-token palette.
+- `+ink($role: primary)` — Text color from the token palette.
+- `+border($side: all, $color: var(--border))` — 1px solid border on all sides or a specific side (`top`, `bottom`, `left`, `right`).
+- `+radius($v: 4)` — Concentric border radius (`0` to `24`, `full`).
+- `+shadow($v: md)` — Elevation box shadow (`sm`, `md`, `lg`).
 
-`+cols` map keys: `base` (no query) plus any breakpoint name (`sm md lg xl`).
-Each value is a column count.
+### Typography & Truncation
+- `+type($v)` — Sets font-size to a fluid Utopia step.
+- `+weight($w: 500)` — `font-weight: $w`.
+- `+leading($lh: 1.5)` — `line-height: $lh`.
+- `+truncate` — Single-line text ellipsis (`nowrap` + `overflow: hidden`).
+- `+clamp-lines($n: 2)` — Multi-line text clamping.
 
 ---
 
-## Responsive fractals
+## 3. Molecules (Compositions of Atoms)
 
-| Mixin | Signature | Does |
-| --- | --- | --- |
-| `+at` | `($name)` | `@media (min-width)` by name (`sm md lg xl`) or raw length; wraps `@content` |
-| `+until` | `($name)` | `@media (max-width)` variant |
-| `+cq` | | `container-type: inline-size` |
-| `+cq-at` | `($width)` | `@container (min-width)` |
-| `+cq-until` | `($width)` | `@container (max-width)` |
-| `+reduce-motion` | | `@media (prefers-reduced-motion: reduce)` |
+- `+stack($gap: xs, $x: null)` — Vertical rhythm stack with aligned child flow.
+- `+cluster($gap: xs, $x: start, $y: center)` — Wrapping flex row for tag chips and action pills.
+- `+surface($bg: surface, $pad: null, $radius: 6, $elevation: none)` — The physical material primitive (background + border + radius + optional padding and shadow).
+- `+cols($map, $gap: s)` — Responsive column map (`+cols((base: 1, sm: 2, lg: 4), s)`).
+- `+center-column($max: var(--measure, 60ch), $pad: s)` — Constrained reading column with automatic horizontal centering.
+- `+cover($min: 100vh, $pad: s)` — Full-viewport container with vertically centered hero focal point.
+- `+frame($ratio: '16 / 9')` — Fixed aspect-ratio container with covered media.
 
-```sass
-.panel
-	+pad(s)
-	+at(md)
-		+pad(l)      // any fractal can grow at a breakpoint
-```
+---
 
-Next: [Tokens & theming](05-tokens-and-theming.md).
+## 4. Macro Recipes
+
+Recipes are parameterized component archetypes in `_06_recipes.sass`:
+
+### `=control($size: md, $radius: 4)`
+Universal interactive control base (used for buttons, select triggers, inputs, and accordion bars). Handles hover states, active spring scale, focus rings, and disabled opacity.
+- `$size`: `sm` (26px height), `md` (32px height), `lg` (38px height).
+
+### `=select($size: md, $radius: 4)`
+Native dropdown select recipe. Includes custom embedded SVG chevron, optical vertical text centering (`line-height: 1.2`), and 28px right padding to prevent text glyph clipping on macOS/WebKit.
+
+### `=partition($side: top, $pad: s)`
+Section divider with guaranteed breathing room. Combines border dividers with reciprocal padding (`padding-top: space($pad)`) and `margin-top: auto` for pinned footers.
+
+### `=card($bg: surface, $pad: null, $radius: 6, $elevation: none)`
+The standard top-anchored vertical card surface.
+
+### `=collapsible`
+Pure CSS grid transition (`0fr` $\to$ `1fr`) for zero-JS accordion animations.
+
+### `=marquee($speed: 30s, $gap: 1rem)`
+Hardware-accelerated infinite ticker with fade masks and pause-on-hover.
+
+---
+
+## 5. Responsive Media Query Mixins
+
+- `+at($bp)` — `@media (min-width: bp($bp)) { @content }` (e.g. `+at(lg)`).
+- `+below($bp)` — `@media (max-width: (bp($bp) - 1px)) { @content }`.
+- `+between($min, $max)` — Viewport interval media query.

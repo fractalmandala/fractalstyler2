@@ -1,14 +1,15 @@
 // =============================================================================
-// MOLECULE FRACTALS — self-similar: each is a small graph of atom fractals.
+// 05_MOLECULES — self-similar: each is a small graph of atom fractals.
 // -----------------------------------------------------------------------------
 // This is the payoff of the model. A molecule reads like a recipe of atoms,
 // and a component (next layer up) reads like a recipe of molecules. Same move
 // at every scale — that is the "fractal" in fractalstyler2.
 // =============================================================================
 
-@use 'config' as *
-@use 'atoms' as *
-@use 'responsive' as *
+@use 'sass:string'
+@use '01_config' as *
+@use '04_atoms' as *
+@use '03_responsive' as *
 
 // Stack — vertical rhythm with one shared gap.
 =stack($gap: xs, $x: null)
@@ -38,11 +39,13 @@
 		+my-auto
 
 // Frame — fixed aspect-ratio media box.
-=frame($ratio: 16 / 9)
-	aspect-ratio: $ratio
+=frame($ratio: '16 / 9')
+	aspect-ratio: string.unquote('#{$ratio}')
 	overflow: hidden
-	> :is(img, video, iframe)
+	position: relative
+	> *
 		+full
+	> :is(img, video, iframe)
 		object-fit: cover
 
 // Reel — horizontal scroll-snap rail.
@@ -69,13 +72,15 @@
 		flex-grow: 999
 		min-width: $min
 
-// Surface — the "material" fractal: skin + elevation in one call.
+// Surface — the "material" fractal: skin + border + optional radius + optional padding + elevation.
 // The building block of every card/panel/popover.
-=surface($bg: surface, $pad: s, $radius: 12, $elevation: none)
+=surface($bg: surface, $pad: null, $radius: 6, $elevation: none)
 	+bg($bg)
 	+border
-	+radius($radius)
-	+pad($pad)
+	@if $radius != null
+		+radius($radius)
+	@if $pad != null
+		+pad($pad)
 	@if $elevation != none
 		+shadow($elevation)
 

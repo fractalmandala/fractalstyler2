@@ -1,0 +1,31 @@
+// =============================================================================
+// 03_RESPONSIVE — the breakpoint mixins. Viewport-aware conditional styling.
+// -----------------------------------------------------------------------------
+// Mobile-first defaults; use +at($bp) for min-width media queries.
+// =============================================================================
+
+@use '01_config' as *
+
+=at($bp)
+	$width: bp($bp)
+	@if $width
+		@media (min-width: $width)
+			@content
+	@else
+		@media (min-width: $bp)
+			@content
+
+=below($bp)
+	$width: bp($bp)
+	@if $width
+		@media (max-width: ($width - 1px))
+			@content
+	@else
+		@media (max-width: $bp)
+			@content
+
+=between($min-bp, $max-bp)
+	$min: bp($min-bp)
+	$max: bp($max-bp)
+	@media (min-width: $min) and (max-width: ($max - 1px))
+		@content

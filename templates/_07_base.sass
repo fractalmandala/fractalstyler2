@@ -1,5 +1,5 @@
 // =============================================================================
-// BASE — a minimal, opinionated reset so the tokens actually reach the page.
+// 07_BASE — a minimal, opinionated reset so the tokens actually reach the page.
 // Kept tiny: box model, sane media defaults, and wiring body to the palette.
 // =============================================================================
 
@@ -8,6 +8,7 @@
 
 html
 	-webkit-text-size-adjust: 100%
+	font-family: var(--font-sans)
 
 body
 	margin: 0
@@ -32,7 +33,7 @@ body
 
 :where(a)
 	color: inherit
-	text-decoration-color: var(--border-strong)
+	text-decoration-color: var(--border-subtle)
 
 :where(button, input, select, textarea)
 	font: inherit

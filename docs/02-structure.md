@@ -1,89 +1,107 @@
 ---
-title: Structure
-description: File and folder anatomy, the four tiers, import surface, and cascade order.
+title: Structure & Hierarchy
+description: File and folder anatomy, the canonical 12-file physical scale, import surfaces, and cascade order.
 ---
 
-The source layout:
+# Structure & Hierarchy
+
+All stylesheets in `fractalstyler2` live inside a single, unified directory (`src/lib/styles/`). Files are numbered sequentially from indivisible mathematical scales up to whole-page layouts.
 
 ```
-src/lib/
-├─ cli.ts                    CLI engine (npx fractalstyler2 init)
-├─ index.ts                  tiny runtime: version, setMode, toggleMode
-└─ styles/                   all SASS partials in one unified folder
-   ├─ _config.sass           scales-as-data + resolvers: space() radius() align() …
-   ├─ _tokens.sass           the CSS custom properties (the only literal values)
-   ├─ _base.sass             minimal reset; wires body to the palette
-   ├─ _responsive.sass       +at(md) +until +cq — responsiveness as a fractal
-   ├─ _atoms.sass            indivisible fractals: +box +row +gap +pad +surface skin…
-   ├─ _molecules.sass        composed fractals: +stack +cluster +cover +surface +cols…
-   ├─ _utilities.sass        projection of atoms → markup classes (optional layer)
-   ├─ _fractals.sass         PURE API barrel — @forward config/responsive/atoms/molecules
-   ├─ _blocks.sass           card, button, badge, input, panel… as fractal recipes
-   ├─ _layouts.sass          grid-3, card-grid, hero, holy-grail, docs, app-shell
-   └─ index.sass             the EMITTED stylesheet: tokens + base + utilities + blocks + layouts
-
-templates/                   clean copies of all 11 SASS files copied by the init CLI
+src/lib/styles/
+├── _00_tokens.sass        ──► Raw CSS custom properties on :root & [data-mode]
+├── _01_config.sass        ──► Scales, maps, resolvers (space, radius, surface, ink)
+├── _02_fonts.sass         ──► Local webfont declarations (@font-face)
+├── _03_responsive.sass    ──► Viewport media query mixins (+at, +below, +between)
+├── _04_atoms.sass         ──► Single-decision layout primitives (+box, +row, +bg, +ink)
+├── _05_molecules.sass     ──► Compositions of atoms (+stack, +cluster, +surface, +cols)
+├── _06_recipes.sass       ──► Macro component archetypes (=control, =select, =card, =partition)
+├── _07_base.sass          ──► Global HTML element resets
+├── _08_blocks.sass        ──► Semantic component classes (.surface, .panel, .select, .badge)
+├── _09_utilities.sass     ──► 1:1 atomic markup projections (.pad-*, .pad-top-*, .gap-*)
+├── _10_layouts.sass       ──► Page layout templates (.docs, .card-grid, .hero, .holy-grail)
+├── _11_own.sass           ──► Bespoke local project overrides
+├── _fractals.sass         ──► Pure Mixin Barrel (forwards 01 to 06, emits 0 bytes CSS)
+└── index.sass             ──► Master Stylesheet (forwards fractals + loads CSS cascade)
 ```
 
-Two files serve as the SASS entry points:
+---
 
-- **`_fractals.sass`** — the *pure API*. `@forward`s config, responsive,
-  atoms, molecules. Emits **no CSS**. Import it to compose your own styles.
-- **`index.sass`** — the *emitted stylesheet*. `@use`s tokens, base,
-  utilities, blocks, layouts in cascade order. Import it to ship ready-made CSS.
+## The Two SASS Entrypoints
 
-## The four tiers
-
-| Tier | File(s) | Emits on its own? | Role |
-| --- | --- | --- | --- |
-| **Config** | `_config.sass` | no | scales as Sass data + resolver functions |
-| **Atoms** | `_atoms.sass` | on call | one styling decision per mixin |
-| **Molecules** | `_molecules.sass` | on call | recipes of atoms |
-| **Components/Layouts** | `_blocks.sass`, `_layouts.sass` | as classes | recipes of molecules |
-
-`_tokens.sass` and `_base.sass` sit beneath the tiers (they emit custom
-properties and a reset). `_utilities.sass` sits beside them — it is the optional
-projection of atoms into classes.
-
-## Usage Surfaces
-
-### 1. Scaffolded in your project (shadcn-style)
-```bash
-npx fractalstyler2 init
-```
-- In `src/routes/+layout.svelte`: `import '$lib/styles/index.sass'`
-- In component SASS: `@use '$lib/styles/fractals' as *`
-
-### 2. Package exports (direct dependency)
-
-| Import | Resolves to | Use for |
-| --- | --- | --- |
-| `import 'fractalstyler2/styles'` | `dist/styles/index.sass` | emit the full stylesheet once, globally |
-| `@use 'fractalstyler2/fractals' as *` | `dist/styles/_fractals.sass` | compose your own components from mixins |
-| `@use 'fractalstyler2/tokens'` | `dist/styles/_tokens.sass` | just the custom properties |
-| `import { … } from 'fractalstyler2'` | `dist/index.js` | `version`, `setMode`, `toggleMode` |
-
-## Cascade order
-
-`index.sass` loads in this exact order, and order is load-bearing:
+### 1. `_fractals.sass` — The Pure Mixin Barrel (Zero CSS)
+- Forwards **only** the mathematical and mixin layers (`01_config` $\to$ `06_recipes`).
+- Emits **0 bytes of CSS**.
+- Safe to `@use '$lib/styles/fractals' as *` inside 100+ component `<style>` blocks without leaking `:root` token blocks or duplicate class declarations.
 
 ```sass
-@use './tokens'      // 1. custom properties define the vocabulary
-@use './base'        // 2. reset consumes tokens (body font/bg/color)
-@use './utilities'   // 3. atom classes (low specificity, single job)
-@use './blocks'      // 4. components consume tokens + fractals
-@use './layouts'     // 5. page templates
+@forward '01_config'
+@forward '03_responsive'
+@forward '04_atoms'
+@forward '05_molecules'
+@forward '06_recipes'
 ```
 
-Tokens first so every later rule can reference them. Utilities before
-components so a component can still be nudged by a utility class in markup where
-that is genuinely wanted. Everything is flat, single-class specificity — the
-cascade does the arbitration, not selector weight.
+### 2. `index.sass` — The Emitted Global Stylesheet
+- Loaded **once globally** in your root `+layout.svelte`.
+- Forwards `fractals` at Line 1 so downstream consumers can import one master file.
+- Uses `@use '...' as *` to load the cascade in strict specificity order:
 
-## What a partial may and may not do
+```sass
+// 1. Public SASS API
+@forward 'fractals'
 
-- `_atoms.sass`, `_molecules.sass`, `_responsive.sass`, `_config.sass` **define** mixins/functions and emit nothing on their own.
-- `_tokens.sass` and `_base.sass` emit custom properties and baseline reset.
-- `_blocks.sass` and `_layouts.sass` author classes by composing fractals via `@use 'fractals' as *`. They contain almost no raw CSS.
+// 2. Global Stylesheet Cascade
+@use '02_fonts' as *
+@use '00_tokens' as *
+@use '07_base' as *
+@use '08_blocks' as *
+@use '09_utilities' as *
+@use '10_layouts' as *
+@use '11_own' as *
+```
 
-Next: [Getting started](03-getting-started.md).
+---
+
+## The Scale Hierarchy Breakdown
+
+| File | Emits CSS? | Purpose |
+|---|---|---|
+| `_00_tokens.sass` | Yes (`:root`) | The single source of truth for runtime CSS custom properties. |
+| `_01_config.sass` | No (0 bytes) | Sass map data and resolver functions (`space()`, `radius()`, `surface()`, `ink()`). |
+| `_02_fonts.sass` | Yes (`@font-face`) | Local webfonts and typography fallbacks. |
+| `_03_responsive.sass` | No (0 bytes) | Breakpoint media query mixins (`+at()`, `+below()`, `+between()`). |
+| `_04_atoms.sass` | No (0 bytes) | Single-decision mixins (`+box`, `+row`, `+bg`, `+ink`, `+pad`, `+gap`). |
+| `_05_molecules.sass` | No (0 bytes) | Multi-atom compositions (`+stack`, `+cluster`, `+surface`, `+cols`). |
+| `_06_recipes.sass` | No (0 bytes) | Parameterized macro archetypes (`=control`, `=select`, `=card`, `=partition`). |
+| `_07_base.sass` | Yes (HTML tags) | Global HTML resets (box-sizing, body ink, link states). |
+| `_08_blocks.sass` | Yes (`.classes`) | Baseline semantic classes (`.surface`, `.panel`, `.select`, `.badge`, `.card`). |
+| `_09_utilities.sass` | Yes (`.classes`) | 1:1 markup classes (`.pad-s`, `.pad-top-s`, `.gap-m`, `.hide-desktop`). |
+| `_10_layouts.sass` | Yes (`.classes`) | Page-scale frames (`.docs`, `.card-grid`, `.hero`, `.holy-grail`). |
+| `_11_own.sass` | Yes (`.classes`) | Local bespoke overrides for your application. |
+
+---
+
+## Import Syntax Guidelines
+
+### In Svelte Component `<style>` Blocks:
+Always import the pure mixin barrel so no duplicate CSS is emitted:
+
+```svelte
+<style lang="sass">
+	@use '$lib/styles/fractals' as *
+
+	.my-card
+		+surface(surface, s, 6)
+		+stack(s)
+</style>
+```
+
+### In Root `+layout.svelte`:
+Import the master stylesheet once:
+
+```svelte
+<script>
+	import '$lib/styles/index.sass';
+</script>
+```

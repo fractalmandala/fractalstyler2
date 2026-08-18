@@ -5,35 +5,37 @@ description: Progressive-discovery entry point for agents — golden rules, inte
 
 # AGENTS — start here
 
-This is the **entry point** for any agent working in fractalstyler2. It is
-deliberately short. It gives you the rules and a routing table, then sends you to
-the [command registry](docs/agents/registry.md), which sends you to the exact
-[docs](docs/) you need. Load only what the task requires — don't read everything.
+This is the **entry point** for any AI agent working in `fractalstyler2`. It gives you the rules, the 21-token contract, and a routing table into the [command registry](docs/agents/registry.md).
+
+---
 
 ## What this package is (10 seconds)
 
-A styling system where **a fractal is a SASS mixin**. Components and layouts are
-recipes of smaller fractals. You build UI by *composing fractals*, not by writing
-raw CSS or long utility strings.
+A styling system where **a fractal is a SASS mixin**. Components and layouts are composable recipes of smaller fractals. You build UI by *composing fractals*, not by writing ad-hoc CSS or unmaintainable utility strings.
 
 It operates in two modes:
 1. **Scaffold mode (shadcn-style)**: `npx fractalstyler2 init` copies the full, editable SASS design system into your project's `src/lib/styles`.
 2. **Library mode**: Direct import via `import 'fractalstyler2/styles'` and `@use 'fractalstyler2/fractals' as *`.
 
-Source of truth inside the package is `src/lib/**` and `templates/**`; `dist/` is
-generated — never edit it.
+---
 
-## The golden rules (always)
+## The Golden Rules (Always)
 
-1. Never hardcode a value a token covers — use `+gap(m)`, `+radius(12)`, `+bg(surface)`.
-2. Compose fractals; write raw CSS only for genuinely unique lines.
-3. State on `data-*` / `aria-*`, never modifier classes.
-4. Markup stays thin and semantic; mobile-first, grow with `+at()`.
-5. Edit `src/lib/styles/**` only. Verify with `npx sass src/lib/styles/index.sass /tmp/check.css` or `npm run dev` (pnpm: `pnpm dev`).
+1. **Strict 21-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, and borders resolve from the 21 tokens in `_00_tokens.sass`.
+2. **Never hardcode values that tokens cover**: Use `+gap(m)`, `+radius(6)`, `+bg(surface)`. Raw numbers (`+gap(18)`) are explicit escape hatches only.
+3. **Compose fractals; write raw CSS only for genuinely unique lines**.
+4. **Reading Column Max Columns Law**: Max 2 columns (`.grid-2` or `cols={2}`) in `.docs-main` / reading measures ($\le 760\text{px}$).
+5. **Partition Breathing Room**: Every divider line (`border-top` / `border-bottom`) MUST have reciprocal padding (`var(--space-xs)` / `var(--space-s)`).
+6. **Card Containment**: Button rows, tag groups, and badge clusters inside cards must use `.row.wrap` or `.cluster`. Controls have `flex-shrink: 0`.
+7. **Form Control Optical Baseline**: `<select>` uses `.select` (never raw `.input`).
+8. **State rides on `data-*` / `aria-*`**, never modifier classes (`.btn--primary`, `.is-active`).
+9. **Zero-CSS Mixin Isolation**: Component styles must `@use '$lib/styles/fractals' as *` (which emits 0 bytes CSS), never `index.sass`.
 
-(Full text: [registry → Golden rules](docs/agents/registry.md#golden-rules).)
+(Full details: [registry → Golden rules](docs/agents/registry.md#golden-rules) and [DESIGN.md](DESIGN.md).)
 
-## Discovery ladder
+---
+
+## Discovery Ladder
 
 ```
 1. AGENTS.md (this file)         → rules + routing
@@ -42,49 +44,46 @@ generated — never edit it.
 4. do the work; verify; report
 ```
 
-## Route the request → a command
+---
+
+## Route the Request → A Command
 
 | The user asks to… | Command | Then read |
-| --- | --- | --- |
-| scaffold styles into a project | [`fs2:init`](docs/agents/registry.md#fs2init) | docs/03, README |
-| build a page or route | [`fs2:page`](docs/agents/registry.md#fs2page) | docs/03, 07, 08 |
-| build a reusable component/block | [`fs2:component`](docs/agents/registry.md#fs2component) | docs/04, 07 |
-| build a page layout/template | [`fs2:layout`](docs/agents/registry.md#fs2layout) | docs/04, 07 |
-| add a new mixin/primitive | [`fs2:fractal`](docs/agents/registry.md#fs2fractal) | docs/02, 04, DEVELOPERS |
-| add a theme / change tokens | [`fs2:theme`](docs/agents/registry.md#fs2theme) | docs/05 |
-| clean up / convert existing CSS | [`fs2:refactor`](docs/agents/registry.md#fs2refactor) | docs/01, 04, 06 |
-| review/audit for idiom | [`fs2:review`](docs/agents/registry.md#fs2review) | docs/01, 02 |
+|---|---|---|
+| Scaffold styles into a project | [`fs2:init`](docs/agents/registry.md#fs2init) | [03. Getting Started](docs/03-getting-started.md), [README](README.md) |
+| Build a page or route | [`fs2:page`](docs/agents/registry.md#fs2page) | [03](docs/03-getting-started.md), [07](docs/07-components-and-layouts.md), [08](docs/08-recipes.md) |
+| Build a reusable component/block | [`fs2:component`](docs/agents/registry.md#fs2component) | [04](docs/04-fractals-reference.md), [07](docs/07-components-and-layouts.md) |
+| Build a page layout/template | [`fs2:layout`](docs/agents/registry.md#fs2layout) | [04](docs/04-fractals-reference.md), [07](docs/07-components-and-layouts.md) |
+| Add a new mixin/primitive | [`fs2:fractal`](docs/agents/registry.md#fs2fractal) | [02](docs/02-structure.md), [04](docs/04-fractals-reference.md), [DEVELOPERS](DEVELOPERS.md) |
+| Add a theme / change tokens | [`fs2:theme`](docs/agents/registry.md#fs2theme) | [05](docs/05-tokens-and-theming.md) |
+| Clean up / convert existing CSS | [`fs2:refactor`](docs/agents/registry.md#fs2refactor) | [01](docs/01-philosophy.md), [04](docs/04-fractals-reference.md), [06](docs/06-utilities.md) |
+| Review/audit for idiom & UI invariants | [`fs2:review`](docs/agents/registry.md#fs2review) | [DESIGN.md](DESIGN.md), [01](docs/01-philosophy.md), [02](docs/02-structure.md) |
 
-If nothing matches, read [docs/README.md](docs/README.md) to orient, then pick
-the closest command.
+---
 
-## Minimal quickstart (for any build task)
+## Minimal Quickstart
 
-### Scaffolded project:
+### In Svelte Component (`<style lang="sass">`):
 ```sass
-// In Svelte component (<style lang="sass">)
 @use '$lib/styles/fractals' as *
 
-.thing
-	+surface(surface, s, 12)   // material: bg + border + radius + pad
-	+stack(2xs)                // arrangement: flex column + gap
-	&[data-variant='loud']     // state via attribute
-		+shadow(lg)
+.feature-card
+	+surface(surface, m, 6)   // material: bg + border + radius(6px) + pad(m)
+	+stack(s)                 // arrangement: flex column + gap(s)
+	&[data-elevated]          // state via attribute
+		+shadow(md)
 ```
 
+### Global Stylesheet (`src/routes/+layout.svelte`):
 ```svelte
-<!-- Global stylesheet in src/routes/+layout.svelte -->
 <script>
 	import '$lib/styles/index.sass';
 </script>
 
-<!-- Markup stays semantic -->
-<section class="grid-3">
-	<article class="card" data-elevated><h3 class="text-lg">…</h3></article>
+<section class="card-grid">
+	<article class="card" data-elevated>
+		<h3 class="text-md font-semibold">Title</h3>
+		<p class="muted text-sm">Description text</p>
+	</article>
 </section>
 ```
-
-## For maintainers, not feature work
-
-If the task is about building, packaging, versioning, or publishing the library
-itself (not building UI *with* it), go to [DEVELOPERS.md](DEVELOPERS.md).

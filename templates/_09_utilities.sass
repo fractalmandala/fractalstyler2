@@ -1,17 +1,14 @@
 // =============================================================================
-// UTILITY PROJECTION — the *other* way to consume a fractal.
+// 09_UTILITIES — the markup projection of atom & molecule fractals.
 // -----------------------------------------------------------------------------
-// A fractal is a mixin. Here we bind a subset of them to class names so they
-// stay usable straight from markup (`class="box gap-m pad-l"`). This is the
-// key idea: utility classes are not a separate system — they are a generated
-// projection of the exact same fractals your components compose. Emit only the
-// atoms you want in markup; delete this whole file if you go SASS-only.
+// Every utility class here is a direct 1:1 projection of an atom or molecule
+// mixin. Because this file is loaded after _08_blocks.sass in index.sass, utility
+// classes can be used on any element to set or override properties without
+// specificity wars.
 // =============================================================================
 
-@use 'config' as *
-@use 'atoms' as *
-@use 'molecules' as *
-@use 'responsive' as *
+@use 'sass:string'
+@use 'fractals' as *
 
 // --- Flow ------------------------------------------------------------------
 .box
@@ -35,6 +32,10 @@
 		justify-content: flex-start
 	&.ybot
 		justify-content: flex-end
+	&.ybetween
+		justify-content: space-between
+	&.yevenly
+		justify-content: space-evenly
 
 .row
 	&.ycenter
@@ -60,7 +61,27 @@
 .center
 	+center
 
-// --- Spacing scale → gap-* / pad-* -----------------------------------------
+// --- Molecule Projections --------------------------------------------------
+.stack
+	+stack(s)
+
+.cluster
+	+cluster(xs)
+
+.frame
+	+frame('16 / 9')
+	&.square
+		+frame('1 / 1')
+	&.video
+		+frame('16 / 9')
+
+.reel
+	+reel(s)
+
+.center-column
+	+center-column
+
+// --- Spacing scale → gap-* / pad-* / margin-* ------------------------------
 @each $s in $space-steps
 	.gap-#{$s}
 		+gap($s)
@@ -70,6 +91,29 @@
 		+px($s)
 	.py-#{$s}
 		+py($s)
+	.pad-top-#{$s}, .pt-#{$s}
+		padding-top: space($s)
+	.pad-bottom-#{$s}, .pb-#{$s}
+		padding-bottom: space($s)
+	.pad-left-#{$s}, .pl-#{$s}
+		padding-left: space($s)
+	.pad-right-#{$s}, .pr-#{$s}
+		padding-right: space($s)
+	.m-#{$s}
+		margin: space($s)
+	.mx-#{$s}
+		margin-inline: space($s)
+	.my-#{$s}
+		margin-block: space($s)
+	.mt-#{$s}, .margin-top-#{$s}
+		margin-top: space($s)
+	.mb-#{$s}, .margin-bottom-#{$s}
+		margin-bottom: space($s)
+
+.mx-auto
+	+mx-auto
+.my-auto
+	+my-auto
 
 // --- Radius / shadow / surface ---------------------------------------------
 @each $r in $radius-steps
@@ -98,11 +142,22 @@
 .truncate
 	+truncate
 
-// Semantic type primitives — so you stop retyping `.text-sm .lh15 .muted`.
-.body
-	+type(md)
-	+leading(1.6)
-	+ink(primary)
+.clamp-1
+	+clamp-lines(1)
+.clamp-2
+	+clamp-lines(2)
+.clamp-3
+	+clamp-lines(3)
+
+.weight-400
+	+weight(400)
+.weight-500
+	+weight(500)
+.weight-600
+	+weight(600)
+.weight-700
+	+weight(700)
+
 .muted
 	+ink(secondary)
 .eyebrow
@@ -121,5 +176,30 @@
 	+full
 .grow
 	+grow
+.shrink-0
+	+shrink(0)
 .min0
 	+min0
+.relative
+	+relative
+.absolute
+	+absolute
+.overflow-hidden
+	overflow: hidden
+.cursor-pointer
+	cursor: pointer
+.block
+	display: block
+
+// --- Responsive Visibility -------------------------------------------------
+.hide-desktop
+	+at(lg)
+		display: none !important
+
+.hide-mobile
+	+below(lg)
+		display: none !important
+
+.only-mobile
+	+at(lg)
+		display: none !important

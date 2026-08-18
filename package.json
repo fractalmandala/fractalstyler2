@@ -39,7 +39,7 @@
 		"./styles": "./dist/styles/index.sass",
 		"./styles/*": "./dist/styles/*",
 		"./fractals": "./dist/styles/_fractals.sass",
-		"./tokens": "./dist/styles/_tokens.sass",
+		"./tokens": "./dist/styles/_00_tokens.sass",
 		"./mcp": "./dist/mcp/server.js",
 		"./package.json": "./package.json"
 	},

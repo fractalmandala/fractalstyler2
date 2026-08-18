@@ -1,11 +1,11 @@
 // =============================================================================
-// ATOM FRACTALS — the indivisible units. One visual decision each.
+// 04_ATOMS — the indivisible units. One visual decision each.
 // -----------------------------------------------------------------------------
 // Every atom is a mixin. Call it inside a class to compose, or let
-// _utilities.sass project it to a utility class. Same fractal, two consumers.
+// _09_utilities.sass project it to a utility class. Same fractal, two consumers.
 // =============================================================================
 
-@use 'config' as *
+@use '01_config' as *
 
 // --- Flow: the two axes of layout ------------------------------------------
 // A box is a vertical stack, a row is horizontal. Optional semantic alignment:
@@ -102,7 +102,7 @@
 	@else
 		border-#{$side}: 1px solid $color
 
-=radius($v: 12)
+=radius($v: 4)
 	border-radius: radius($v)
 
 =shadow($v: md)

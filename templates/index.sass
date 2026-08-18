@@ -1,20 +1,18 @@
 // =============================================================================
-// STYLES ENTRY — the full emitted stylesheet in cascade order.
+// FRACTALSTYLER2 — Master Stylesheet & Public Mixin API
 // -----------------------------------------------------------------------------
-//   1. tokens      the CSS custom properties (only literal values)
-//   2. base        fluid reset
-//   3. utilities   atom fractals projected to markup classes (optional layer)
-//   4. blocks      components composed from fractals
-//   5. layouts     page templates composed from fractals
-//
-// Consume from a SvelteKit app:  import '$lib/styles/index.sass'
-// or from package:               import 'fractalstyler2/styles'
-// The fractal mixins/functions themselves emit nothing until called, so output
-// contains only what you use.
+// 1. Public API: Forwards all pure mixins, functions, and atoms (0 bytes CSS)
+// 2. Cascade Order: Emits CSS rules in strict specificity sequence
 // =============================================================================
 
-@use './tokens'
-@use './base'
-@use './utilities'
-@use './blocks'
-@use './layouts'
+// Public Sass API — available to any file that @uses this module
+@forward 'fractals'
+
+// Global Stylesheet Cascade
+@use '02_fonts' as *
+@use '00_tokens' as *
+@use '07_base' as *
+@use '08_blocks' as *
+@use '09_utilities' as *
+@use '10_layouts' as *
+@use '11_own' as *

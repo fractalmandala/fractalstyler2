@@ -1,84 +1,87 @@
 ---
-title: Utilities
-description: The markup classes projected from atom fractals, and when to reach for them.
+title: Utilities Reference
+description: Complete reference of generated 1:1 atomic markup classes, directional padding, margins, and responsive visibility.
 ---
 
-Utility classes are the *projection* of atom fractals into markup, generated in
-`src/lib/styles/_utilities.sass`. They ship in `fractalstyler2/styles` (or `$lib/styles/index.sass`). Use
-them for quick composition in markup; reach for [component recipes](07-components-and-layouts.md)
-when a class string recurs.
+# Utilities Reference
 
-## Flow
+Utility classes in `_09_utilities.sass` are direct 1:1 projections of atom and molecule fractals. Because `_09_utilities.sass` is loaded after `_08_blocks.sass` in `index.sass`, utility classes override component styles without specificity conflicts.
 
-| Class | Fractal |
-| --- | --- |
-| `.box` | `+box` (flex column) |
-| `.row` `.row.wrap` | `+row` (+ `+wrap`) |
-| `.grid-cols-1` … `.grid-cols-6` | `+grid(n)` |
-| `.center` | `+center` |
+---
 
-Alignment modifiers (composed in the class string):
-
-- On `.box`: `.xcenter .xleft .xright` (cross axis) · `.ycenter .ytop .ybot` (main axis)
-- On `.row`: `.ycenter .ytop .ybot` (cross axis) · `.xbetween .xevenly .xleft .xright` (main axis)
+## 1. Flow & Flexbox
 
 ```svelte
-<div class="row ycenter xbetween">…</div>
-<div class="box xcenter">…</div>
+<!-- Vertical Flexbox Stack -->
+<div class="box gap-s">...</div>
+
+<!-- Horizontal Flexbox Row -->
+<div class="row ycenter xbetween gap-xs">...</div>
+
+<!-- Wrapping Row for Badges & Buttons -->
+<div class="row wrap ycenter gap-2xs">...</div>
+
+<!-- Dead Center Child -->
+<div class="center hfull">...</div>
 ```
 
-## Spacing
+### Alignment Modifiers
+- **Box Axis Modifiers**: `.box.xcenter`, `.box.xleft`, `.box.xright`, `.box.ycenter`, `.box.ytop`, `.box.ybot`, `.box.ybetween`, `.box.yevenly`
+- **Row Axis Modifiers**: `.row.ycenter`, `.row.ytop`, `.row.ybot`, `.row.xbetween`, `.row.xevenly`, `.row.xleft`, `.row.xright`
 
-Generated for every space step (`3xs 2xs xs s m l xl 2xl 3xl s-l`):
+---
 
-| Pattern | Fractal |
-| --- | --- |
-| `.gap-m` | `+gap(m)` |
-| `.pad-l` | `+pad(l)` |
-| `.px-s` | `+px(s)` |
-| `.py-xl` | `+py(xl)` |
+## 2. Spacing & Directional Padding
 
-## Surface, radius, shadow, border
+All spacing classes map to fluid Utopia steps (`3xs`, `2xs`, `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`, `s-l`):
 
-| Class | Fractal |
-| --- | --- |
-| `.bg-bg` `.bg-surface` `.bg-raised` | `+bg(role)` |
-| `.radius-0…24` `.radius-full` | `+radius(v)` |
-| `.shadow-sm/md/lg` | `+shadow(v)` |
-| `.border` | `+border` (all sides) |
-| `.border-top/right/bottom/left` | `+border(side)` |
+| Class Pattern | Shorthand | What It Applies |
+|---|---|---|
+| `.gap-#{$s}` | — | `gap: var(--space-#{$s})` |
+| `.pad-#{$s}` | — | `padding: var(--space-#{$s})` |
+| `.px-#{$s}` | — | `padding-inline: var(--space-#{$s})` |
+| `.py-#{$s}` | — | `padding-block: var(--space-#{$s})` |
+| `.pad-top-#{$s}` | `.pt-#{$s}` | `padding-top: var(--space-#{$s})` |
+| `.pad-bottom-#{$s}` | `.pb-#{$s}` | `padding-bottom: var(--space-#{$s})` |
+| `.pad-left-#{$s}` | `.pl-#{$s}` | `padding-left: var(--space-#{$s})` |
+| `.pad-right-#{$s}` | `.pr-#{$s}` | `padding-right: var(--space-#{$s})` |
+| `.m-#{$s}` | — | `margin: var(--space-#{$s})` |
+| `.mt-#{$s}` | `.margin-top-#{$s}` | `margin-top: var(--space-#{$s})` |
+| `.mb-#{$s}` | `.margin-bottom-#{$s}` | `margin-bottom: var(--space-#{$s})` |
+| `.mx-#{$s}` / `.my-#{$s}` | — | `margin-inline` / `margin-block` |
+| `.mx-auto` / `.my-auto` | — | `margin-inline: auto` / `margin-block: auto` |
 
-## Type
+---
 
-| Class | Fractal / effect |
-| --- | --- |
-| `.text-xs … .text-4xl` | `+type(v)` |
-| `.truncate` | single-line ellipsis |
-| `.body` | md size + 1.6 leading + primary ink (semantic paragraph) |
-| `.muted` | secondary ink |
-| `.eyebrow` | small uppercase label, muted |
+## 3. Surface & Borders
 
-## Sizing shortcuts
+- **Surfaces**: `.bg-bg`, `.bg-surface`, `.bg-raised`, `.bg-panel`, `.bg-footer`, `.bg-popover`, `.bg-dialog`, `.bg-terminal`, `.bg-input`, `.bg-canvas`
+- **Borders**: `.border`, `.border-top`, `.border-bottom`, `.border-left`, `.border-right`
+- **Radius**: `.radius-0`, `.radius-2`, `.radius-3`, `.radius-4`, `.radius-6`, `.radius-full`
+- **Shadow**: `.shadow-sm`, `.shadow-md`, `.shadow-lg`
 
-| Class | Fractal |
-| --- | --- |
-| `.wfull` `.hfull` `.full` | `+w/+h/+full` |
-| `.grow` | `+grow` |
-| `.min0` | `+min0` |
+---
 
-## Extending the projection
+## 4. Typography & Clamping
 
-To add a utility, bind a fractal to a class in `_utilities.sass` — ideally by
-looping a scale so the whole family generates at once:
+- **Text Scale**: `.text-xs`, `.text-sm`, `.text-md`, `.text-lg`, `.text-xl`, `.text-2xl`, `.text-3xl`, `.text-4xl`
+- **Font Weights**: `.weight-400`, `.weight-500`, `.weight-600`, `.weight-700`
+- **Semantic Text**: `.muted` (secondary ink), `.eyebrow` (uppercase tracking header)
+- **Clamping**: `.truncate` (single line ellipsis), `.clamp-1`, `.clamp-2`, `.clamp-3`
 
-```sass
-@each $s in $space-steps
-	.mt-#{$s}
-		margin-top: space($s)
-```
+---
 
-Only project atoms you actually use in markup; anything you don't project still
-exists as a fractal for composition. See [DEVELOPERS.md](../DEVELOPERS.md) for
-when a change like this needs a repack.
+## 5. Sizing & Overflow
 
-Next: [Components & layouts](07-components-and-layouts.md).
+- `.wfull` / `.hfull` / `.full` — 100% width and height
+- `.grow` / `.shrink-0` — Flex grow and shrink prevention
+- `.min0` — Zero minimum dimension to prevent flex and grid child overflow
+- `.overflow-hidden` / `.cursor-pointer` / `.block` / `.relative` / `.absolute`
+
+---
+
+## 6. Responsive Visibility
+
+- `.hide-desktop`: Hidden at viewports $\ge 1024\text{px}$ (`display: none !important`). Use on mobile drawer triggers and mobile topbars.
+- `.hide-mobile`: Hidden at viewports $< 1024\text{px}$ (`display: none !important`).
+- `.only-mobile`: Explicitly visible on mobile only.
