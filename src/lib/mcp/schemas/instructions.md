@@ -12,7 +12,7 @@ The fractalstyler2 MCP server provides tools to inspect design tokens, snap canv
 7. **list_fractals**: Catalogs all atom & molecule mixins with signatures.
 
 ## Golden Rules:
-- Never hardcode values that tokens cover; use `+gap(m)`, `+radius(12)`, `+bg(surface)`.
+- Never hardcode values that tokens cover; use `+gap(m)`, `+radius(6)`, `+bg(surface)`.
 - Compose fractals (`+surface`, `+stack`, `+cluster`); write raw CSS only for unique lines.
 - Express component state on `data-*` / `aria-*` attributes, never modifier classes.
 - No legacy v1 classes (e.g. `gap8`, `pad16`, `w100`, `.stack` in markup).

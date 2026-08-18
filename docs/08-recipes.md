@@ -51,7 +51,7 @@ An anchored vertical card with category badge, feature checklist, and pinned but
 	</div>
 
 	<!-- Pinned Footer Action -->
-	<footer class="row wrap ycenter pad-top-s border-top">
+	<footer class="row wrap ycenter border-top">
 		<button
 			type="button"
 			class="button text-sm wfull"

@@ -1,7 +1,6 @@
 {
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "fractalstyler2",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Fractal-composition styling system and design token engine for SvelteKit and AI design tools (OpenDesign, Pencil, Cursor).",
   "author": {
     "name": "Amrit",

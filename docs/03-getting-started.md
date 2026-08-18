@@ -3,7 +3,7 @@ title: Getting started
 description: Install fractalstyler2, scaffold via CLI or install package, wire into SvelteKit, and build your first page.
 ---
 
-## Option A: Scaffold via CLI (shadcn-style, Recommended)
+## Option A: Scaffold via CLI (Recommended)
 
 Scaffold the complete, editable SASS design system into your project's `src/lib/styles`:
 
@@ -11,7 +11,7 @@ Scaffold the complete, editable SASS design system into your project's `src/lib/
 # npm
 npx fractalstyler2 init
 
-# pnpm
+# or pnpm
 pnpm dlx fractalstyler2 init
 ```
 
@@ -161,16 +161,16 @@ Markup stays thin and semantic:
 
 ## Compose your own component
 
-When the shipped blocks don't cover something, author it from fractals in a
-scoped `<style lang="sass">`:
+When the shipped blocks don't cover something, author it from fractals in a new .sass file (or in scoped `<style lang="sass>` within the page/component if you prefer that).
 
 ```svelte
 <div class="pricing-card">
 	<h3 class="text-lg">Pro</h3>
 	<p class="body muted">Everything, composed.</p>
 </div>
+```
 
-<style lang="sass">
+```
 	// If scaffolded:
 	@use '$lib/styles/fractals' as *
 
@@ -181,7 +181,6 @@ scoped `<style lang="sass">`:
 		+surface(surface, l, 16, md)   // bg + border + radius + pad + shadow
 		+stack(m, center)              // flex column + gap + centered
 		text-align: center
-</style>
 ```
 
 ## Color mode

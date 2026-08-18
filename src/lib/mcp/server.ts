@@ -20,7 +20,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '0.1.0';
+const VERSION = '0.3.0';
 
 // Resolve styles directory for SASS compiler loadPaths
 function getStylesDir(): string {
@@ -33,7 +33,7 @@ function getStylesDir(): string {
 		join(process.cwd(), 'templates')
 	];
 	for (const candidate of candidates) {
-		if (existsSync(candidate) && existsSync(join(candidate, '_tokens.sass'))) {
+		if (existsSync(candidate) && existsSync(join(candidate, '_00_tokens.sass'))) {
 			return candidate;
 		}
 	}
@@ -104,10 +104,11 @@ const DESIGN_TOKENS = {
 		}
 	},
 	radius: {
-		steps: ['0', '2', '4', '6', '8', '12', '16', '24', 'full'],
+		steps: ['0', '2', '3', '4', '6', '8', '12', '16', '24', 'full'],
 		values: {
 			'0': '0px',
 			'2': '2px',
+			'3': '3px',
 			'4': '4px',
 			'6': '6px',
 			'8': '8px',
@@ -125,13 +126,22 @@ const DESIGN_TOKENS = {
 	surfaces: {
 		bg: 'var(--bg)',
 		surface: 'var(--bg-surface)',
-		raised: 'var(--bg-raised)'
+		raised: 'var(--bg-raised)',
+		panel: 'var(--bg-panel)',
+		footer: 'var(--bg-footer)',
+		popover: 'var(--bg-popover)',
+		dialog: 'var(--bg-dialog)',
+		terminal: 'var(--bg-terminal)',
+		input: 'var(--bg-input)',
+		canvas: 'var(--bg-canvas)'
 	},
 	ink: {
 		primary: 'var(--text-primary)',
 		secondary: 'var(--text-secondary)',
 		muted: 'var(--text-muted)',
-		inverse: 'var(--text-inverse)'
+		inverse: 'var(--text-inverse)',
+		themeColor: 'var(--theme-color)',
+		themeColorAlt: 'var(--theme-color-alt)'
 	},
 	brand: {
 		theme: 'var(--theme)',
@@ -170,10 +180,10 @@ const FRACTAL_CATALOG = {
 		{ name: 'grow', signature: '+grow($n: 1)', description: 'Sets flex-grow.' },
 		{ name: 'shrink', signature: '+shrink($n: 0)', description: 'Sets flex-shrink.' },
 		{ name: 'min0', signature: '+min0', description: 'Sets min-width: 0 and min-height: 0 to prevent overflow.' },
-		{ name: 'bg', signature: '+bg($role: surface)', description: 'Sets background-color to bg, surface, or raised.' },
-		{ name: 'ink', signature: '+ink($role: primary)', description: 'Sets text color to primary, secondary, muted, or inverse.' },
+		{ name: 'bg', signature: '+bg($role: surface)', description: 'Sets background-color to any of the 21 surface tokens.' },
+		{ name: 'ink', signature: '+ink($role: primary)', description: 'Sets text color to primary, secondary, muted, inverse, theme-color, theme-color-alt.' },
 		{ name: 'border', signature: '+border($side: all, $color: var(--border))', description: 'Applies 1px solid border on all sides or a specific side.' },
-		{ name: 'radius', signature: '+radius($v: 12)', description: 'Applies border-radius from radius token or raw px.' },
+		{ name: 'radius', signature: '+radius($v: 6)', description: 'Applies border-radius from radius token or raw px.' },
 		{ name: 'shadow', signature: '+shadow($v: md)', description: 'Applies box-shadow from shadow scale (sm, md, lg).' },
 		{ name: 'type', signature: '+type($v)', description: 'Applies font-size from fluid type scale (xs..4xl).' },
 		{ name: 'weight', signature: '+weight($w: 500)', description: 'Sets font-weight.' },
@@ -191,8 +201,14 @@ const FRACTAL_CATALOG = {
 		{ name: 'frame', signature: '+frame($ratio: 16 / 9)', description: 'Aspect-ratio container for media (images, video, iframe).' },
 		{ name: 'reel', signature: '+reel($gap: xs)', description: 'Horizontal scroll-snap rail.' },
 		{ name: 'with-sidebar', signature: '+with-sidebar($rail: 240px, $gap: s, $min: 60%)', description: 'Intrinsic sidebar and fluid main content.' },
-		{ name: 'surface', signature: '+surface($bg: surface, $pad: s, $radius: 12, $elevation: none)', description: 'All-in-one material fractal: skin, border, radius, pad, and elevation.' },
+		{ name: 'surface', signature: '+surface($bg: surface, $pad: null, $radius: 6, $elevation: none)', description: 'All-in-one material fractal: skin, radius, pad, and elevation.' },
 		{ name: 'cols', signature: '+cols($map, $gap: s)', description: 'Responsive column grid mapped across breakpoints, e.g. (base: 1, sm: 2, lg: 3).' }
+	],
+	recipes: [
+		{ name: 'card', signature: '+card($bg: surface, $pad: null, $radius: 6, $elevation: none)', description: 'Vertical card container recipe with optional pad and elevation.' },
+		{ name: 'control', signature: '+control($size: md, $radius: 4)', description: 'Universal interactive control recipe (buttons, triggers, inputs).' },
+		{ name: 'select', signature: '+select($size: md, $radius: 4)', description: 'Select input recipe with embedded SVG chevron.' },
+		{ name: 'badge', signature: '+badge($radius: 4)', description: 'Compact status badge recipe.' }
 	],
 	layouts: [
 		{ name: 'grid-3', class: '.grid-3', description: 'Responsive 1 → 2 → 3 column reflow.' },
@@ -208,8 +224,8 @@ const FRACTAL_CATALOG = {
 const GUIDELINES = `
 # fractalstyler2 Design System Rules
 
-1. Never hardcode a value that a token covers (+gap(m), +radius(12), +bg(surface)).
-2. Compose fractals (+surface, +stack, +cluster); write raw CSS only for genuinely unique lines.
+1. Never hardcode a value that a token covers (+gap(m), +radius(6), +bg(surface)).
+2. Compose fractals (+surface, +stack, +cluster, +card); write raw CSS only for genuinely unique lines.
 3. Express component state on data-* / aria-* attributes, never modifier classes (e.g. &[data-elevated], &[data-variant='ghost']).
 4. Markup stays thin and semantic: prefer clean tags (<article class="card">) over utility class soup.
 5. Mobile-first: define base styles first, then grow with +at(md/lg/xl) or +cols().
@@ -352,7 +368,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 					properties: {
 						tier: {
 							type: 'string',
-							enum: ['all', 'atoms', 'molecules', 'layouts'],
+							enum: ['all', 'atoms', 'molecules', 'recipes', 'layouts'],
 							description: 'Filter by fractal tier.'
 						}
 					}

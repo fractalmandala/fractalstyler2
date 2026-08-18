@@ -50,6 +50,13 @@ A fractal is defined once. There are exactly two ways to use it:
 		+stack(m, center)
 ```
 
+Here, `+cover` calls the mixin `=cover` from molecules. A cover is simply a flexbox column with child centered, where you define the min-height and padding. Those are the 2 parameters (or arguments - those things in brackets). So, `+cover(80vh, xl)` gives you a flexbox column with min height of 80vh, and an extra large padding.
+- in `_00_tokens.sass` you will find the definitions of space units. `xl` corresponds to `--space-xl` which is set at `clamp(3.375rem, 3.2216rem + 0.6818vw, 3.75rem)`.
+
+***Fractalstyler similarly sets responsive and scaling scheme into the design. But should you wish to configure it your way, you can always alter the token definitions.***
+
+> Tip: Look at the files 00_tokens and 01_config to understand the first level of fractals. 00_tokens sets variables for colors, typography, sizing, border-radius, shadows, z-index values. If you are using the [fractalthemer](https://github.com/fractalmandala/fractalthemer) package, make sure you do not change the color token variables, or the themes will no longer work.
+
 **B — as a utility class** (bound to a name, used from markup):
 
 ```sass
@@ -61,8 +68,7 @@ A fractal is defined once. There are exactly two ways to use it:
 <div class="box gap-m pad-l">…</div>
 ```
 
-> Utility classes are a *generated projection* of the fractal library, not a
-> parallel system. Same source of truth; the author picks where each fractal is
+> Utility classes are a *generated projection* of the fractal library. Same source of truth; the author picks where each fractal is
 > consumed.
 
 This dissolves the old "utility CSS vs. component CSS" argument. You have one
@@ -85,7 +91,14 @@ No `gap16`, `gap18`, `gap22`, `pad24-sm` explosion. The token scale is the
 default vocabulary; raw values are the exploratory escape hatch, and they live
 in the *same* call site so promoting one to a token is a one-character edit.
 
-## 5. State is an attribute, not a class
+> The resolvers in 01_config may look arcane, but they are simple utilities to set great flexibility in the system. `@function space($v)` simply means that when you use `space(8)` it resolves to a spacing of 8px. Further down the line it enables gap(8), pad(8), px(8) which is padding-inline and py(8) which is padding-block. 01_config builds the first elementary fractals!
+
+What's more, the system isn't opinionated about the units you want to use. It resolves all these:
+- token steps (m, xl, etc.) - space(m) resolves to var(--space-m) 
+- numberical values - space(24) resolves to 24px
+- CSS units - 2rem, 80vh etc.
+
+## 5. State is an attribute
 
 Variants and states ride on `data-*` / `aria-*`, never on modifier classes:
 

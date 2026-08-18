@@ -103,7 +103,7 @@ function init(destArg: string | undefined, force: boolean): void {
          @use '${fractalsPath}' as *
 
          .card
-           +surface(surface, s, 12)
+           +surface(surface, s, 6)
            +stack(s)
        </style>
 `);

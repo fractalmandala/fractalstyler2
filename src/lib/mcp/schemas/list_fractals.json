@@ -10,9 +10,10 @@
           "all",
           "atoms",
           "molecules",
+          "recipes",
           "layouts"
         ],
-        "description": "Filter by fractal tier (all, atoms, molecules, layouts)."
+        "description": "Filter by fractal tier (all, atoms, molecules, recipes, layouts)."
       }
     }
   }
