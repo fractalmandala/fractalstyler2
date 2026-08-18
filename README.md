@@ -15,7 +15,7 @@ Scaffold the complete, customizable SASS design system directly into your projec
 npx fractalstyler2 init
 
 # Or using pnpm
-pnpm dlx fractalstyler2 init
+pnpm --package=fractalstyler2 dlx fractalstyler2 init
 ```
 
 ### Next Steps in Your Project

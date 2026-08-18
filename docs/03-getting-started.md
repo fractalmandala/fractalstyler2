@@ -12,7 +12,7 @@ Scaffold the complete, editable SASS design system into your project's `src/lib/
 npx fractalstyler2 init
 
 # or pnpm
-pnpm dlx fractalstyler2 init
+pnpm --package=fractalstyler2 dlx fractalstyler2 init
 ```
 
 Install `sass` as a dev dependency if you haven't already:
