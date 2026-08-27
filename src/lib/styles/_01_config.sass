@@ -25,60 +25,46 @@ $ink-roles: primary secondary muted inverse theme-color theme-color-alt
 
 $align-map: (start: flex-start, end: flex-end, center: center, between: space-between, around: space-around, evenly: space-evenly, stretch: stretch, baseline: baseline)
 
-// --- Resolvers ----------------------------------------------------------------
-
-// space(m) → var(--space-m) | space(18) → 18px | space(2rem) → 2rem
-@function space($v)
+// --- Universal Token Resolver --------------------------------------------------
+@function tok($group, $v)
 	@if $v == null
 		@return null
-	@else if list.index($space-steps, $v)
-		@return var(--space-#{$v})
-	@else if meta.type-of($v) == number and math.is-unitless($v)
-		@return #{$v}px
-	@else
-		@return $v
+	@if meta.type-of($v) == number
+		@if math.is-unitless($v)
+			@return #{$v}px
+		@else
+			@return $v
+	@if meta.type-of($v) == string
+		@return var(--#{$group}-#{$v})
+	@return $v
+
+// --- Resolvers ----------------------------------------------------------------
+
+@function space($v)
+	@return tok(space, $v)
 
 @function radius($v)
-	@if list.index($radius-steps, $v)
-		@return var(--radius-#{$v})
-	@else if meta.type-of($v) == number and math.is-unitless($v)
-		@return #{$v}px
-	@else
-		@return $v
+	@return tok(radius, $v)
 
 @function text-size($v)
-	@if list.index($text-steps, $v)
-		@return var(--text-#{$v})
-	@else
-		@return $v
+	@return tok(text, $v)
 
 @function shadow($v)
-	@if list.index($shadow-steps, $v)
-		@return var(--shadow-#{$v})
-	@else
-		@return $v
+	@return tok(shadow, $v)
 
 @function surface($role)
 	@if $role == bg
 		@return var(--bg)
-	@else if list.index($surface-roles, $role)
-		@return var(--bg-#{$role})
-	@else
-		@return var(--bg-#{$role})
+	@return tok(bg, $role)
 
 @function ink($role)
 	@if $role == primary
 		@return var(--text-primary)
-	@else if list.index($ink-roles, $role)
-		@return var(--text-#{$role})
-	@else
-		@return var(--text-#{$role})
+	@return tok(text, $role)
 
 @function align($v)
-	$m: map.get($align-map, $v)
-	@if $m
-		@return $m
-	@return $v
+	@return map.get($align-map, $v) or $v
 
 @function bp($name)
 	@return map.get($breakpoints, $name)
+

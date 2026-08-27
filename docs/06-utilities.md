@@ -27,7 +27,7 @@ Utility classes in `_09_utilities.sass` are direct 1:1 projections of atom and m
 
 ### Alignment Modifiers
 - **Box Axis Modifiers**: `.box.xcenter`, `.box.xleft`, `.box.xright`, `.box.ycenter`, `.box.ytop`, `.box.ybot`, `.box.ybetween`, `.box.yevenly`
-- **Row Axis Modifiers**: `.row.ycenter`, `.row.ytop`, `.row.ybot`, `.row.xbetween`, `.row.xevenly`, `.row.xleft`, `.row.xright`
+- **Row Axis Modifiers**: `.row.ycenter`, `.row.ytop`, `.row.ybot`, `.row.xcenter`, `.row.xbetween`, `.row.xevenly`, `.row.xleft`, `.row.xright`
 
 ---
 
@@ -41,10 +41,10 @@ All spacing classes map to fluid Utopia steps (`3xs`, `2xs`, `xs`, `s`, `m`, `l`
 | `.pad-#{$s}` | — | `padding: var(--space-#{$s})` |
 | `.px-#{$s}` | — | `padding-inline: var(--space-#{$s})` |
 | `.py-#{$s}` | — | `padding-block: var(--space-#{$s})` |
-| `.pad-top-#{$s}` | `.pt-#{$s}` | `padding-top: var(--space-#{$s})` |
-| `.pad-bottom-#{$s}` | `.pb-#{$s}` | `padding-bottom: var(--space-#{$s})` |
-| `.pad-left-#{$s}` | `.pl-#{$s}` | `padding-left: var(--space-#{$s})` |
-| `.pad-right-#{$s}` | `.pr-#{$s}` | `padding-right: var(--space-#{$s})` |
+| `.pt-#{$s}` | `.padtop-#{$s}`, `.pad-top-#{$s}` | `padding-top: var(--space-#{$s})` |
+| `.pb-#{$s}` | `.padbot-#{$s}`, `.pad-bottom-#{$s}` | `padding-bottom: var(--space-#{$s})` |
+| `.pl-#{$s}` | `.padleft-#{$s}`, `.pad-left-#{$s}` | `padding-left: var(--space-#{$s})` |
+| `.pr-#{$s}` | `.padright-#{$s}`, `.pad-right-#{$s}` | `padding-right: var(--space-#{$s})` |
 | `.m-#{$s}` | — | `margin: var(--space-#{$s})` |
 | `.mt-#{$s}` | `.margin-top-#{$s}` | `margin-top: var(--space-#{$s})` |
 | `.mb-#{$s}` | `.margin-bottom-#{$s}` | `margin-bottom: var(--space-#{$s})` |
@@ -57,7 +57,7 @@ All spacing classes map to fluid Utopia steps (`3xs`, `2xs`, `xs`, `s`, `m`, `l`
 
 - **Surfaces**: `.bg-bg`, `.bg-surface`, `.bg-raised`, `.bg-panel`, `.bg-footer`, `.bg-popover`, `.bg-dialog`, `.bg-terminal`, `.bg-input`, `.bg-canvas`
 - **Borders**: `.border`, `.border-top`, `.border-bottom`, `.border-left`, `.border-right`
-- **Radius**: `.radius-0`, `.radius-2`, `.radius-3`, `.radius-4`, `.radius-6`, `.radius-full`
+- **Radius**: `.radius-0`, `.radius-2`, `.radius-3`, `.radius-4`, `.radius-6`, `.radius-8`, `.radius-12`, `.radius-16`, `.radius-24`, `.radius-full`
 - **Shadow**: `.shadow-sm`, `.shadow-md`, `.shadow-lg`
 
 ---

@@ -5,6 +5,60 @@
 // JS disabled; dark comes from prefers-color-scheme and explicit [data-mode='dark'].
 // =============================================================================
 
+=light-theme-tokens
+	color-scheme: light
+	--bg: #fdfefe
+	--bg-surface: #f8f7f7
+	--bg-raised: #f1f5f9
+	--bg-panel: #F1F3F5
+	--bg-footer: #E9ECEF
+	--bg-popover: #FFFFFF
+	--bg-dialog: #FFFFFF
+	--bg-terminal: #0F172A
+	--bg-input: #FFFFFF
+	--bg-canvas: #F8F9FA
+	--text-primary: #0f172a
+	--text-secondary: #5b6472
+	--text-muted: #929497
+	--text-inverse: #ffffff
+	--state-hover: #E2E8F0
+	--state-hover-subtle: #F1F5F9
+	--state-selected: #CBD5E1
+	--border: #E2E8F0
+	--border-subtle: #EDF2F7
+	--theme-color: #04825B
+	--theme-color-alt: #047857
+	--theme: var(--theme-color)
+	--theme-hover: var(--theme-color-alt)
+	--ring: rgba(0, 127, 78, 0.35)
+
+=dark-theme-tokens
+	color-scheme: dark
+	--bg: #0E1118
+	--bg-surface: #141824
+	--bg-raised: #1C2232
+	--bg-panel: #101420
+	--bg-footer: #0B0D14
+	--bg-popover: #20273A
+	--bg-dialog: #20273A
+	--bg-terminal: #080A0F
+	--bg-input: #121622
+	--bg-canvas: #0E1118
+	--border: #28324A
+	--border-subtle: #1E2538
+	--text-primary: #EDF2F7
+	--text-secondary: #9BB0C7
+	--text-muted: #5D7087
+	--state-hover: #263047
+	--state-hover-subtle: #1B2233
+	--state-selected: #32405E
+	--theme-color: #38BDF8
+	--theme-color-alt: #0EA5E9
+	--theme: var(--theme-color)
+	--theme-hover: var(--theme-color-alt)
+	--text-inverse: #0E1118
+	--ring: rgba(16, 185, 129, 0.4)
+
 :root
 	color-scheme: light
 
@@ -34,16 +88,16 @@
 	--space-3xl: clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem)
 	--space-s-l: clamp(1.125rem, 0.5625rem + 2.5vw, 2.5rem)
 
-	// Radius (Concentric 2px, 3px, 4px, 6px hierarchy)
+	// Radius (Concentric hierarchy)
 	--radius-0: 0
 	--radius-2: 2px
 	--radius-3: 3px
 	--radius-4: 4px
 	--radius-6: 6px
-	--radius-8: 6px
-	--radius-12: 6px
-	--radius-16: 6px
-	--radius-24: 6px
+	--radius-8: 8px
+	--radius-12: 12px
+	--radius-16: 16px
+	--radius-24: 24px
 	--radius-full: 9999px
 
 	// Control Heights
@@ -68,110 +122,17 @@
 	--footer-height: 56px
 	--measure: 65ch
 
-	// Light palette (marker-free default)
-	--bg: #fdfefe
-	--bg-surface: #f8f7f7
-	--bg-raised: #f1f5f9
-	--bg-panel: #F1F3F5
-	--bg-footer: #E9ECEF
-	--bg-popover: #FFFFFF
-	--bg-dialog: #FFFFFF
-	--bg-terminal: #0F172A
-	--bg-input: #FFFFFF
-	--bg-canvas: #F8F9FA
-	--text-primary: #0f172a
-	--text-secondary: #5b6472
-	--text-muted: #929497
-	--text-inverse: #ffffff
-	--state-hover: #E2E8F0
-	--state-hover-subtle: #F1F5F9
-	--state-selected: #CBD5E1
-	--border: #E2E8F0
-	--border-subtle: #EDF2F7
-	--theme-color: #04825B
-	--theme-color-alt: #047857
-	--theme: var(--theme-color)
-	--theme-hover: var(--theme-color-alt)
-	--ring: rgba(0, 127, 78, 0.35)
+	// Default Light Palette
+	+light-theme-tokens
 
 @media (prefers-color-scheme: dark)
 	:root:not([data-mode='light'])
-		color-scheme: dark
-		--bg: #0E1118
-		--bg-surface: #141824
-		--bg-raised: #1C2232
-		--bg-panel: #101420
-		--bg-footer: #0B0D14
-		--bg-popover: #20273A
-		--bg-dialog: #20273A
-		--bg-terminal: #080A0F
-		--bg-input: #121622
-		--bg-canvas: #0E1118
-		--border: #28324A
-		--border-subtle: #1E2538
-		--text-primary: #EDF2F7
-		--text-secondary: #9BB0C7
-		--text-muted: #5D7087
-		--state-hover: #263047
-		--state-hover-subtle: #1B2233
-		--state-selected: #32405E
-		--theme-color: #38BDF8
-		--theme-color-alt: #0EA5E9
-		--theme: var(--theme-color)
-		--theme-hover: var(--theme-color-alt)
-		--text-inverse: #0E1118
-		--ring: rgba(16, 185, 129, 0.4)
+		+dark-theme-tokens
 
 [data-mode='dark']
-	color-scheme: dark
-	--bg: #0E1118
-	--bg-surface: #141824
-	--bg-raised: #1C2232
-	--bg-panel: #101420
-	--bg-footer: #0B0D14
-	--bg-popover: #20273A
-	--bg-dialog: #20273A
-	--bg-terminal: #080A0F
-	--bg-input: #121622
-	--bg-canvas: #0E1118
-	--border: #28324A
-	--border-subtle: #1E2538
-	--text-primary: #EDF2F7
-	--text-secondary: #9BB0C7
-	--text-muted: #5D7087
-	--state-hover: #263047
-	--state-hover-subtle: #1B2233
-	--state-selected: #32405E
-	--theme-color: #38BDF8
-	--theme-color-alt: #0EA5E9
-	--theme: var(--theme-color)
-	--theme-hover: var(--theme-color-alt)
-	--text-inverse: #0E1118
-	--ring: rgba(16, 185, 129, 0.4)
+	+dark-theme-tokens
 
 [data-mode='light']
-	color-scheme: light
-	--bg: #fdfefe
-	--bg-surface: #f8f7f7
-	--bg-raised: #f1f5f9
-	--bg-panel: #F1F3F5
-	--bg-footer: #E9ECEF
-	--bg-popover: #FFFFFF
-	--bg-dialog: #FFFFFF
-	--bg-terminal: #0F172A
-	--bg-input: #FFFFFF
-	--bg-canvas: #F8F9FA
-	--text-primary: #0f172a
-	--text-secondary: #5b6472
-	--text-muted: #929497
-	--text-inverse: #ffffff
-	--state-hover: #E2E8F0
-	--state-hover-subtle: #F1F5F9
-	--state-selected: #CBD5E1
-	--border: #E2E8F0
-	--border-subtle: #EDF2F7
-	--theme-color: #04825B
-	--theme-color-alt: #047857
-	--theme: var(--theme-color)
-	--theme-hover: var(--theme-color-alt)
-	--ring: rgba(0, 127, 78, 0.35)
+	+light-theme-tokens
+
+

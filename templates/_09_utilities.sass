@@ -44,6 +44,8 @@
 		align-items: flex-start
 	&.ybot
 		align-items: flex-end
+	&.xcenter
+		justify-content: center
 	&.xbetween
 		justify-content: space-between
 	&.xevenly
@@ -91,13 +93,13 @@
 		+px($s)
 	.py-#{$s}
 		+py($s)
-	.pad-top-#{$s}, .pt-#{$s}
+	.pt-#{$s}, .padtop-#{$s}, .pad-top-#{$s}
 		padding-top: space($s)
-	.pad-bottom-#{$s}, .pb-#{$s}
+	.pb-#{$s}, .padbot-#{$s}, .pad-bottom-#{$s}
 		padding-bottom: space($s)
-	.pad-left-#{$s}, .pl-#{$s}
+	.pl-#{$s}, .padleft-#{$s}, .pad-left-#{$s}
 		padding-left: space($s)
-	.pad-right-#{$s}, .pr-#{$s}
+	.pr-#{$s}, .padright-#{$s}, .pad-right-#{$s}
 		padding-right: space($s)
 	.m-#{$s}
 		margin: space($s)
