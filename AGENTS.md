@@ -21,7 +21,7 @@ It operates in two modes:
 
 ## The Golden Rules (Always)
 
-1. **Strict 21-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, and borders resolve from the 21 tokens in `_00_tokens.sass`.
+1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback resolve from the 30 tokens in `_00_tokens.sass`.
 2. **Never hardcode values that tokens cover**: Use `+gap(m)`, `+radius(6)`, `+bg(surface)`. Raw numbers (`+gap(18)`) are explicit escape hatches only.
 3. **Compose fractals; write raw CSS only for genuinely unique lines**.
 4. **Reading Column Max Columns Law**: Max 2 columns (`.grid-2` or `cols={2}`) in `.docs-main` / reading measures ($\le 760\text{px}$).

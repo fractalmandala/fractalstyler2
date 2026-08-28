@@ -14,18 +14,19 @@ This document establishes the design principles, structural invariants, and layo
 
 ---
 
-## 2. Strict 21-Token Contract (The Theme & Color Law)
+## 2. Strict 30-Token Contract (The Theme & Color Law)
 
-All surface, border, and ink decisions must strictly resolve from the 21 theme variables defined in `_tokens.sass` and `fractalthemer/_themes.sass`:
+All surface, border, ink, brand, and status feedback decisions must strictly resolve from the 30 theme variables defined in `_00_tokens.sass` and `fractalthemer`:
 
 - **Surfaces**: `--bg`, `--bg-surface`, `--bg-raised`, `--bg-panel`, `--bg-footer`, `--bg-popover`, `--bg-dialog`, `--bg-terminal`, `--bg-input`, `--bg-canvas`
 - **Text & Ink**: `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`
 - **States & Feedback**: `--state-hover`, `--state-hover-subtle`, `--state-selected`
-- **Borders & Accents**: `--border`, `--border-subtle`, `--theme-color`, `--theme-color-alt` *(aliased to `--theme`)*
+- **Borders & Accents**: `--border`, `--border-subtle`, `--theme-color`, `--theme-color-alt` *(aliased to `--theme` / `--theme-hover`)*, `--ring`
+- **Semantic Status**: `--success`, `--success-hover`, `--warning`, `--warning-hover`, `--danger`, `--danger-hover`, `--info`, `--info-hover`, `--feedback-error`
 
 > [!CAUTION]
 > **Zero Tolerance for Foreign CSS Variables**:
-> Never introduce ad-hoc variables like `--card`, `--primary`, `--accent`, `--destructive`, or `--border-strong`. All components must consume the 21-token contract.
+> Never introduce ad-hoc variables like `--card`, `--primary`, `--accent`, `--destructive`, or `--border-strong`. All components must consume the 30-token contract.
 
 ---
 

@@ -30,7 +30,7 @@ Each entry is a **command**: a reusable prompt that directs an AI coding agent t
 
 Applied to every command:
 
-1. **Strict 21-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, and borders must resolve from the 21 token contract in `_00_tokens.sass`.
+1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 30 token contract in `_00_tokens.sass`.
 2. **Never hardcode values that tokens cover**: Route through resolvers (`+gap(m)`, `+radius(6)`, `+bg(surface)`). Raw values (`+gap(18)`) are explicit escape hatches only.
 3. **Compose fractals; avoid raw CSS**: In component `<style lang="sass">` blocks, compose existing atom/molecule mixins rather than writing ad-hoc CSS walls.
 4. **Reading Column Max Columns Law**: Any grid placed inside a reading column (`.docs-main`, `.center-column`, or container $\le 760\text{px}$) must **never exceed 2 columns** (`.grid-2` or `cols={2}`). 3 and 4-column grids are strictly reserved for full-width views (`.app-main`).

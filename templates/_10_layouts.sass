@@ -353,13 +353,14 @@
 .app-shell
 	+box
 	+relative
-	isolation: isolate
 	min-height: 100vh
 	> .app-header
 		+row(null, center)
 		+sticky(0)
 		+px(m)
-		background: var(--bg)
+		background: color-mix(in srgb, var(--bg-surface) 88%, transparent)
+		backdrop-filter: blur(12px)
+		-webkit-backdrop-filter: blur(12px)
 		z-index: var(--z-sticky)
 		height: var(--header-height)
 		+border(bottom)

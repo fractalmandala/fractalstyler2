@@ -20,7 +20,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 
 // Resolve styles directory for SASS compiler loadPaths
 function getStylesDir(): string {
@@ -69,11 +69,11 @@ const DESIGN_TOKENS = {
 			'2xs': 9,
 			xs: 14,
 			s: 18,
-			m: 27,
-			l: 36,
-			xl: 54,
-			'2xl': 72,
-			'3xl': 108
+			m: 28,
+			l: 38,
+			xl: 56,
+			'2xl': 76,
+			'3xl': 114
 		}
 	},
 	typography: {
@@ -142,6 +142,17 @@ const DESIGN_TOKENS = {
 		inverse: 'var(--text-inverse)',
 		themeColor: 'var(--theme-color)',
 		themeColorAlt: 'var(--theme-color-alt)'
+	},
+	status: {
+		success: 'var(--success)',
+		successHover: 'var(--success-hover)',
+		warning: 'var(--warning)',
+		warningHover: 'var(--warning-hover)',
+		danger: 'var(--danger)',
+		dangerHover: 'var(--danger-hover)',
+		info: 'var(--info)',
+		infoHover: 'var(--info-hover)',
+		feedbackError: 'var(--feedback-error)'
 	},
 	brand: {
 		theme: 'var(--theme)',
