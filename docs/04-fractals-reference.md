@@ -21,7 +21,7 @@ Resolvers accept tokens (`m`, `s`, `md`, `surface`) or raw unit/numeric values (
 
 | Function | Accepts | Returns | Example |
 |---|---|---|---|
-| `space($v)` | `3xs` `2xs` `xs` `s` `m` `l` `xl` `2xl` `3xl` `s-l` \| Number | Token or px | `space(m)` $\to$ `var(--space-m)`; `space(18)` $\to$ `18px` |
+| `space($v)` | `3xs` `2xs` `xs` `s` `m` `l` `xl` `2xl` `3xl` `s-l` \| Number | Token or px | `space(md)` $\to$ `var(--space-md)`; `space(18)` $\to$ `18px` |
 | `radius($v)` | `0` `2` `3` `4` `6` `8` `12` `16` `24` `full` \| Number | Token or px | `radius(6)` $\to$ `var(--radius-6)` |
 | `surface($role)` | `bg` `surface` `raised` `panel` `footer` `popover` `dialog` `terminal` `input` `canvas` | Token var | `surface(panel)` $\to$ `var(--bg-panel)` |
 | `ink($role)` | `primary` `secondary` `muted` `inverse` | Token var | `ink(secondary)` $\to$ `var(--text-secondary)` |
@@ -39,14 +39,14 @@ Resolvers accept tokens (`m`, `s`, `md`, `surface`) or raw unit/numeric values (
 - `+row($x: null, $y: null)` — Flex row. `$x` controls `justify-content`, `$y` controls `align-items`.
 - `+wrap` — `flex-wrap: wrap`.
 - `+grid($cols: 1)` — CSS Grid with $N$ equal `minmax(0, 1fr)` tracks.
-- `+auto-grid($min: 15rem, $gap: s)` — Responsive auto-fitting grid without media queries.
+- `+auto-grid($min: 15rem, $gap: sm)` — Responsive auto-fitting grid without media queries.
 - `+center` — Dead center single child via `display: grid; place-items: center`.
 
 ### Spacing & Sizing
-- `+gap($v: s)` — `gap: space($v)`.
-- `+pad($v: s)` — `padding: space($v)`.
-- `+px($v: s)` — `padding-inline: space($v)`.
-- `+py($v: s)` — `padding-block: space($v)`.
+- `+gap($v: sm)` — `gap: space($v)`.
+- `+pad($v: sm)` — `padding: space($v)`.
+- `+px($v: sm)` — `padding-inline: space($v)`.
+- `+py($v: sm)` — `padding-block: space($v)`.
 - `+mx-auto` / `+my-auto` — Auto margins for centering.
 - `+w($v: 100%)` / `+h($v: 100%)` / `+full` — Width and height constraints.
 - `+min0` — `min-width: 0; min-height: 0` (prevents flex and grid child overflow).
@@ -72,9 +72,9 @@ Resolvers accept tokens (`m`, `s`, `md`, `surface`) or raw unit/numeric values (
 - `+stack($gap: xs, $x: null)` — Vertical rhythm stack with aligned child flow.
 - `+cluster($gap: xs, $x: start, $y: center)` — Wrapping flex row for tag chips and action pills.
 - `+surface($bg: surface, $pad: null, $radius: 6, $elevation: none)` — The physical material primitive (background + border + radius + optional padding and shadow).
-- `+cols($map, $gap: s)` — Responsive column map (`+cols((base: 1, sm: 2, lg: 4), s)`).
-- `+center-column($max: var(--measure, 60ch), $pad: s)` — Constrained reading column with automatic horizontal centering.
-- `+cover($min: 100vh, $pad: s)` — Full-viewport container with vertically centered hero focal point.
+- `+cols($map, $gap: sm)` — Responsive column map (`+cols((base: 1, sm: 2, lg: 4), sm)`).
+- `+center-column($max: var(--measure, 60ch), $pad: sm)` — Constrained reading column with automatic horizontal centering.
+- `+cover($min: 100vh, $pad: sm)` — Full-viewport container with vertically centered hero focal point.
 - `+frame($ratio: '16 / 9')` — Fixed aspect-ratio container with covered media.
 
 ---
@@ -90,17 +90,17 @@ Universal interactive control base (used for buttons, select triggers, inputs, a
 ### `=select($size: md, $radius: 4)`
 Native dropdown select recipe. Includes custom embedded SVG chevron, optical vertical text centering (`line-height: 1.2`), and 28px right padding to prevent text glyph clipping on macOS/WebKit.
 
-### `=partition($side: top, $pad: s)`
+### `=partition($side: top, $pad: sm)`
 Section divider with guaranteed breathing room. Combines border dividers with reciprocal padding (`padding-top: space($pad)`) and `margin-top: auto` for pinned footers.
 
-### `=card($bg: surface, $pad: null, $radius: 6, $elevation: none)`
+### `=card($bg: surface, $pad: null, $radius: md, $elevation: none)`
 The standard top-anchored vertical card surface.
 
 ### `=collapsible`
 Pure CSS grid transition (`0fr` $\to$ `1fr`) for zero-JS accordion animations.
 
-### `=marquee($speed: 30s, $gap: 1rem)`
-Hardware-accelerated infinite ticker with fade masks and pause-on-hover.
+### `=marquee` — removed (registry v1)
+Graduated to the component library; `.reel` stays for human-driven scroll-snap rails.
 
 ---
 

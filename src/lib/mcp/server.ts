@@ -51,26 +51,25 @@ const DESIGN_TOKENS = {
 		xl: '1240px'
 	},
 	space: {
-		scale: ['3xs', '2xs', 'xs', 's', 'm', 'l', 'xl', '2xl', '3xl', 's-l'],
+		scale: ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
 		clamp: {
 			'3xs': 'clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem)', // ~5px
 			'2xs': 'clamp(0.5625rem, 0.5369rem + 0.1136vw, 0.625rem)', // ~9-10px
 			xs: 'clamp(0.875rem, 0.8494rem + 0.1136vw, 0.9375rem)', // ~14-15px
-			s: 'clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem)', // ~18-20px
-			m: 'clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem)', // ~27-30px
-			l: 'clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem)', // ~36-40px
+			sm: 'clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem)', // ~18-20px
+			md: 'clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem)', // ~27-30px
+			lg: 'clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem)', // ~36-40px
 			xl: 'clamp(3.375rem, 3.2216rem + 0.6818vw, 3.75rem)', // ~54-60px
 			'2xl': 'clamp(4.5rem, 4.2955rem + 0.9091vw, 5rem)', // ~72-80px
-			'3xl': 'clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem)', // ~108-120px
-			's-l': 'clamp(1.125rem, 0.5625rem + 2.5vw, 2.5rem)' // fluid s to l
+			'3xl': 'clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem)' // ~108-120px
 		},
 		approxPx: {
 			'3xs': 5,
 			'2xs': 9,
 			xs: 14,
-			s: 18,
-			m: 28,
-			l: 38,
+			sm: 18,
+			md: 28,
+			lg: 38,
 			xl: 56,
 			'2xl': 76,
 			'3xl': 114
@@ -235,12 +234,12 @@ const FRACTAL_CATALOG = {
 const GUIDELINES = `
 # fractalstyler2 Design System Rules
 
-1. Never hardcode a value that a token covers (+gap(m), +radius(6), +bg(surface)).
-2. Compose fractals (+surface, +stack, +cluster, +card); write raw CSS only for genuinely unique lines.
-3. Express component state on data-* / aria-* attributes, never modifier classes (e.g. &[data-elevated], &[data-variant='ghost']).
-4. Markup stays thin and semantic: prefer clean tags (<article class="card">) over utility class soup.
-5. Mobile-first: define base styles first, then grow with +at(md/lg/xl) or +cols().
-6. No legacy v1 classes (e.g. no gap8, pad16, w100, .stack as markup class).
+1. Never hardcode a value that a token covers (+gap(sm), +radius(sm), +bg(surface)); literals like .gap-16 are the sanctioned escape hatch.
+2. Classes are the public API (.gap-sm, .pad-x-sm, .box.xcenter, .button.primary); mixins are internal generators, callable during migration only.
+3. Visual toggles ride classes (.open, .active, .elevated); semantic state stays on native attributes ([disabled], [aria-expanded='true'], :focus-visible).
+4. Markup stays thin and semantic: prefer clean tags (<article class="card elevated">) over utility class soup.
+5. Mobile-first: define base styles first, then grow with +at(md/lg/xl) or +cols(); viewport locks use -mob / -desk suffixes (.gap-sm-desk).
+6. Literal utilities are family-{N} px within the configured range (.gap-16, .radius-4, .w-64); negative margins use the -- infix (.marg--16).
 `.trim();
 
 // Snapping helper: find closest token
@@ -558,11 +557,11 @@ ${indented}
 
 			// If surface combination
 			if (bgVal || padVal || radiusVal) {
-				mixins.push(`+surface(${bgVal || 'surface'}, ${padVal || 's'}, ${radiusVal || '12'}${elevationVal ? `, ${elevationVal}` : ''})`);
+				mixins.push(`+surface(${bgVal || 'surface'}, ${padVal || 'sm'}, ${radiusVal || 'md'}${elevationVal ? `, ${elevationVal}` : ''})`);
 			}
 
 			if (hasFlexCol) {
-				mixins.push(`+stack(${gapVal || 's'})`);
+				mixins.push(`+stack(${gapVal || 'sm'})`);
 			} else if (hasFlexRow) {
 				mixins.push(`+cluster(${gapVal || 'xs'})`);
 			} else if (gapVal && !hasFlexCol && !hasFlexRow) {
@@ -638,7 +637,7 @@ ${indented}
 	let { variant = 'primary', disabled = false, onclick, children } = $props();
 </script>
 
-<button class="button" data-variant={variant} {disabled} {onclick}>
+<button class="button {variant}" {disabled} {onclick}>
 	{#if children}
 		{@render children()}
 	{:else}
@@ -656,7 +655,7 @@ ${indented}
 	let { label = 'Badge', variant = 'default' } = $props();
 </script>
 
-<span class="badge" data-variant={variant}>
+<span class="badge" data-status={variant}>
 	{label}
 </span>
 

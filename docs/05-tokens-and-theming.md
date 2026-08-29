@@ -55,7 +55,7 @@ The system defines 30 semantic CSS custom properties across 6 core categories. E
 	@return $v
 
 // Domain helper functions:
-@function space($v)    // space(m) -> var(--space-m) | space(16) -> 16px
+@function space($v)    // space(md) -> var(--space-md) | space(16) -> 16px
 @function radius($v)   // radius(4) -> var(--radius-4) | radius(full) -> var(--radius-full)
 @function text-size($v)// text-size(sm) -> var(--text-sm)
 @function shadow($v)   // shadow(md) -> var(--shadow-md)
@@ -70,7 +70,7 @@ The system defines 30 semantic CSS custom properties across 6 core categories. E
 .my-custom-panel
 	background: surface(raised)      // resolves to var(--bg-raised)
 	color: ink(primary)              // resolves to var(--text-primary)
-	padding: space(m) space(l)       // resolves to var(--space-m) var(--space-l)
+	padding: space(md) space(lg)       // resolves to var(--space-md) var(--space-lg)
 	border-radius: radius(6)         // resolves to var(--radius-6)
 	box-shadow: shadow(md)           // resolves to var(--shadow-md)
 ```
@@ -121,9 +121,9 @@ All type and space scales use fluid viewport formulas interpolating smoothly bet
 --space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem) // 5px
 --space-2xs: clamp(0.5625rem, 0.5369rem + 0.1136vw, 0.625rem) // 9px - 10px
 --space-xs:  clamp(0.875rem, 0.8494rem + 0.1136vw, 0.9375rem) // 14px - 15px
---space-s:   clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem) // 18px - 20px
---space-m:   clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem) // 27px - 30px
---space-l:   clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem) // 36px - 40px
+--space-sm:   clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem) // 18px - 20px
+--space-md:   clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem) // 27px - 30px
+--space-lg:   clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem) // 36px - 40px
 --space-xl:  clamp(3.375rem, 3.2216rem + 0.6818vw, 3.75rem) // 54px - 60px
 --space-2xl: clamp(4.5rem, 4.2955rem + 0.9091vw, 5rem) // 72px - 80px
 --space-3xl: clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem) // 108px - 120px

@@ -13,18 +13,18 @@ description: Design, compose, and build UI components and page layouts using the
 
 | Tier | Role | Examples |
 | :--- | :--- | :--- |
-| **1. Tokens & Config** | Fluid Utopia scales & resolvers | `space(m)` → `var(--space-m)`, `radius(12)` → `var(--radius-12)` |
-| **2. Atoms** | Single layout/styling decisions | `+box`, `+row`, `+gap(s)`, `+pad(m)`, `+border`, `+radius(12)`, `+bg(surface)`, `+ink(primary)` |
-| **3. Molecules** | Compositions of atoms | `+stack(s)`, `+cluster(xs)`, `+surface(surface, s, 12)`, `+cover(80vh)`, `+frame(16/9)`, `+with-sidebar` |
+| **1. Tokens & Config** | Fluid Utopia scales & resolvers | `space(md)` → `var(--space-md)`, `radius(12)` → `var(--radius-12)` |
+| **2. Atoms** | Single layout/styling decisions | `+box`, `+row`, `+gap(sm)`, `+pad(md)`, `+border`, `+radius(12)`, `+bg(surface)`, `+ink(primary)` |
+| **3. Molecules** | Compositions of atoms | `+stack(sm)`, `+cluster(xs)`, `+surface(surface, sm, 12)`, `+cover(80vh)`, `+frame(16/9)`, `+with-sidebar` |
 | **4. Components & Layouts** | Recipes of molecules | `.card`, `.panel`, `.button`, `.badge` · `.grid-3`, `.card-grid`, `.hero`, `.holy-grail`, `.docs`, `.app-shell` |
 
 ---
 
 ## Golden Rules for Agents
 
-1. **Never hardcode values that tokens cover**: Use `+gap(m)`, `+radius(12)`, `+bg(surface)` instead of arbitrary pixel values.
+1. **Never hardcode values that tokens cover**: Use `.gap-sm` / `+gap(sm)`, `+bg(surface)` instead of arbitrary pixel values.
 2. **Compose fractals; don't write raw CSS**: Raw CSS is strictly for unique lines that no fractal covers.
-3. **State on `data-*` / `aria-*` attributes**: Never use modifier classes like `.is-active` or `.btn--primary`. Use `&[data-elevated]`, `&[data-variant='primary']`.
+3. **Visual toggles ride classes; semantics stay native**: `.open` / `.active` / `.elevated` for JS-toggled looks; `[disabled]`, `[aria-expanded]`, `:focus-visible` keep their native meaning.
 4. **Markup stays semantic**: Prefer `<article class="card">` over 20 nested utility classes.
 5. **Mobile-first**: Define base layout first, grow with `+at(md/lg/xl)` and `+cols()`.
 
@@ -46,7 +46,7 @@ description: Design, compose, and build UI components and page layouts using the
 	<div class="row ycenter xbetween">
 		<h3 class="text-xl">{title}</h3>
 		{#if highlighted}
-			<span class="badge" data-variant="theme">Popular</span>
+			<span class="badge">Popular</span>
 		{/if}
 	</div>
 	<div class="row ycenter gap-2xs">
@@ -62,8 +62,8 @@ description: Design, compose, and build UI components and page layouts using the
 	@use '$lib/styles/fractals' as *
 
 	.pricing-card
-		+surface(surface, m, 16)
-		+stack(m)
+		+surface(surface, md, 16)
+		+stack(md)
 		transition: transform 150ms ease, box-shadow 150ms ease
 
 		&[data-highlighted]

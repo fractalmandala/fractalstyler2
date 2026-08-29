@@ -15,7 +15,7 @@ description: Shipped component blocks, page layout templates, grid heuristics, a
 Cards are top-anchored vertical stacks that automatically handle pinned partition footers:
 
 ```svelte
-<article class="card pad-s radius-6 box ybetween gap-s" data-elevated>
+<article class="card pad-sm radius-6 box ybetween gap-sm elevated">
 	<div class="box gap-2xs">
 		<header class="row ycenter xbetween">
 			<span class="eyebrow text-xs" style="color: var(--theme-color)">Core</span>
@@ -59,7 +59,7 @@ Side-by-side / Comparisons (2 items) ──►  .grid-2 (2 desktop ──► 1 m
 
 - `.grid-1`: Single column stack.
 - `.grid-2`: 2 columns desktop $\to$ 1 column mobile (`md: 768px`).
-- `.grid-3`: 3 columns desktop $\to$ 2 tablet $\to$ 1 mobile.
+- `.grid-3`: 3 columns desktop $\to$ 1 mobile (gridding golden rule: 3 items never split 2+1).
 - `.grid-4`: 4 columns desktop $\to$ 2 tablet $\to$ 1 mobile.
 - `.card-grid`: Fluid auto-fit grid (`repeat(auto-fit, minmax(16rem, 1fr))`) that reflows automatically without media queries.
 

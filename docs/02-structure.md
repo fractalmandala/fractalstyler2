@@ -17,8 +17,8 @@ src/lib/styles/
 ├── _05_molecules.sass     ──► Compositions of atoms (+stack, +cluster, +surface, +cols)
 ├── _06_recipes.sass       ──► Macro component archetypes (=control, =select, =card, =partition)
 ├── _07_base.sass          ──► Global HTML element resets
-├── _08_blocks.sass        ──► Semantic component classes (.surface, .panel, .select, .badge)
-├── _09_utilities.sass     ──► 1:1 atomic markup projections (.pad-*, .pad-top-*, .gap-*)
+├── _08_blocks.sass        ──► Semantic compositions (.card, .button, .select, .badge, .input)
+├── _09_utilities.sass     ──► The class registry (spacing/radius/size families: presets, literals, negatives, -mob/-desk)
 ├── _10_layouts.sass       ──► Page layout templates (.docs, .card-grid, .hero, .holy-grail)
 ├── _11_own.sass           ──► Bespoke local project overrides
 ├── _fractals.sass         ──► Pure Mixin Barrel (forwards 01 to 06, emits 0 bytes CSS)
@@ -75,12 +75,27 @@ src/lib/styles/
 | `_05_molecules.sass` | No (0 bytes) | Multi-atom compositions (`+stack`, `+cluster`, `+surface`, `+cols`). |
 | `_06_recipes.sass` | No (0 bytes) | Parameterized macro archetypes (`=control`, `=select`, `=card`, `=partition`). |
 | `_07_base.sass` | Yes (HTML tags) | Global HTML resets (box-sizing, body ink, link states). |
-| `_08_blocks.sass` | Yes (`.classes`) | Baseline semantic classes (`.surface`, `.panel`, `.select`, `.badge`, `.card`). |
-| `_09_utilities.sass` | Yes (`.classes`) | 1:1 markup classes (`.pad-s`, `.pad-top-s`, `.gap-m`, `.hide-desktop`). |
+| `_08_blocks.sass` | Yes (`.classes`) | Baseline compositions (`.card`, `.button`, `.select`, `.badge`, `.accordion`). |
+| `_09_utilities.sass` | Yes (`.classes`) | The class registry (spacing/radius/size families: presets, literals, negatives, `-mob`/`-desk` locks). |
 | `_10_layouts.sass` | Yes (`.classes`) | Page-scale frames (`.docs`, `.card-grid`, `.hero`, `.holy-grail`). |
 | `_11_own.sass` | Yes (`.classes`) | Local bespoke overrides for your application. |
 
 ---
+
+## The Class Grammar (registry v1)
+
+Since v0.5.0, **classes are the public API** — mixins are internal generators, still callable during migration. The full registry lives in [`registry-v1.md`](../registry-v1.md); the grammar in one table:
+
+| Form | Meaning | Example |
+| --- | --- | --- |
+| `.family-{preset}` | Token-routed fluid value | `.gap-sm`, `.pad-x-md`, `.text-lg` |
+| `.family-{N}` | Literal px within `$utility-range` (1–256) | `.gap-16`, `.radius-4`, `.w-64` |
+| `.family--{N}` | Negative (margin families only) | `.marg--16` |
+| `.family-{value}-{mob\|desk}` | Viewport lock (below / at-or-above 768px) | `.gap-sm-desk`, `.hide-mobile` |
+
+Every class is self-sufficient — co-occurrence adds, never requires. Visual toggles are classes (`.open`, `.active`, `.elevated`); semantic state stays on native attributes.
+
+**Preset languages** ride `<html>` data-attributes as pure token remaps (fractalthemer applies them): `data-layout` tight/sprawling, `data-shape` round/curved/pro/sharp (remaps the `--radius-sm/md/lg` channels compositions read), `data-color` clean/vibrant (light mode only), `data-motion` springy/heavy/reduced.
 
 ## Import Syntax Guidelines
 
@@ -92,8 +107,8 @@ Always import the pure mixin barrel so no duplicate CSS is emitted:
 	@use '$lib/styles/fractals' as *
 
 	.my-card
-		+surface(surface, s, 6)
-		+stack(s)
+		+surface(surface, sm, 6)
+		+stack(sm)
 </style>
 ```
 

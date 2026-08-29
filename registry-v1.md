@@ -150,10 +150,9 @@ Docs teach: pick the grid class whose step pattern matches the item count.
 - `.app-footer`: full-width footer bar.
 
 **Roles within the canon** (registered today, definitions transcribed from `_10_layouts.sass` at build — they work in fractalcodex now):
-- `.docs` — config modifier on `.app-shell`: left sidebar retracts below breakpoint (header menu button toggles `.open`), right TOC contracts to `.docs-mobile-toc` dropdown.
-- `.navtree` `+ .navtree-group .navtree-title .navtree-link .navtree-sub` — the left tree; lives in `.sidebar-left`.
-- `.toc` `+ .toc-list .toc-title .toc-link .toc-footer` — the right TOC; lives in `.sidebar-right`.
-- `.docs-mobile-toc` — mobile dropdown TOC.
+- `.sidebar-left` ≡ **the nav** — hosts `.navtree` (`+ .navtree-group .navtree-title .navtree-link .navtree-sub`). Retracts below 1024px to an off-canvas drawer; the header menu toggles `.open` on `.app-shell`. (Amendment A1.)
+- `.sidebar-right` ≡ **the TOC** — hosts `.toc` (`+ .toc-list .toc-title .toc-link .toc-footer`). Retracts below 1280px; its content surfaces in the page-top TOC dropdown. (Amendment A1.)
+- `.mobile-toc` — the page-top TOC dropdown (was `.docs-mobile-toc`; renamed by Amendment A1).
 - `.tab-list` / `.tab-trigger` — current tab = `.active`.
 
 **Page frames** (the page-shell physics, resolved):
@@ -240,7 +239,7 @@ Padding ownership moves with full-bleed chrome: a shell with a sidebar cannot ca
 
 ## Presets — the wireframe
 
-Four orthogonal languages. Mechanism is identical for all: **token remaps on html-level attributes** — the class system needs zero changes; preset classes ride the remap, `-N` literals opt out by design. fractalthemer owns application, persistence, anti-flicker. Attribute/value names are downstream; the "what" is below.
+Four orthogonal languages. Mechanism is identical for all: **token remaps on html-level attributes** — the class system needs zero changes; preset classes ride the remap, `-N` literals opt out by design. fs2 owns application, persistence, and anti-flicker (Amendment A2 — presets are the styling system's own physics, not themes). Attribute/value names are the fs2 public contract; the "what" is below.
 
 ### 1. Layout language — `data-layout`: tight / comfortable / sprawling
 
@@ -343,3 +342,7 @@ A: Surfaces it: `.radius-N` is literal by your ruling, so shape presets cannot r
 6. `--page-gutter` / `--sidebar-width` / `--breakpoint`: defaults proposed at build (approved).
 
 The registry is frozen. Next: **geography** — files, names, what "atoms/molecules" become. The registry's layer boundaries propose themselves as file boundaries; that decision is now unblocked.
+
+## Amendment A2 (2026-08-29) — fs2 owns its preset runtime
+
+The four preset languages are the styling system's own physics (gaps, radii, motion — not "themes"). fs2 therefore owns application, persistence, and anti-flicker itself: `src/lib/presets.svelte.ts` (`presets` reactive state, `setPreset`, `initPresets`, `getPresetScript`), `src/lib/components/ShapePicker.svelte`, exports via `src/lib/index.ts`. Attribute contract unchanged (`data-*` on `<html>`; absent = default, stored blob keeps only non-defaults). Radius channel defaults set to curved 6/8/12 per L0, closing the 4/6/12 holdout. Verified live at `/previews/shape`: measured computed border-radius per state matches the registry tables (card 0/3/8/16, button 0/2/6/12 across sharp/pro/curved/round); literal `.radius-N` and `.radius-full` opt-outs confirmed immobile; persistence + anti-flicker verified across reload.

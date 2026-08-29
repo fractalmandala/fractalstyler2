@@ -1,89 +1,55 @@
----
-title: AGENTS
-description: Progressive-discovery entry point for agents — golden rules, intent→command routing, and pointers into the registry and docs.
----
+# AGENTS
 
-# AGENTS — start here
+> You cannot add ad-hoc CSS anywhere. Styles are added ONLY inside the system's designated files (fractalstyler2 templates / the project's global SASS sections), always via fractal mixins and existing tokens. No scoped `<style>` blocks anywhere, including components. 
 
-This is the **entry point** for any AI agent working in `fractalstyler2`. It gives you the rules, the 21-token contract, and a routing table into the [command registry](docs/agents/registry.md).
+> All colors, spacing, radii, and shadows resolve from the shared 30-token vocabulary (source of truth: fractalstyler2 _00_tokens.sass, mirrored by fractalthemer CORE_TOKENS). Never invent token names, never use legacy aliases (--theme, --theme-hover), never hardcode a value a token covers.
 
----
+**You MUST understand and use the `fractalstyler2` SASS system. Learn it here - https://github.com/fractalmandala/fractalstyler2/blob/main/docs/agents/registry.md.**
 
-## What this package is (10 seconds)
+NPM link - https://www.npmjs.com/package/fractalstyler2
 
-A styling system where **a fractal is a SASS mixin**. Components and layouts are composable recipes of smaller fractals. You build UI by *composing fractals*, not by writing ad-hoc CSS or unmaintainable utility strings.
+If you find existing violations of these rules. Drop a comment to user. The project is in flux and they might be known, temporary violations. The project is part of a core set that should always be in sync. You are never working in any one of these projects alone. You are working in a WIP ecosystem. 
 
-It operates in two modes:
-1. **Scaffold mode (shadcn-style)**: `npx fractalstyler2 init` copies the full, editable SASS design system into your project's `src/lib/styles`.
-2. **Library mode**: Direct import via `import 'fractalstyler2/styles'` and `@use 'fractalstyler2/fractals' as *`.
+1. `fractalsvelte` is a website to front various Sveltekit projects, docs, and resources.
+2. `Fractalsvelte UI` - WIP components library at `/Users/amrit/fractalmandala/fractalcodex`.
+3. `Fractalstyler2` - SASS styling system at `/Users/amrit/fractalmandala/fractalstyler2`. [NPM](https://www.npmjs.com/package/fractalstyler2) and [Github](https://github.com/fractalmandala/fractalstyler2).
+4. `Fractalthemer` - Themeing and theme building system for Fractalstyler2, at `/Users/amrit/fractalmandala/fractalthemer`. [NPM](https://www.npmjs.com/package/fractalthemer) and [Github](https://github.com/fractalmandala/fractalthemer).
 
----
+Contract changes start in `fractalstyler2` → mirror to `fractalthemer` → run pnpm tokens:generate in `fractalcodex` if applicable → verify all three build. And a change in one repo usually means a version bump in another. 
 
-## The Golden Rules (Always)
+> `fractalcodex` is folder name of the `fractalsvelte-ui` components library. 
 
-1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback resolve from the 30 tokens in `_00_tokens.sass`.
-2. **Never hardcode values that tokens cover**: Use `+gap(m)`, `+radius(6)`, `+bg(surface)`. Raw numbers (`+gap(18)`) are explicit escape hatches only.
-3. **Compose fractals; write raw CSS only for genuinely unique lines**.
-4. **Reading Column Max Columns Law**: Max 2 columns (`.grid-2` or `cols={2}`) in `.docs-main` / reading measures ($\le 760\text{px}$).
-5. **Partition Breathing Room**: Every divider line (`border-top` / `border-bottom`) MUST have reciprocal padding (`var(--space-xs)` / `var(--space-s)`).
-6. **Card Containment**: Button rows, tag groups, and badge clusters inside cards must use `.row.wrap` or `.cluster`. Controls have `flex-shrink: 0`.
-7. **Form Control Optical Baseline**: `<select>` uses `.select` (never raw `.input`).
-8. **State rides on `data-*` / `aria-*`**, never modifier classes (`.btn--primary`, `.is-active`).
-9. **Zero-CSS Mixin Isolation**: Component styles must `@use '$lib/styles/fractals' as *` (which emits 0 bytes CSS), never `index.sass`.
+## Dev Servers
 
-(Full details: [registry → Golden rules](docs/agents/registry.md#golden-rules) and [DESIGN.md](DESIGN.md).)
+Always first check with user if they have dev server active, before starting your own. If they do, use that. Always kill servers that you have started, when done. Do not leave them running background.
 
----
+## Other Rules
 
-## Discovery Ladder
+- always keep docs, README, and AGENTS up to date in any project. 
+- all docs should have YAML frontmatter:
 
 ```
-1. AGENTS.md (this file)         → rules + routing
-2. docs/agents/registry.md       → the command that matches the request
-3. the command's "Primary docs"  → read ONLY those docs/ files
-4. do the work; verify; report
+title: 
+description: 
+type: {project/site name}
 ```
 
----
+- if you see a doc without frontmatter, add it.
+- "done" always means that for any fix/feature/mod the docs have always been updated, package version has been bumped up, and update is ready to be published at npm
+- for any icons, use installed package `fractalicons` or install it from [NPM](https://www.npmjs.com/package/fractalicons).
+- do not use local reference file paths for package dependencies. always use the NPM sources.
 
-## Route the Request → A Command
+> If you find yourself using styling not in fractalstyler2, or using components not from fractalsvelte-ui then either 1) you are being careless and non-compliant, or 2) you must notify user for feature request(s) in those projects.
 
-| The user asks to… | Command | Then read |
-|---|---|---|
-| Scaffold styles into a project | [`fs2:init`](docs/agents/registry.md#fs2init) | [03. Getting Started](docs/03-getting-started.md), [README](README.md) |
-| Build a page or route | [`fs2:page`](docs/agents/registry.md#fs2page) | [03](docs/03-getting-started.md), [07](docs/07-components-and-layouts.md), [08](docs/08-recipes.md) |
-| Build a reusable component/block | [`fs2:component`](docs/agents/registry.md#fs2component) | [04](docs/04-fractals-reference.md), [07](docs/07-components-and-layouts.md) |
-| Build a page layout/template | [`fs2:layout`](docs/agents/registry.md#fs2layout) | [04](docs/04-fractals-reference.md), [07](docs/07-components-and-layouts.md) |
-| Add a new mixin/primitive | [`fs2:fractal`](docs/agents/registry.md#fs2fractal) | [02](docs/02-structure.md), [04](docs/04-fractals-reference.md), [DEVELOPERS](DEVELOPERS.md) |
-| Add a theme / change tokens | [`fs2:theme`](docs/agents/registry.md#fs2theme) | [05](docs/05-tokens-and-theming.md) |
-| Clean up / convert existing CSS | [`fs2:refactor`](docs/agents/registry.md#fs2refactor) | [01](docs/01-philosophy.md), [04](docs/04-fractals-reference.md), [06](docs/06-utilities.md) |
-| Review/audit for idiom & UI invariants | [`fs2:review`](docs/agents/registry.md#fs2review) | [DESIGN.md](DESIGN.md), [01](docs/01-philosophy.md), [02](docs/02-structure.md) |
+## Working Index
 
----
+- Fractalsvelte (site) - not yet in Github, not live.
+- Fractalsvelte UI - /Users/amrit/fractalmandala/fractalcodex | will overwrite the repo https://github.com/fractalmandala/fractalsvelte | will overwrite the package https://www.npmjs.com/package/fractalsvelte
+- Fractalthemer - /Users/amrit/fractalmandala/fractalthemer | https://github.com/fractalmandala/fractalthemer | https://www.npmjs.com/package/fractalthemer
+- Fractalstyler2 - /Users/amrit/fractalmandala/fractalstyler2 | https://github.com/fractalmandala/fractalstyler2 | https://www.npmjs.com/package/fractalstyler2
+- Fractalicons - /Users/amrit/fractalmandala/fractalicons | https://github.com/fractalmandala/fractalicons | https://www.npmjs.com/package/fractalicons
 
-## Minimal Quickstart
-
-### In Svelte Component (`<style lang="sass">`):
-```sass
-@use '$lib/styles/fractals' as *
-
-.feature-card
-	+surface(surface, m, 6)   // material: bg + border + radius(6px) + pad(m)
-	+stack(s)                 // arrangement: flex column + gap(s)
-	&[data-elevated]          // state via attribute
-		+shadow(md)
-```
-
-### Global Stylesheet (`src/routes/+layout.svelte`):
-```svelte
-<script>
-	import '$lib/styles/index.sass';
-</script>
-
-<section class="card-grid">
-	<article class="card" data-elevated>
-		<h3 class="text-md font-semibold">Title</h3>
-		<p class="muted text-sm">Description text</p>
-	</article>
-</section>
-```
+### WIP, Upcoming
+- Svelte Animated Icons
+- Acrolls, docs for Sveltekit
+- Svelte Scaffold

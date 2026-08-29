@@ -130,13 +130,13 @@ Markup stays thin and semantic:
 <div class="app-shell">
 	<header class="app-header">
 		<strong>My app</strong>
-		<nav class="row gap-s" style="margin-inline-start:auto">
-			<a class="button" data-variant="ghost" href="/docs">Docs</a>
-			<a class="button" data-variant="primary" href="/start">Get started</a>
+		<nav class="row gap-sm" style="margin-inline-start:auto">
+			<a class="button ghost" href="/docs">Docs</a>
+			<a class="button primary" href="/start">Get started</a>
 		</nav>
 	</header>
 
-	<main class="app-main box gap-2xl" style="padding:var(--space-2xl) var(--space-l)">
+	<main class="app-main box gap-2xl" style="padding:var(--space-2xl) var(--space-lg)">
 		<section class="hero">
 			<div class="center">
 				<h1 class="text-3xl">Fractals compose.</h1>
@@ -146,7 +146,7 @@ Markup stays thin and semantic:
 
 		<section class="grid-3">
 			<article class="card"><h3 class="text-lg">One</h3></article>
-			<article class="card" data-elevated><h3 class="text-lg">Two</h3></article>
+			<article class="card elevated"><h3 class="text-lg">Two</h3></article>
 			<article class="card"><h3 class="text-lg">Three</h3></article>
 		</section>
 	</main>
@@ -157,7 +157,7 @@ Markup stays thin and semantic:
 </div>
 ```
 
-`.grid-3` is responsive (1 → 2 → 3 columns) with no extra markup.
+`.grid-3` is responsive (1 → 3 columns — the gridding golden rule: three items never split 2+1) with no extra markup.
 
 ## Compose your own component
 
@@ -178,7 +178,7 @@ When the shipped blocks don't cover something, author it from fractals in a new 
 	// @use 'fractalstyler2/fractals' as *
 
 	.pricing-card
-		+surface(surface, l, 16, md)   // bg + border + radius + pad + shadow
+		+surface(surface, lg, 16, md)   // bg + border + radius + pad + shadow
 		+stack(m, center)              // flex column + gap + centered
 		text-align: center
 ```

@@ -108,9 +108,9 @@ Skills live under `skills/` and conform to the [Agent Skills Specification](http
 ### Skill 2: `style-migration` ([`skills/style-migration/SKILL.md`](file:///Users/amrit/fractalmandala/fractalstyler2/skills/style-migration/SKILL.md))
 * **Primary Role**: Teaches agents how to refactor raw CSS, Tailwind utility soups, or legacy `fractals-styler` (v1) code (`gap8`, `pad16`, `w100`, `.stack` markup classes) into idiomatic `fractalstyler2` SASS mixins.
 * **Golden Rules**:
-  1. Never hardcode token values in raw CSS (`padding: 16px` → `+pad(m)`).
+  1. Never hardcode token values in raw CSS (`padding: 16px` → `+pad(md)`).
   2. Use semantic tags and custom class names; never spam utility classes in markup.
-  3. Express component state on `data-*` / `aria-*` attributes (never modifier classes like `.is-active`).
+  3. Visual toggles ride classes (`.open`, `.active`, `.elevated`); semantic state stays on native `[aria-*]` and html-level `data-*` (themer runtime).
 
 ---
 

@@ -1,18 +1,9 @@
-// =============================================================================
-// FRACTALSTYLER2 — Master Stylesheet & Public Mixin API
-// -----------------------------------------------------------------------------
-// 1. Public API: Forwards all pure mixins, functions, and atoms (0 bytes CSS)
-// 2. Cascade Order: Emits CSS rules in strict specificity sequence
-// =============================================================================
-
-// Public Sass API — available to any file that @uses this module
-@forward 'fractals'
-
-// Global Stylesheet Cascade
-@use '02_fonts' as *
-@use '00_tokens' as *
-@use '07_base' as *
-@use '08_blocks' as *
-@use '09_utilities' as *
-@use '10_layouts' as *
-@use '11_own' as *
+@forward '00_tokens'
+@use '01_config' as *
+@use '02_dimensions' as *
+@use '03_containers' as *
+@use '04_layouts' as *
+@use '05_shells' as *
+@use '06_visuals' as *
+@use '07_interactions' as *
+@use '08_own' as *

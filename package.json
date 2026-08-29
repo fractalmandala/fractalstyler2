@@ -1,7 +1,7 @@
 {
 	"name": "fractalstyler2",
-	"version": "0.4.1",
-	"description": "A fractal-composition styling system for SvelteKit — every style unit is a SASS mixin, and components and layouts are recipes of smaller fractals.",
+	"version": "0.5.1",
+	"description": "A fractal-composition styling system for SvelteKit — the class registry is the public API (composable fractal classes with preset and literal values), and mixins remain as internal generators.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
 		"fractalstyler": "./dist/cli.js",

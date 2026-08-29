@@ -1,5 +1,8 @@
 # Fractal Architecture & Directory Composition System
 
+> [!NOTE]
+> Registry v1 (fs2 0.5.0): **classes are the public API** — mixins are internal generators. This document's mixin-era narrative predates the class registry; the live spec is [`registry-v1.md`](../registry-v1.md).
+
 ## 1. Core Philosophy
 
 ### The Fractal Principle: Self-Similarity Across Scales
@@ -17,7 +20,7 @@ $$\text{Atom} \longrightarrow \text{Molecule} \longrightarrow \text{Recipe} \lon
 ### The Three Golden Rules
 
 1. **Human Legibility, Zero Syntactic Noise**:
-   Avoid `__`, `&__`, or complex deeply-nested selectors. A container is a `.box` or `.row`, a spacing unit is `.pad-s` or `.gap-xs`.
+   Avoid `__`, `&__`, or complex deeply-nested selectors. A container is a `.box` or `.row`, a spacing unit is `.pad-sm` or `.gap-xs`.
 2. **Zero Variable Chasing**:
    To know the value of something, you should never have to trace up a chain like `--this-var` $\to$ `var(--other-var)` $\to$ `$token`. Spacing, radius, typography, and color route directly from semantic Utopia tokens.
 3. **Non-Opinionated Primitives**:
@@ -238,7 +241,7 @@ Every card in this system follows the exact same self-similar vertical stack:
   showSearch={false}
 >
   {#snippet item(photo)}
-    <article class="card pad-3xs radius-6" data-elevated>
+    <article class="card pad-3xs radius-6 elevated">
       <div class="frame radius-4">
         <img src={photo.url} alt="" loading="lazy" />
       </div>
@@ -274,8 +277,7 @@ Every card in this system follows the exact same self-similar vertical stack:
   {#snippet item(icon)}
     <button
       type="button"
-      class="button pad-xs center box gap-3xs radius-4"
-      data-variant="ghost"
+      class="button ghost pad-xs center box gap-3xs radius-4"
       onclick={() => navigator.clipboard.writeText(icon.name)}
       title={`Copy ${icon.name}`}
     >

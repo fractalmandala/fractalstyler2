@@ -21,8 +21,8 @@ Each entry is a **command**: a reusable prompt that directs an AI coding agent t
 | [`fs2:layout`](#fs2layout) | Build a responsive page-layout template | [04](../04-fractals-reference.md), [07](../07-components-and-layouts.md) |
 | [`fs2:fractal`](#fs2fractal) | Add a new atom, molecule, or macro recipe mixin | [02. Structure](../02-structure.md), [04](../04-fractals-reference.md), [DEVELOPERS](../../DEVELOPERS.md) |
 | [`fs2:theme`](#fs2theme) | Tune tokens or create a named theme | [05. Tokens & Theming](../05-tokens-and-theming.md) |
-| [`fs2:refactor`](#fs2refactor) | Convert legacy CSS or utility-soup to fractal recipes | [01](../01-philosophy.md), [04](../04-fractals-reference.md), [06](../06-utilities.md) |
-| [`fs2:review`](#fs2review) | Audit markup and SASS for fractal idiom and UI invariants | [DESIGN.md](../../DESIGN.md), [01](../01-philosophy.md), [02](../02-structure.md) |
+| [`fs2:refactor`](#fs2refactor) | Convert legacy CSS or utility-soup to fractal recipes | [01](../02-getting-started.md), [04](../04-fractals-reference.md), [06](../06-utilities.md) |
+| [`fs2:review`](#fs2review) | Audit markup and SASS for fractal idiom and UI invariants | [DESIGN.md](../../DESIGN.md), [01](../02-getting-started.md), [02](../02-structure.md) |
 
 ---
 
@@ -31,13 +31,13 @@ Each entry is a **command**: a reusable prompt that directs an AI coding agent t
 Applied to every command:
 
 1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 30 token contract in `_00_tokens.sass`.
-2. **Never hardcode values that tokens cover**: Route through resolvers (`+gap(m)`, `+radius(6)`, `+bg(surface)`). Raw values (`+gap(18)`) are explicit escape hatches only.
+2. **Never hardcode values that tokens cover**: Route through resolvers (`+gap(sm)` / `.gap-sm`, `+radius(sm)`, `+bg(surface)`). Literals (`.gap-18`) are the sanctioned opt-out.
 3. **Compose fractals; avoid raw CSS**: In component `<style lang="sass">` blocks, compose existing atom/molecule mixins rather than writing ad-hoc CSS walls.
 4. **Reading Column Max Columns Law**: Any grid placed inside a reading column (`.docs-main`, `.center-column`, or container $\le 760\text{px}$) must **never exceed 2 columns** (`.grid-2` or `cols={2}`). 3 and 4-column grids are strictly reserved for full-width views (`.app-main`).
-5. **Partition Breathing Room**: Every divider line (`border-top` or `border-bottom`) that partitions content MUST have reciprocal padding (`var(--space-xs)` or `var(--space-s)`). Content text or action chips must never touch a divider line directly.
+5. **Partition Breathing Room**: Every divider line (`border-top` or `border-bottom`) that partitions content MUST have reciprocal padding (`var(--space-xs)` or `var(--space-sm)`). Content text or action chips must never touch a divider line directly.
 6. **Card Containment (Zero Overflow)**: Multiple-button rows, tag collections, or badge clusters within cards must use `.row.wrap` or `.cluster`. Control components (`.switch-track`, `.avatar`, `.is-icon`) must specify `flex-shrink: 0`.
 7. **Form Control Optical Baseline**: `<select>` and `<input>` must use `=control`/`=select`/`.select` with optical line-height (`1.2`) and 28px chevron padding to prevent vertical glyph clipping. Never apply raw `.input` to `<select>`.
-8. **State rides on `data-*` / `aria-*`**: Never create modifier classes (`.btn--primary`, `.is-active`). State is an attribute (`&[data-variant='primary']`, `&[aria-current='page']`).
+8. **Visual toggles ride classes; semantics stay native**: `.open`, `.active`, `.elevated` for JS-toggled looks (never BEM `--variant` classes); `[disabled]`, `[aria-expanded='true']`, `[aria-current='page']` stay attributes. html-level `data-*` is the themer runtime.
 9. **Zero-CSS Mixin Isolation**: Component styles must `@use '$lib/styles/fractals' as *` (which emits 0 bytes CSS), never `index.sass`.
 
 ---
@@ -75,20 +75,20 @@ Applied to every command:
 > 1. Start from `+surface(...)` for materials (cards, panels) or `+stack/+cluster` for flow.
 > 2. Add skin, spacing, and typography via atoms (`+bg`, `+ink`, `+pad`, `+type`).
 > 3. Express variants and states with `&[data-*]` and `&[aria-*]`.
-> 4. Anchor footers with `=partition(top, s)` or `margin-top: auto; padding-top: var(--space-xs); border-top: 1px solid var(--border)`.
+> 4. Anchor footers with `=partition(top, sm)` or `margin-top: auto; padding-top: var(--space-xs); border-top: 1px solid var(--border)`.
 > 5. Import pure mixins: `@use '$lib/styles/fractals' as *`.
 >
 > **Example Skeleton:**
 > ```sass
 > .feature-card
-> 	+surface(surface, m, 6)
+> 	+surface(surface, md, 6)
 > 	+box(stretch, start)
-> 	+gap(s)
+> 	+gap(sm)
 > 	height: 100%
-> 	&[data-elevated]
+> 	&.elevated
 > 		+shadow(md)
 > 	> footer
-> 		+partition(top, s)
+> 		+partition(top, sm)
 > 		+row(between, center)
 > 		+wrap
 > ```
@@ -138,8 +138,8 @@ Applied to every command:
 >
 > **Procedure:**
 > 1. Map raw CSS declarations to fractals (`display: flex; flex-direction: column` $\to$ `+box`, `border-radius: 6px` $\to$ `+radius(6)`).
-> 2. Collapse repetitive markup class strings (`class="box gap-s pad-m bg-surface border radius-6..."`) into a single semantic component class.
-> 3. Replace magic numbers with standard tokens (`space(s)`, `radius(4)`).
+> 2. Collapse repetitive markup class strings (`class="box gap-sm pad-md bg-surface border radius-6..."`) into a single semantic component class.
+> 3. Replace magic numbers with standard tokens (`space(sm)`, `radius(4)`).
 > 4. Verify visual fidelity before and after refactoring.
 
 ---
@@ -151,7 +151,7 @@ Applied to every command:
 > **Checklist:**
 > - [ ] **21-Token Contract**: Zero references to foreign tokens (`--card`, `--primary`, `--border-strong`).
 > - [ ] **Reading Column Law**: No 3 or 4-column grids inside `.docs-main` or reading views.
-> - [ ] **Partition Breathing Room**: Every `border-top` divider has matching `padding-top: var(--space-xs)` / `var(--space-s)`.
+> - [ ] **Partition Breathing Room**: Every `border-top` divider has matching `padding-top: var(--space-xs)` / `var(--space-sm)`.
 > - [ ] **Card Containment**: Action rows and tag clusters inside cards use `.row.wrap` or `.cluster`. Controls have `flex-shrink: 0`.
 > - [ ] **Form Control Optical Baseline**: `<select>` uses `.select` (never raw `.input`).
 > - [ ] **Pure Mixin Isolation**: Components `@use '$lib/styles/fractals' as *` (never `index.sass`).

@@ -39,6 +39,10 @@
 	--info-hover: #2563EB
 	--feedback-error: #DC2626
 	--ring: rgba(0, 127, 78, 0.35)
+	// Per-mode shadows (registry v1)
+	--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06)
+	--shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08)
+	--shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12)
 
 =dark-theme-tokens
 	color-scheme: dark
@@ -74,6 +78,10 @@
 	--info-hover: #93C5FD
 	--feedback-error: #F87171
 	--ring: rgba(16, 185, 129, 0.4)
+	// Per-mode shadows (registry v1)
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4)
+	--shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35)
+	--shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.45)
 
 :root
 	color-scheme: light
@@ -92,17 +100,17 @@
 	--text-3xl: clamp(2.3328rem, 2.0387rem + 1.3072vw, 3.0518rem)
 	--text-4xl: clamp(2.7994rem, 2.384rem + 1.8461vw, 3.8147rem)
 
-	// Fluid space scale
+	// Fluid space scale — the comfortable values. data-layout scales at USE
+	// sites: gaps/margins × var(--gap-scale), paddings × var(--pad-scale).
 	--space-3xs: clamp(0.3125rem, 0.3125rem + 0vw, 0.3125rem)
 	--space-2xs: clamp(0.5625rem, 0.5369rem + 0.1136vw, 0.625rem)
 	--space-xs: clamp(0.875rem, 0.8494rem + 0.1136vw, 0.9375rem)
-	--space-s: clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem)
-	--space-m: clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem)
-	--space-l: clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem)
+	--space-sm: clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem)
+	--space-md: clamp(1.6875rem, 1.6108rem + 0.3409vw, 1.875rem)
+	--space-lg: clamp(2.25rem, 2.1477rem + 0.4545vw, 2.5rem)
 	--space-xl: clamp(3.375rem, 3.2216rem + 0.6818vw, 3.75rem)
 	--space-2xl: clamp(4.5rem, 4.2955rem + 0.9091vw, 5rem)
 	--space-3xl: clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem)
-	--space-s-l: clamp(1.125rem, 0.5625rem + 2.5vw, 2.5rem)
 
 	// Radius (Concentric hierarchy)
 	--radius-0: 0
@@ -116,15 +124,25 @@
 	--radius-24: 24px
 	--radius-full: 9999px
 
+	// Radius channels — compositions read these; shape presets remap them.
+	// Defaults = curved (registry v1); unset data-shape IS curved.
+	--radius-sm: 8px
+	--radius-md: 16px
+	--radius-lg: 24px
+
+	// Motion language (registry v1) — durations and easings all compositions read.
+	--motion-fast: 120ms
+	--motion-base: 160ms
+	--motion-slow: 240ms
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1)
+	--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1)
+
 	// Control Heights
 	--control-h-sm: 26px
 	--control-h-md: 32px
 	--control-h-lg: 38px
 
-	// Shadow
-	--shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06)
-	--shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08)
-	--shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12)
+	// Shadow values live in the theme mixins (per-mode since registry v1).
 
 	// Layering
 	--z-base: 0
@@ -135,8 +153,13 @@
 
 	// Layout
 	--header-height: 48px
-	--footer-height: 56px
+	--footer-height: 32px
 	--measure: 65ch
+	--page-gutter: clamp(1rem, 4vw, 2rem)
+	--sidebar-width: 260px
+	--toc-width: 240px
+	--card-min: 16rem
+	--breakpoint: 768px
 
 	// Default Light Palette
 	+light-theme-tokens
@@ -151,4 +174,104 @@
 [data-mode='light']
 	+light-theme-tokens
 
+// =============================================================================
+// PRESET LANGUAGES — global looks as pure token remaps (registry v1).
+// -----------------------------------------------------------------------------
+// Applied by setting one attribute per language on <html>; fs2 owns
+// application, persistence, and anti-flicker (Amendment A2). Absent attributes
+// = the defaults above (comfortable layout, curved radius channels, general
+// color, active motion).
+// =============================================================================
 
+// --- Layout — data-layout: tight / sprawling (comfortable is the default) ---
+// Density = two factors: gaps/margins × --gap-scale, paddings × --pad-scale.
+// Pads and gaps scale at DIFFERENT rates — uniform scaling is a perceptual
+// no-op; breathing opens when padding outgrows gap (sprawling) and closes
+// when it shrinks faster (tight). Element sizes, heights, and widths never
+// move: control heights stay authored at their comfortable values.
+[data-layout='tight']
+	--gap-scale: 0.85
+	--pad-scale: 0.7
+
+[data-layout='sprawling']
+	--gap-scale: 1.2
+	--pad-scale: 1.5
+
+// --- Shape — data-shape: round / curved / pro / sharp ------------------------
+[data-shape='round']
+	--radius-sm: 16px
+	--radius-md: 24px
+	--radius-lg: 32px
+
+[data-shape='curved']
+	--radius-sm: 8px
+	--radius-md: 16px
+	--radius-lg: 24px
+
+[data-shape='pro']
+	--radius-sm: 4px
+	--radius-md: 8px
+	--radius-lg: 16px
+
+[data-shape='sharp']
+	--radius-sm: 0
+	--radius-md: 0
+	--radius-lg: 0
+
+// --- Color — data-color: clean / vibrant (general is the default) ------------
+// Layer tint on the surface ladder only: clean flattens separation toward the
+// page bg, vibrant deepens it. Light values are the mode default; dark values
+// override under both dark paths. General ships in the theme mixins.
+[data-color='clean']
+	--bg-surface: #fbfbfb
+	--bg-raised: #f5f7f9
+	--bg-panel: #F7F8F9
+
+[data-color='vibrant']
+	--bg-surface: #f2f5f7
+	--bg-raised: #e8eef3
+	--bg-panel: #E9EEF3
+
+@media (prefers-color-scheme: dark)
+	:root:not([data-mode='light'])[data-color='clean']
+		--bg-surface: #121626
+		--bg-raised: #171C2C
+		--bg-panel: #10131D
+	:root:not([data-mode='light'])[data-color='vibrant']
+		--bg-surface: #171E33
+		--bg-raised: #26314E
+		--bg-panel: #141B2E
+
+[data-mode='dark'][data-color='clean']
+	--bg-surface: #121626
+	--bg-raised: #171C2C
+	--bg-panel: #10131D
+
+[data-mode='dark'][data-color='vibrant']
+	--bg-surface: #171E33
+	--bg-raised: #26314E
+	--bg-panel: #141B2E
+
+// --- Motion — data-motion: springy / heavy / reduced (active is the default) -
+[data-motion='springy']
+	--motion-fast: 140ms
+	--motion-base: 200ms
+	--motion-slow: 300ms
+	--ease-out: cubic-bezier(0.34, 1.56, 0.64, 1)
+
+[data-motion='heavy']
+	--motion-fast: 200ms
+	--motion-base: 300ms
+	--motion-slow: 450ms
+
+[data-motion='reduced']
+	--motion-fast: 0ms
+	--motion-base: 0ms
+	--motion-slow: 0ms
+
+// prefers-reduced-motion is honored globally regardless of preset (registry v1).
+@media (prefers-reduced-motion: reduce)
+	:root
+		--motion-fast: 0ms
+		--motion-base: 0ms
+		--motion-slow: 0ms

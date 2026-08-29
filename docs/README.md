@@ -15,7 +15,7 @@ Available as a **shadcn-style scaffolder** (`npx fractalstyler2 init`) and as a 
 
 | Chapter | Document | What It Teaches |
 |---|---|---|
-| **01** | [Philosophy](01-philosophy.md) | The fractal model, self-similarity, dual consumption, and why CUBE CSS works |
+| **01** | [Philosophy](02-getting-started.md) | The fractal model, self-similarity, dual consumption, and why CUBE CSS works |
 | **02** | [Structure & Hierarchy](02-structure.md) | File anatomy, the canonical 12-file numbered scale, and cascade rules |
 | **03** | [Getting Started](03-getting-started.md) | CLI scaffolding, SvelteKit project setup, and your first component |
 | **04** | [Fractals Reference](04-fractals-reference.md) | Complete manual for every atom (`+box`, `+row`, `+bg`) and molecule (`+stack`, `+surface`) |
@@ -32,8 +32,8 @@ Available as a **shadcn-style scaffolder** (`npx fractalstyler2 init`) and as a 
 
 ## The One-Paragraph Summary
 
-A fractal is a mixin: `+box`, `+gap(m)`, `+surface(...)`. You consume a fractal two ways:
-1. **Composed into a Svelte component**: `.card { +surface(surface, s, 6) +stack(s) }`
-2. **Projected to a class in markup**: `<div class="box gap-s pad-m bg-surface radius-6">...</div>`
+A fractal is a mixin: `+box`, `+gap(md)`, `+surface(...)`. You consume a fractal two ways:
+1. **Composed into a Svelte component**: `.card { +surface(surface, sm, 6) +stack(sm) }`
+2. **Projected to a class in markup**: `<div class="box gap-sm pad-md bg-surface radius-6">...</div>`
 
-Atoms compose into molecules, molecules into components, components into layouts. All numeric values pass through resolvers (`space(m)` $\to$ `var(--space-m)`, `space(18)` $\to$ `18px`), creating a single shared vocabulary between CSS and markup with zero bloat.
+Atoms compose into molecules, molecules into components, components into layouts. All numeric values pass through resolvers (`space(md)` $\to$ `var(--space-md)`, `space(18)` $\to$ `18px`), creating a single shared vocabulary between CSS and markup with zero bloat.

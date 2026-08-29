@@ -26,8 +26,8 @@ An anchored vertical card with category badge, feature checklist, and pinned but
 	let { title, price, description, features, popular = false }: Props = $props();
 </script>
 
-<article class="card pad-m radius-6 box ybetween gap-m" data-elevated={popular ? true : undefined}>
-	<div class="box gap-s">
+<article class="card pad-md radius-6 box ybetween gap-md" class:elevated={popular}>
+	<div class="box gap-sm">
 		<header class="row ycenter xbetween">
 			<span class="eyebrow text-xs" style="color: var(--theme-color)">{title}</span>
 			{#if popular}
@@ -102,7 +102,7 @@ Leverages the top-layer native `<dialog>` with backdrop blur and token surfaces:
 			</button>
 		</header>
 
-		<div class="box gap-s">
+		<div class="box gap-sm">
 			{@render children()}
 		</div>
 
@@ -127,7 +127,7 @@ Combines search input, native select, and layout switchers with zero layout thra
 	let view = $state<'grid' | 'list'>('grid');
 </script>
 
-<div class="panel pad-xs radius-6 row ycenter xbetween wrap gap-s">
+<div class="panel pad-xs radius-6 row ycenter xbetween wrap gap-sm">
 	<!-- Search Box -->
 	<div class="row ycenter gap-2xs grow min0" style="max-width: 320px;">
 		<input
@@ -150,7 +150,7 @@ Combines search input, native select, and layout switchers with zero layout thra
 			<button
 				type="button"
 				class="button ghost text-xs radius-4"
-				data-active={view === 'grid' ? true : undefined}
+				class:active={view === 'grid'}
 				onclick={() => (view = 'grid')}
 			>
 				Grid
@@ -158,7 +158,7 @@ Combines search input, native select, and layout switchers with zero layout thra
 			<button
 				type="button"
 				class="button ghost text-xs radius-4"
-				data-active={view === 'list' ? true : undefined}
+				class:active={view === 'list'}
 				onclick={() => (view = 'list')}
 			>
 				List

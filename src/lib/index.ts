@@ -30,20 +30,19 @@ export const breakpoints = {
 	sm: '640px',
 	md: '768px',
 	lg: '1024px',
-	xl: '1240px'
+	xl: '1280px'
 } as const;
 
 export const spaceScale = [
 	'3xs',
 	'2xs',
 	'xs',
-	's',
-	'm',
-	'l',
+	'sm',
+	'md',
+	'lg',
 	'xl',
 	'2xl',
-	'3xl',
-	's-l'
+	'3xl'
 ] as const;
 
 export const typographyScale = [
@@ -108,3 +107,18 @@ export type TypographyStep = (typeof typographyScale)[number];
 export type RadiusStep = (typeof radiusSteps)[number];
 export type SurfaceRole = (typeof surfaceRoles)[number];
 export type InkRole = (typeof inkRoles)[number];
+
+// Preset runtime — fs2 owns application, persistence, and anti-flicker for
+// the four preset languages (layout / shape / color / motion).
+export {
+	presets,
+	presetAxes,
+	initPresets,
+	setPreset,
+	getPresetScript,
+	type PresetAxis
+} from './presets.svelte.js';
+export { default as ShapePicker } from './components/ShapePicker.svelte';
+export { default as LayoutPicker } from './components/LayoutPicker.svelte';
+export { default as ColorPicker } from './components/ColorPicker.svelte';
+export { default as MotionPicker } from './components/MotionPicker.svelte';

@@ -1,71 +1,53 @@
-// =============================================================================
-// 01_CONFIG — the finite vocabulary every fractal draws from.
-// -----------------------------------------------------------------------------
-// Scales live here as Sass data; resolvers turn a keyword-or-raw value into the
-// right token var() or unit. Fractals never hardcode a px or a token name —
-// they route through space(), radius(), etc. so the system speaks one language.
-// =============================================================================
+// ============================================================================
+// config — the builder knobs the Contract names. All !default: overridable at
+// compile time via `@use 'config' with (…)`, never edited in place.
+// ============================================================================
 
-@use 'sass:map'
-@use 'sass:math'
-@use 'sass:meta'
-@use 'sass:list'
+// The responsive seam. Every loop-generated class takes -mob (below) and
+// -desk (at or above) this width.
+$breakpoint: 768px !default
+$responsive-modes: (mob: 'all and (max-width: #{$breakpoint - 1})', desk: 'all and (min-width: #{$breakpoint})') !default
 
-// --- Scales (mirror the custom properties in _00_tokens.sass) ----------------
-$breakpoints: (sm: 640px, md: 768px, lg: 1024px, xl: 1240px)
+// Literal utility ceiling: .gap-{N}, .radius-{N}, .w-{N}… emit lo…hi in px.
+$utility-range: (1, 256) !default
 
-$space-steps: 3xs 2xs xs s m l xl 2xl 3xl s-l
-$radius-steps: 0 2 3 4 6 8 12 16 24 full
-$text-steps: xs sm md lg xl 2xl 3xl 4xl
-$shadow-steps: sm md lg
+// Named steps for grid stepping and the shell rails (not the responsive seam).
+$breakpoints: (sm: 640px, md: 768px, lg: 1024px, xl: 1280px) !default
 
-// Surfaces mapped to the 21 theme token contract
-$surface-roles: bg surface raised panel footer popover dialog terminal input canvas
-$ink-roles: primary secondary muted inverse theme-color theme-color-alt
+// ============================================================================
+// base — element baseline. Builder infrastructure, not registry classes: the
+// registry is a list of classes; this only makes documents predictable so the
+// classes behave. Deliberately minimal — no typographic opinions beyond body.
+// ============================================================================
 
-$align-map: (start: flex-start, end: flex-end, center: center, between: space-between, around: space-around, evenly: space-evenly, stretch: stretch, baseline: baseline)
+*,
+*::before,
+*::after
+	box-sizing: border-box
 
-// --- Universal Token Resolver --------------------------------------------------
-@function tok($group, $v)
-	@if $v == null
-		@return null
-	@if meta.type-of($v) == number
-		@if math.is-unitless($v)
-			@return var(--#{$group}-#{$v})
-		@return $v
-	@if meta.type-of($v) == string
-		@if $v == 'auto' or $v == 'inherit' or $v == 'initial' or $v == 'unset' or $v == 'none' or $v == 'transparent'
-			@return $v
-		@return var(--#{$group}-#{$v})
-	@return $v
+*
+	margin: 0
 
-// --- Resolvers ----------------------------------------------------------------
+body, html
+	font-family: var(--font-sans)
+	font-size: var(--text-sm)
+	line-height: 1.5
+	color: var(--text-primary)
+	background: var(--bg)
+	box-sizing: border-box
 
-@function space($v)
-	@return tok(space, $v)
+img,
+video,
+svg
+	display: block
+	max-width: 100%
 
-@function radius($v)
-	@return tok(radius, $v)
+button,
+input,
+select,
+textarea
+	font: inherit
+	color: inherit
 
-@function text-size($v)
-	@return tok(text, $v)
-
-@function shadow($v)
-	@return tok(shadow, $v)
-
-@function surface($role)
-	@if $role == bg
-		@return var(--bg)
-	@return tok(bg, $role)
-
-@function ink($role)
-	@if $role == primary
-		@return var(--text-primary)
-	@return tok(text, $role)
-
-@function align($v)
-	@return map.get($align-map, $v) or $v
-
-@function bp($name)
-	@return map.get($breakpoints, $name)
-
+a
+	color: inherit

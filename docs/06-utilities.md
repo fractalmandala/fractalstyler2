@@ -13,7 +13,7 @@ Utility classes in `_09_utilities.sass` are direct 1:1 projections of atom and m
 
 ```svelte
 <!-- Vertical Flexbox Stack -->
-<div class="box gap-s">...</div>
+<div class="box gap-sm">...</div>
 
 <!-- Horizontal Flexbox Row -->
 <div class="row ycenter xbetween gap-xs">...</div>
