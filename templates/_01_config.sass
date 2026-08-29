@@ -29,9 +29,13 @@ $align-map: (start: flex-start, end: flex-end, center: center, between: space-be
 @function tok($group, $v)
 	@if $v == null
 		@return null
-	@if meta.type-of($v) == number and math.is-unitless($v)
-		@return #{$v}px
-	@if meta.type-of($v) == string and not (math.unit($v) != '')
+	@if meta.type-of($v) == number
+		@if math.is-unitless($v)
+			@return var(--#{$group}-#{$v})
+		@return $v
+	@if meta.type-of($v) == string
+		@if $v == 'auto' or $v == 'inherit' or $v == 'initial' or $v == 'unset' or $v == 'none' or $v == 'transparent'
+			@return $v
 		@return var(--#{$group}-#{$v})
 	@return $v
 

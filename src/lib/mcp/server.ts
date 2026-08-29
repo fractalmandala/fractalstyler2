@@ -155,8 +155,8 @@ const DESIGN_TOKENS = {
 		feedbackError: 'var(--feedback-error)'
 	},
 	brand: {
-		theme: 'var(--theme)',
-		themeHover: 'var(--theme-hover)',
+		theme: 'var(--theme-color)',
+		themeHover: 'var(--theme-color-alt)',
 		themeActive: 'var(--theme-active)',
 		ring: 'var(--ring)'
 	},

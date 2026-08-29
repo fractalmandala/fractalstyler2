@@ -83,8 +83,8 @@ The design system enforces a crisp, subtle 3px/6px radius:
 ### Button Borders
 All interactive buttons have an explicit `border: 1px solid var(--border)` baseline:
 - **Ghost Button**: `background: transparent; border-color: var(--border)`. Transitions to `var(--border-strong)` on hover.
-- **Active State**: `[data-active]` renders `border-color: var(--theme)` or `var(--border-strong)`.
-- **Primary Button**: `background: var(--theme); border-color: var(--theme)`.
+- **Active State**: `[data-active]` renders `border-color: var(--theme-color)` or `var(--border-strong)`.
+- **Primary Button**: `background: var(--theme-color); border-color: var(--theme-color)`.
 
 ---
 

@@ -105,7 +105,7 @@ Variants and states ride on `data-*` / `aria-*`, never on modifier classes:
 ```sass
 .button
 	&[data-variant='primary']
-		background: var(--theme)
+		background: var(--theme-color)
 ```
 ```svelte
 <button class="button" data-variant="primary">Save</button>

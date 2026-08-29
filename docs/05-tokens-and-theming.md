@@ -28,8 +28,8 @@ The system defines 30 semantic CSS custom properties across 6 core categories. E
 | | `--text-inverse` | Contrast text on solid brand buttons | `#ffffff` | `#0E1118` |
 | **Borders** | `--border` | Primary borders, card outlines, separators | `#E2E8F0` | `#28324A` |
 | | `--border-subtle` | Faint dividers, table rows, inner items | `#EDF2F7` | `#1E2538` |
-| **Brand Accent** | `--theme-color` (`--theme`) | Primary action color, active tabs, badges | `#04825B` | `#38BDF8` |
-| | `--theme-color-alt` (`--theme-hover`) | Hover state for primary action buttons | `#047857` | `#0EA5E9` |
+| **Brand Accent** | `--theme-color` (`--theme-color`) | Primary action color, active tabs, badges | `#04825B` | `#38BDF8` |
+| | `--theme-color-alt` (`--theme-color-alt`) | Hover state for primary action buttons | `#047857` | `#0EA5E9` |
 | | `--ring` | Visible focus outline ring | `rgba(0,127,78,0.35)` | `rgba(16,185,129,0.4)` |
 | **Status Feedback** | `--success`, `--success-hover` | Success states, confirmed badges | `#10B981`, `#059669` | `#34D399`, `#6EE7B7` |
 | | `--warning`, `--warning-hover` | Warning alerts, pending states | `#F59E0B`, `#D97706` | `#FBBF24`, `#FCD34D` |
@@ -142,5 +142,5 @@ With JavaScript disabled or before hydration, `_00_tokens.sass` renders `=light-
 When `fractalthemer` is installed, `themeState.apply(themeId)` dynamically writes the full token dictionary to `document.documentElement.style`, instantly updating all `fractalstyler2` components across:
 - Dark/Light mode flipping (`[data-mode='dark']`, `[data-mode='light']`)
 - Preset color families (`theme-night-dark`, `theme-frozen-dark`, `theme-nord-dark`, etc.)
-- User-customized accent colors (`--theme-color`, `--theme-hover`)
+- User-customized accent colors (`--theme-color`, `--theme-color-alt`)
 - GPU Atmospheric Shaders (`[data-bg-style='aura']`, `[data-bg-style='gradient']`, `[data-bg-style='pattern']`)

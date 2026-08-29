@@ -33,4 +33,4 @@
 * **Surfaces**: `--bg`, `--bg-surface`, `--bg-raised`
 * **Ink**: `--text-primary`, `--text-secondary`, `--text-muted`, `--text-inverse`
 * **Borders**: `--border`, `--border-strong`
-* **Brand**: `--theme`, `--theme-hover`, `--theme-active`, `--ring`
+* **Brand**: `--theme`, `--theme-color-alt`, `--theme-active`, `--ring`

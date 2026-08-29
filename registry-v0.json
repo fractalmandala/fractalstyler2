@@ -1,0 +1,548 @@
+{
+  "L1 — Dimensions (17 space families + radius + shadows)": [
+    {
+      "name": ".gap-",
+      "definition": "gap; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".rgap-",
+      "definition": "row-gap; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".cgap-",
+      "definition": "column-gap; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-",
+      "definition": "padding; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-x-",
+      "definition": "padding-inline (renames +px); presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-y-",
+      "definition": "padding-block (renames +py); presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-top-",
+      "definition": "padding-top; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-right-",
+      "definition": "padding-right; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-bottom-",
+      "definition": "padding-bottom; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".pad-left-",
+      "definition": "padding-left; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-",
+      "definition": "margin; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-x-",
+      "definition": "margin-inline; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-y-",
+      "definition": "margin-block; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-top-",
+      "definition": "margin-top; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-right-",
+      "definition": "margin-right; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-bottom-",
+      "definition": "margin-bottom; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".marg-left-",
+      "definition": "margin-left; presets (3xs, 2xs, xs, s, m, l, xl, 2xl, 3xl, s-l) -> var(--space-*), extensible (-1...-256) -> literal px"
+    },
+    {
+      "name": ".radius-{0...256}",
+      "definition": "border-radius: literal px (0 included — the reset)"
+    },
+    {
+      "name": ".radius-full",
+      "definition": "border-radius: var(--radius-full)"
+    },
+    {
+      "name": ".w-{1...256}",
+      "definition": "width: literal px"
+    },
+    {
+      "name": ".h-{1...256}",
+      "definition": "height: literal px"
+    },
+    {
+      "name": ".square-{1...256}",
+      "definition": "width: literal px; height: literal px (width=height literal)"
+    },
+    {
+      "name": ".wfull",
+      "definition": "width: 100%"
+    },
+    {
+      "name": ".hfull",
+      "definition": "height: 100%"
+    },
+    {
+      "name": ".full",
+      "definition": "width: 100%; height: 100%"
+    },
+    {
+      "name": ".min0",
+      "definition": "min-width: 0; min-height: 0"
+    },
+    {
+      "name": ".shadow-sm",
+      "definition": "box-shadow: var(--shadow-sm) (token-routed channel, not literal)"
+    },
+    {
+      "name": ".shadow-md",
+      "definition": "box-shadow: var(--shadow-md) (token-routed channel, not literal)"
+    },
+    {
+      "name": ".shadow-lg",
+      "definition": "box-shadow: var(--shadow-lg) (token-routed channel, not literal)"
+    }
+  ],
+  "L2 — Containers & flow": [
+    {
+      "name": ".box",
+      "definition": "display: flex; flex-direction: column"
+    },
+    {
+      "name": ".row",
+      "definition": "display: flex; flex-direction: row"
+    },
+    {
+      "name": ".wrap",
+      "definition": "flex-wrap: wrap"
+    },
+    {
+      "name": ".xcenter",
+      "definition": "main-axis justify-content: center; .box.xcenter -> align-items: center (horizontal in both directions)"
+    },
+    {
+      "name": ".ycenter",
+      "definition": "main-axis justify-content: center; .row.ycenter -> align-items: center (vertical in both directions)"
+    },
+    {
+      "name": ".center",
+      "definition": "both axes centered (justify-content: center; align-items: center)"
+    },
+    {
+      "name": ".grow",
+      "definition": "flex: 1 1 0% (fill remaining)"
+    },
+    {
+      "name": ".shrink-0",
+      "definition": "flex-shrink: 0 (card-containment workhorse; kept from current _09)"
+    },
+    {
+      "name": ".relative",
+      "definition": "position: relative (position only — offsets stay yours)"
+    },
+    {
+      "name": ".absolute",
+      "definition": "position: absolute (position only — offsets stay yours)"
+    },
+    {
+      "name": ".fixed",
+      "definition": "position: fixed (position only — offsets stay yours)"
+    },
+    {
+      "name": ".sticky",
+      "definition": "position: sticky (position only — offsets stay yours)"
+    }
+  ],
+  "L3 — Layouts & templates": [
+    {
+      "name": ".grid-1",
+      "definition": "single column grid"
+    },
+    {
+      "name": ".grid-2",
+      "definition": "responsive grid: 2 -> 1 column"
+    },
+    {
+      "name": ".grid-3",
+      "definition": "responsive grid: 3 -> 1 column (or 3 -> 2 -> 1 — see open decisions)"
+    },
+    {
+      "name": ".grid-4",
+      "definition": "responsive grid: 4 -> 2 -> 1 columns (never 3)"
+    },
+    {
+      "name": ".grid-6",
+      "definition": "responsive grid: 6 -> 3 -> 2 -> 1 columns (never 5/4)"
+    },
+    {
+      "name": ".card-grid",
+      "definition": "auto-fit repeatable cards, min-width from config"
+    },
+    {
+      "name": ".hero",
+      "definition": "page/section hero template"
+    },
+    {
+      "name": ".prose",
+      "definition": "reading measure <=760px + typographic rhythm"
+    },
+    {
+      "name": ".toc",
+      "definition": "right TOC; contracts to dropdown per docs config (composed with .toc-list, .toc-title, .toc-link, .toc-footer)"
+    },
+    {
+      "name": ".toc-list",
+      "definition": "right TOC item list container (composed within .toc)"
+    },
+    {
+      "name": ".toc-title",
+      "definition": "right TOC title header (composed within .toc)"
+    },
+    {
+      "name": ".toc-link",
+      "definition": "right TOC navigation item link (composed within .toc)"
+    },
+    {
+      "name": ".toc-footer",
+      "definition": "right TOC footer section (composed within .toc)"
+    },
+    {
+      "name": ".navtree",
+      "definition": "left sidebar tree; retracts to header menu button per docs config (composed with .navtree-group, .navtree-title, .navtree-link, .navtree-sub)"
+    },
+    {
+      "name": ".navtree-group",
+      "definition": "left sidebar nav tree category group (composed within .navtree)"
+    },
+    {
+      "name": ".navtree-title",
+      "definition": "left sidebar nav tree category title (composed within .navtree)"
+    },
+    {
+      "name": ".navtree-link",
+      "definition": "left sidebar nav tree item link (composed within .navtree)"
+    },
+    {
+      "name": ".navtree-sub",
+      "definition": "left sidebar nav tree nested sub-tree (composed within .navtree)"
+    },
+    {
+      "name": ".docs",
+      "definition": "the holy-grail docs config proper"
+    },
+    {
+      "name": ".docs-mobile-toc",
+      "definition": "mobile dropdown table of contents for docs layout"
+    },
+    {
+      "name": ".active",
+      "definition": "state indicator for active item (tab-list / tab-trigger mechanics live here-adjacent; current tab = .active)"
+    }
+  ],
+  "L4 — Shells & overlays": [
+    {
+      "name": ".app-shell",
+      "definition": "application frame container (composed with .app-header, .app-main)"
+    },
+    {
+      "name": ".app-header",
+      "definition": "application frame header (composed within .app-shell)"
+    },
+    {
+      "name": ".app-main",
+      "definition": "application frame main content area (composed within .app-shell)"
+    },
+    {
+      "name": ".holy-grail",
+      "definition": "header/left/right/footer layout template (composed with .docs)"
+    },
+    {
+      "name": ".drawer",
+      "definition": "slide-in panel; shown via .open"
+    },
+    {
+      "name": ".dialog",
+      "definition": "modal dialog: overlay mechanics + var(--bg-dialog) + radius/shadow; shown via .open"
+    },
+    {
+      "name": ".popover",
+      "definition": "anchored overlay mechanics + var(--bg-popover); shown via .open"
+    },
+    {
+      "name": ".open",
+      "definition": "state class for open/visible state on drawer, dialog, popover, or accordion-item"
+    },
+    {
+      "name": ".accordion",
+      "definition": "accordion container; open/close via .open on item; trigger carries aria-expanded (composed with .accordion-item, .accordion-trigger, .accordion-content)"
+    },
+    {
+      "name": ".accordion-item",
+      "definition": "accordion item element; toggled open/closed via .open"
+    },
+    {
+      "name": ".accordion-trigger",
+      "definition": "accordion interactive header button/trigger; carries aria-expanded"
+    },
+    {
+      "name": ".accordion-content",
+      "definition": "accordion collapsible body content container"
+    }
+  ],
+  "L5 — Dress & compositions": [
+    {
+      "name": ".bg",
+      "definition": "background: var(--bg) (bare, one declaration)"
+    },
+    {
+      "name": ".surface",
+      "definition": "background: var(--bg-surface) (bare, one declaration)"
+    },
+    {
+      "name": ".raised",
+      "definition": "background: var(--bg-raised) / raised surface background (bare, one declaration)"
+    },
+    {
+      "name": ".panel",
+      "definition": "background: var(--bg-panel) / panel background (bare, one declaration)"
+    },
+    {
+      "name": ".footer",
+      "definition": "background: var(--bg-footer) / footer background (bare, one declaration)"
+    },
+    {
+      "name": ".canvas",
+      "definition": "background: var(--bg-canvas) / canvas background (bare, one declaration)"
+    },
+    {
+      "name": ".terminal",
+      "definition": "background: var(--bg-terminal) / terminal background (bare, one declaration)"
+    },
+    {
+      "name": ".text-primary",
+      "definition": "color: var(--text-primary) (design token)"
+    },
+    {
+      "name": ".text-secondary",
+      "definition": "color: var(--text-secondary) (design token)"
+    },
+    {
+      "name": ".text-muted",
+      "definition": "color: var(--text-muted) (design token)"
+    },
+    {
+      "name": ".text-inverse",
+      "definition": "color: var(--text-inverse) (design token)"
+    },
+    {
+      "name": ".text-brand",
+      "definition": "color: var(--theme-color)"
+    },
+    {
+      "name": ".text-success",
+      "definition": "color: var(--text-success) / status token (optional set)"
+    },
+    {
+      "name": ".text-warning",
+      "definition": "color: var(--text-warning) / status token (optional set)"
+    },
+    {
+      "name": ".text-danger",
+      "definition": "color: var(--text-danger) / status token (optional set)"
+    },
+    {
+      "name": ".text-info",
+      "definition": "color: var(--text-info) / status token (optional set)"
+    },
+    {
+      "name": ".border",
+      "definition": "border: 1px var(--border)"
+    },
+    {
+      "name": ".border-subtle",
+      "definition": "border: 1px var(--border-subtle) (subtle border)"
+    },
+    {
+      "name": ".border-top",
+      "definition": "border-top: 1px var(--border) (the partition-law pair)"
+    },
+    {
+      "name": ".border-bottom",
+      "definition": "border-bottom: 1px var(--border) (the partition-law pair)"
+    },
+    {
+      "name": ".text-xs",
+      "definition": "font-size: var(--text-xs)"
+    },
+    {
+      "name": ".text-sm",
+      "definition": "font-size: var(--text-sm)"
+    },
+    {
+      "name": ".text-md",
+      "definition": "font-size: var(--text-md)"
+    },
+    {
+      "name": ".text-lg",
+      "definition": "font-size: var(--text-lg)"
+    },
+    {
+      "name": ".text-xl",
+      "definition": "font-size: var(--text-xl)"
+    },
+    {
+      "name": ".text-2xl",
+      "definition": "font-size: var(--text-2xl)"
+    },
+    {
+      "name": ".text-3xl",
+      "definition": "font-size: var(--text-3xl)"
+    },
+    {
+      "name": ".text-4xl",
+      "definition": "font-size: var(--text-4xl)"
+    },
+    {
+      "name": ".weight-400",
+      "definition": "font-weight: 400"
+    },
+    {
+      "name": ".weight-500",
+      "definition": "font-weight: 500"
+    },
+    {
+      "name": ".weight-600",
+      "definition": "font-weight: 600"
+    },
+    {
+      "name": ".weight-700",
+      "definition": "font-weight: 700"
+    },
+    {
+      "name": ".mono",
+      "definition": "font-family: monospace (token-backed mono family)"
+    },
+    {
+      "name": ".eyebrow",
+      "definition": "eyebrow typography style (small uppercase, tracking)"
+    },
+    {
+      "name": ".truncate",
+      "definition": "text-overflow: ellipsis; white-space: nowrap; overflow: hidden"
+    },
+    {
+      "name": ".clamp-1",
+      "definition": "display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden (line-clamp 1)"
+    },
+    {
+      "name": ".clamp-2",
+      "definition": "display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden (line-clamp 2)"
+    },
+    {
+      "name": ".clamp-3",
+      "definition": "display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden (line-clamp 3)"
+    },
+    {
+      "name": ".hover",
+      "definition": "&:hover { background: var(--state-hover) } (attention proposal)"
+    },
+    {
+      "name": ".transition",
+      "definition": "transition with the default duration/easing pair"
+    },
+    {
+      "name": ".button",
+      "definition": "reset, type baseline, inline-flex, height, pad-x, radius, text-decoration:none, :focus-visible ring"
+    },
+    {
+      "name": ".primary",
+      "definition": "background: var(--theme-color), ink inverse (works on any element)"
+    },
+    {
+      "name": ".ghost",
+      "definition": "transparent bg, border: 1px var(--border), ink primary"
+    },
+    {
+      "name": ".is-icon",
+      "definition": "square, centered, text-decoration:none (so <a class=\"is-icon\"> stands alone)"
+    },
+    {
+      "name": ".input",
+      "definition": "form input composition (includes background; plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".select",
+      "definition": "form select dropdown composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".field",
+      "definition": "form field container composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".field-label",
+      "definition": "form field label composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".field-error",
+      "definition": "form field error message composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".card",
+      "definition": "card container composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".badge",
+      "definition": "badge / pill indicator composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".avatar",
+      "definition": "avatar media composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".divider",
+      "definition": "divider line separator composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".kbd",
+      "definition": "keyboard shortcut tag composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".tab-list",
+      "definition": "tab list header container composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".tab-trigger",
+      "definition": "tab trigger button composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".switch-track",
+      "definition": "toggle switch track composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".switch-thumb",
+      "definition": "toggle switch thumb composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".marquee",
+      "definition": "marquee scrolling container composition (plain class over vocabulary, yours to restyle)"
+    },
+    {
+      "name": ".link",
+      "definition": "hyperlink text composition (plain class over vocabulary, yours to restyle)"
+    }
+  ]
+}
