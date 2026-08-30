@@ -151,6 +151,8 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .sidebar-right           | L4 | .sidebar-right component / container                       | _05_shells.sass        | <div class="sidebar-right">
 .sidebar-left            | L4 | .sidebar-left component / container                        | _05_shells.sass        | <div class="sidebar-left">
 .sidebar-right           | L4 | .sidebar-right component / container                       | _05_shells.sass        | <div class="sidebar-right">
+.sidebar-left            | L4 | Required child of .sidebar-right — see canonical-markups.md | _05_shells.sass        | <div class="sidebar-left">
+.sidebar-right           | L4 | Required child of .sidebar-right — see canonical-markups.md | _05_shells.sass        | <div class="sidebar-right">
 .content-shell           | L4 | .content-shell component / container                       | _05_shells.sass        | <div class="content-shell">
 .app-footer              | L4 | .app-footer component / container                          | _05_shells.sass        | <div class="app-footer">
 .mobile-toc              | L4 | .mobile-toc component / container                          | _05_shells.sass        | <div class="mobile-toc">
@@ -181,7 +183,8 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .accordion               | L4 | .accordion component / container                           | _05_shells.sass        | <div class="accordion">
 .accordion-item          | L4 | .accordion-item component / container                      | _05_shells.sass        | <div class="accordion-item">
 .accordion-content       | L4 | Required child of .accordion-item — see canonical-markups.md | _05_shells.sass        | <div class="accordion-content">
-.accordion-item.open     | L4 | > .accordion-content                                       | _05_shells.sass        | <div class="accordion-item.open">
+.accordion-panel         | L4 | Required child of .accordion-item — see canonical-markups.md | _05_shells.sass        | <div class="accordion-panel">
+.accordion-item.open     | L4 | .accordion-content                                         | _05_shells.sass        | <div class="accordion-item.open">
 .accordion-trigger       | L4 | .accordion-trigger component / container                   | _05_shells.sass        | <div class="accordion-trigger">
 .hero                    | L4 | .hero component / container                                | _05_shells.sass        | <div class="hero">
 .bg                      | L5 | .bg component / container                                  | _06_visuals.sass       | <div class="bg">
@@ -200,6 +203,10 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .text-warning            | L5 | .text-warning component / container                        | _06_visuals.sass       | <div class="text-warning">
 .text-danger             | L5 | .text-danger component / container                         | _06_visuals.sass       | <div class="text-danger">
 .text-info               | L5 | .text-info component / container                           | _06_visuals.sass       | <div class="text-info">
+.bg-success              | L5 | .bg-success component / container                          | _06_visuals.sass       | <div class="bg-success">
+.bg-warning              | L5 | .bg-warning component / container                          | _06_visuals.sass       | <div class="bg-warning">
+.bg-danger               | L5 | .bg-danger component / container                           | _06_visuals.sass       | <div class="bg-danger">
+.bg-info                 | L5 | .bg-info component / container                             | _06_visuals.sass       | <div class="bg-info">
 .border                  | L5 | .border component / container                              | _06_visuals.sass       | <div class="border">
 .border-subtle           | L5 | .border-subtle component / container                       | _06_visuals.sass       | <div class="border-subtle">
 .border-top              | L5 | .border-top component / container                          | _06_visuals.sass       | <div class="border-top">
@@ -237,6 +244,7 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .switch-thumb            | L5 | .switch-thumb component / container                        | _06_visuals.sass       | <div class="switch-thumb">
 .switch-track            | L5 | [aria-checked='true'],                                     | _06_visuals.sass       | <div class="switch-track">
 .switch-track            | L5 | .checked                                                   | _06_visuals.sass       | <div class="switch-track">
+.switch-thumb            | L5 | Required child of .switch-track — see canonical-markups.md | _06_visuals.sass       | <div class="switch-thumb">
 .hide-mobile             | L5 | .hide-mobile component / container                         | _06_visuals.sass       | <div class="hide-mobile">
 .hide-desktop            | L5 | .hide-desktop component / container                        | _06_visuals.sass       | <div class="hide-desktop">
 .only-mobile             | L5 | .only-mobile component / container                         | _06_visuals.sass       | <div class="only-mobile">
@@ -249,14 +257,12 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .link                    | L5 | .link component / container                                | _07_interactions.sass  | <div class="link">
 .link-plain              | L5 | .link-plain component / container                          | _07_interactions.sass  | <div class="link-plain">
 .link-parent             | L5 | .link-parent component / container                         | _07_interactions.sass  | <div class="link-parent">
+.link-plain              | L5 | Required child of .link-parent — see canonical-markups.md  | _07_interactions.sass  | <div class="link-plain">
 .button                  | L5 | .button component / container                              | _07_interactions.sass  | <div class="button">
 .button.primary          | L5 | Modifier for .button                                       | _07_interactions.sass  | <div class="button.primary">
 .button.ghost            | L5 | Modifier for .button                                       | _07_interactions.sass  | <div class="button.ghost">
 .button.active           | L5 | Modifier for .button                                       | _07_interactions.sass  | <div class="button.active">
 .button.is-icon          | L5 | Modifier for .button                                       | _07_interactions.sass  | <div class="button.is-icon">
-.logomotif               | Custom | .logomotif component / container                           | _08_own.sass           | <div class="logomotif">
-.logotype                | Custom | .logotype component / container                            | _08_own.sass           | <div class="logotype">
-.header-nav              | Custom | .header-nav component / container                          | _08_own.sass           | <div class="header-nav">
 ```
 
 ---

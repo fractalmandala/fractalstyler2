@@ -19,21 +19,20 @@
  *   node scripts/validate-deck.js
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import * as sass from 'sass'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8'))
 
-const exact = new Set()
+// Ground truth is the COMPILED stylesheet, not registry.json. The registry
+// carries wildcard families (.radius-*), and matching on those stems accepted
+// .radius-md — a class that does not exist — everywhere it appeared. A wildcard
+// cannot tell you whether a value is on the ladder; only the output can.
+const compiled = sass.compile(join(root, 'src/lib/styles/index.sass'), { style: 'expanded' }).css
+const exact = new Set([...compiled.matchAll(/\.([a-zA-Z][\w-]*)/g)].map((m) => m[1]))
 const stems = []
-for (const entry of registry) {
-	// Compound entries (.box.xcenter) contribute every segment.
-	for (const seg of entry.class.split('.').filter(Boolean)) {
-		if (seg.endsWith('*')) stems.push(seg.slice(0, -1))
-		else exact.add(seg)
-	}
-}
 
 /** State modifiers the registry documents on their parent rather than alone. */
 const MODIFIERS = new Set(['open', 'active', 'checked', 'primary', 'ghost', 'is-icon'])
@@ -50,6 +49,9 @@ const walk = (d, exts) => {
 	}
 }
 walk(join(root, 'skills'), /\.md$/)
+// The shell components emit canonical markup, so every class in them must
+// resolve — they are the one place a wrong class ships as code, not prose.
+walk(join(root, 'src/lib/components'), /\.svelte$/)
 walk(join(root, 'docs'), /\.md$/)
 walk(join(root, 'src/lib/mcp/schemas'), /\.(json|md)$/)
 files.push(join(root, 'src/lib/mcp/server.ts'))
@@ -102,7 +104,7 @@ files.forEach((file) => {
 	// the cookbook, the canonical shell structures, the skill, the docs. A wrong
 	// class there is pasted into a real project. Schemas and server code get the
 	// phantom-API check above and nothing more.
-	const AUTHORS_MARKUP = /^(docs\/|skills\/|src\/lib\/styles\/canonical-markups\.md)/
+	const AUTHORS_MARKUP = /^(docs\/|skills\/|src\/lib\/components\/|src\/lib\/styles\/canonical-markups\.md)/
 	if (!AUTHORS_MARKUP.test(rel)) return
 
 	const body = src.split('<style')[0]
@@ -122,6 +124,114 @@ files.forEach((file) => {
 		}
 	}
 })
+
+// ── links, anchors and file references ─────────────────────────────────────
+// A broken cross-reference sat on line 6 of the first document through two
+// sweeps, because nothing here looked at links. Now it does.
+const LINK = /\[([^\]]*)\]\(([^)]+)\)/g
+// GitHub's slugger: lowercase, strip punctuation, then every remaining space
+// becomes a hyphen — runs are NOT collapsed, so "Rules & UI" -> "rules--ui".
+const slug = (h) =>
+	h
+		.toLowerCase()
+		.replace(/`/g, '')
+		.replace(/[^a-z0-9 -]/g, '')
+		.trim()
+		.replace(/ /g, '-')
+
+for (const file of files.filter((f) => f.endsWith('.md'))) {
+	const rel = file.replace(root + '/', '')
+	const dir = file.slice(0, file.lastIndexOf('/'))
+	const text = readFileSync(file, 'utf8')
+	const lines = text.split('\n')
+	const ownHeadings = new Set([...text.matchAll(/^#{1,6}\s+(.*)$/gm)].map((m) => slug(m[1])))
+
+	lines.forEach((line, i) => {
+		LINK.lastIndex = 0
+		let m
+		while ((m = LINK.exec(line))) {
+			const href = m[2]
+			if (/^(https?:|mailto:)/.test(href)) continue
+			const [path, frag] = href.split('#')
+			if (path) {
+				const target = join(dir, path)
+				if (!existsSync(target)) {
+					problems.push(`${rel}:${i + 1}  →  broken link: ${href}`)
+					continue
+				}
+				if (frag && target.endsWith('.md')) {
+					const heads = new Set(
+						[...readFileSync(target, 'utf8').matchAll(/^#{1,6}\s+(.*)$/gm)].map((h) => slug(h[1]))
+					)
+					if (!heads.has(frag)) problems.push(`${rel}:${i + 1}  →  broken anchor: ${href}`)
+				}
+			} else if (frag && !ownHeadings.has(frag)) {
+				problems.push(`${rel}:${i + 1}  →  broken anchor: #${frag}`)
+			}
+		}
+	})
+}
+
+// ── the child combinator ───────────────────────────────────────────────────
+// Opinion #1 in docs/01-introduction.md: styling syntax should avoid `> *` and
+// friends. The rule has been stated since the beginning and violated
+// continuously, because nothing checked it. Now something does.
+//
+// Exactly one exception, matched literally: the scroll-snap rail, where snap
+// targets must be the rail's own children or the rail catches in the wrong
+// places. A second exception should be a deliberate edit here, not a drift.
+const COMBINATOR_ALLOWED = new Set(['_04_layouts.sass:\t> *'])
+
+for (const file of readdirSync(join(root, 'src/lib/styles')).filter((f) => f.endsWith('.sass'))) {
+	const lines = readFileSync(join(root, 'src/lib/styles', file), 'utf8').split('\n')
+	lines.forEach((line, i) => {
+		const code = line.split('//')[0]
+		if (!code.includes('>')) return
+		// interpolations and media queries legitimately carry > inside #{...}
+		if (/#\{[^}]*>[^}]*\}/.test(code)) return
+		if (COMBINATOR_ALLOWED.has(`${file}:${code.replace(/\s+$/, '')}`)) return
+		problems.push(
+			`src/lib/styles/${file}:${i + 1}  →  child combinator \`>\` — opinion #1 forbids it: ${code.trim()}`
+		)
+	})
+}
+
+// ── stated counts vs reality ───────────────────────────────────────────────
+// "30 semantic tokens" was stated in nine places; there are 31 colour tokens.
+// Numbers in prose drift silently, so derive the truth and assert it.
+const tokensSrc = readFileSync(join(root, 'src/lib/styles/_00_tokens.sass'), 'utf8')
+const lightMixin = tokensSrc.split('=light-theme-tokens')[1].split('=dark-theme-tokens')[0]
+const colourCount = [...lightMixin.matchAll(/^\s+(--[\w-]+):/gm)].filter(
+	(m) => !m[1].startsWith('--shadow')
+).length
+const themeCount = [...compiled.matchAll(/\.(theme-[\w-]+)\s*\{/g)].length
+
+// Only phrases that mean the CONTRACT. "22 colour tokens" in the generated
+// reference is the per-theme count — a different, correct fact.
+const COUNTS = [
+	{ re: /(\d{1,3})\s+semantic\s+(?:CSS\s+custom\s+properties|tokens?)/gi, actual: colourCount, what: 'colour tokens' },
+	{ re: /(\d{1,3})[- ][Tt]oken [Cc]ontract/g, actual: colourCount, what: 'colour tokens' },
+	{ re: /[Tt]he (\d{1,3}) [Cc]olors?\b/g, actual: colourCount, what: 'colour tokens' },
+	{ re: /(\d{1,3})\s+(?:curated\s+|built-in\s+)?(?:palettes|themes)\b/gi, actual: themeCount, what: 'themes' }
+]
+for (const file of files.filter((f) => f.endsWith('.md') && !f.includes('/references/'))) {
+	const rel = file.replace(root + '/', '')
+	readFileSync(file, 'utf8')
+		.split('\n')
+		.forEach((line, i) => {
+			for (const { re, actual, what } of COUNTS) {
+				re.lastIndex = 0
+				let m
+				while ((m = re.exec(line))) {
+					if (Number(m[1]) !== actual) {
+						problems.push(
+							`${rel}:${i + 1}  →  says "${m[0].trim()}" but there are ${actual} ${what}`
+						)
+					}
+				}
+			}
+		})
+}
 
 // ── framing drift ──────────────────────────────────────────────────────────
 // The system ships as plain CSS AND as SASS. Surfaces that describe it as a

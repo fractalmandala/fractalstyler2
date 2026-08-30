@@ -7,15 +7,12 @@ summary: Reference guide for Level 5 dress fractals, including bare surfaces, te
 updated: 2026-08-30
 ---
 
-# Visuals & Interactions (L5)
+Level 5 (L5) fractals provide skin, typography, surfaces, and interactive behaviors. Components own their own hover states, borders, and transitions—avoiding disconnected `.hover` or `.transition` utility clutter.
 
-Level 5 (L5) fractals provide skin, typography, surfaces, and interactive behaviors. In Fractalstyler2, components own their own hover states, borders, and transitions—avoiding disconnected `.hover` or `.transition` utility clutter.
 
----
+## 1. Bare Surfaces & Text Color Roles
 
-## 1. Bare Surfaces & Ink Roles
-
-Surfaces and inks map directly to the 30 semantic tokens defined in `_00_tokens.sass`.
+Surfaces and text colors map directly to the 31 semantic tokens defined in `_00_tokens.sass`.
 
 ### Surface Backgrounds
 ```html
@@ -34,7 +31,7 @@ Surfaces and inks map directly to the 30 semantic tokens defined in `_00_tokens.
 | `.canvas` | `background: var(--bg-canvas)` | Graph/node canvas |
 | `.terminal` | `background: var(--bg-terminal)` | Code blocks, terminal views |
 
-### Text Inks & Status Colors
+### Text Colors
 ```html
 <h1 class="text-primary text-xl">High-contrast heading</h1>
 <p class="text-secondary text-sm">Standard readable body text.</p>
@@ -102,6 +99,7 @@ Fractalstyler2 includes semantic container compositions that inherit shape and l
 ```
 
 ### Toggle Switch (`.switch-track`, `.switch-thumb`)
+
 ```html
 <button
   type="button"
@@ -166,9 +164,4 @@ Show or hide elements based on viewport size:
 - `.hide-desktop`: Hidden at or above 768px.
 - `.only-mobile`: Visible exclusively on mobile viewports.
 
----
-
-## Next Steps
-
-- Explore [10-presets.md](./10-presets.md) to customize layout spacing, corner sharpness, color saturation, and motion physics.
-- Learn how to interact with the [11-mcp-server.md](./11-mcp-server.md).
+[Next - Presets](./10-presets.md)

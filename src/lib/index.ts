@@ -127,6 +127,16 @@ export {
 	type ThemeMeta,
 	type PresetAxis
 } from './presets.svelte.js';
+// Shell components — the canonical markups, executable. Optional convenience
+// over the class contract, never a replacement for it: a CSS consumer copying
+// canonical-markups.md by hand gets identical output.
+export { default as AppShell } from './components/AppShell.svelte';
+export { default as PageShell } from './components/PageShell.svelte';
+export { default as PageSplit } from './components/PageSplit.svelte';
+export { default as Hero } from './components/Hero.svelte';
+export { default as Accordion } from './components/Accordion.svelte';
+export { default as AccordionItem } from './components/AccordionItem.svelte';
+
 export { default as ShapePicker } from './components/ShapePicker.svelte';
 export { default as LayoutPicker } from './components/LayoutPicker.svelte';
 export { default as ColorPicker } from './components/ColorPicker.svelte';

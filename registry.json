@@ -1104,6 +1104,22 @@
     "example": "<div class=\"sidebar-right\">"
   },
   {
+    "class": ".sidebar-left",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .sidebar-right — see canonical-markups.md",
+    "example": "<div class=\"sidebar-left\">"
+  },
+  {
+    "class": ".sidebar-right",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .sidebar-right — see canonical-markups.md",
+    "example": "<div class=\"sidebar-right\">"
+  },
+  {
     "class": ".content-shell",
     "layer": "L4",
     "property": "",
@@ -1344,11 +1360,19 @@
     "example": "<div class=\"accordion-content\">"
   },
   {
+    "class": ".accordion-panel",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .accordion-item — see canonical-markups.md",
+    "example": "<div class=\"accordion-panel\">"
+  },
+  {
     "class": ".accordion-item.open",
     "layer": "L4",
     "property": "",
     "file": "_05_shells.sass",
-    "description": "> .accordion-content",
+    "description": ".accordion-content",
     "example": "<div class=\"accordion-item.open\">"
   },
   {
@@ -1494,6 +1518,38 @@
     "file": "_06_visuals.sass",
     "description": ".text-info component / container",
     "example": "<div class=\"text-info\">"
+  },
+  {
+    "class": ".bg-success",
+    "layer": "L5",
+    "property": "",
+    "file": "_06_visuals.sass",
+    "description": ".bg-success component / container",
+    "example": "<div class=\"bg-success\">"
+  },
+  {
+    "class": ".bg-warning",
+    "layer": "L5",
+    "property": "",
+    "file": "_06_visuals.sass",
+    "description": ".bg-warning component / container",
+    "example": "<div class=\"bg-warning\">"
+  },
+  {
+    "class": ".bg-danger",
+    "layer": "L5",
+    "property": "",
+    "file": "_06_visuals.sass",
+    "description": ".bg-danger component / container",
+    "example": "<div class=\"bg-danger\">"
+  },
+  {
+    "class": ".bg-info",
+    "layer": "L5",
+    "property": "",
+    "file": "_06_visuals.sass",
+    "description": ".bg-info component / container",
+    "example": "<div class=\"bg-info\">"
   },
   {
     "class": ".border",
@@ -1792,6 +1848,14 @@
     "example": "<div class=\"switch-track\">"
   },
   {
+    "class": ".switch-thumb",
+    "layer": "L5",
+    "property": "",
+    "file": "_06_visuals.sass",
+    "description": "Required child of .switch-track — see canonical-markups.md",
+    "example": "<div class=\"switch-thumb\">"
+  },
+  {
     "class": ".hide-mobile",
     "layer": "L5",
     "property": "",
@@ -1888,6 +1952,14 @@
     "example": "<div class=\"link-parent\">"
   },
   {
+    "class": ".link-plain",
+    "layer": "L5",
+    "property": "",
+    "file": "_07_interactions.sass",
+    "description": "Required child of .link-parent — see canonical-markups.md",
+    "example": "<div class=\"link-plain\">"
+  },
+  {
     "class": ".button",
     "layer": "L5",
     "property": "",
@@ -1926,29 +1998,5 @@
     "file": "_07_interactions.sass",
     "description": "Modifier for .button",
     "example": "<div class=\"button.is-icon\">"
-  },
-  {
-    "class": ".logomotif",
-    "layer": "Custom",
-    "property": "",
-    "file": "_08_own.sass",
-    "description": ".logomotif component / container",
-    "example": "<div class=\"logomotif\">"
-  },
-  {
-    "class": ".logotype",
-    "layer": "Custom",
-    "property": "",
-    "file": "_08_own.sass",
-    "description": ".logotype component / container",
-    "example": "<div class=\"logotype\">"
-  },
-  {
-    "class": ".header-nav",
-    "layer": "Custom",
-    "property": "",
-    "file": "_08_own.sass",
-    "description": ".header-nav component / container",
-    "example": "<div class=\"header-nav\">"
   }
 ]

@@ -28,7 +28,7 @@ the generators — the literal ladder and the responsive seam — before compili
 Tokens (L0) ──► Dimensions (L1) ──► Containers (L2) ──► Layouts (L3) ──► Shells (L4) ──► Visuals (L5)
 ```
 
-1. **Tokens (L0)**: 30 semantic color tokens, 41 themes, and fluid Utopia typography/space scales.
+1. **Tokens (L0)**: 31 semantic colour tokens, 41 themes, and fluid Utopia typography/space scales.
 2. **Dimensions (L1)**: 17 space families (`.gap-sm`, `.pad-md`, `.marg-xs`), negative margins (`.marg--sm`), literal pixel utilities (`.w-120`, `.radius-8`), and `-mob` / `-desk` bands.
 3. **Containers (L2)**: Flexible flow primitives (`.box`, `.row`, `.grid`) with strict physical X/Y axis alignment (`.xcenter`, `.ycenter`, `.xbetween`).
 4. **Layouts (L3)**: Gridding Golden Rules ($3\to1$, $4\to2\to1$, $6\to3\to2\to1$), `.card-grid`, reading measure `.prose`, and scroll-snap `.reel`.

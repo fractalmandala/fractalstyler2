@@ -74,6 +74,13 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 .radius-full
 	border-radius: var(--radius-full)
 
+// The radius CHANNELS as classes. Unlike the numeric ladder these follow
+// data-shape, so a card on .radius-md goes round -> curved -> pro -> sharp with
+// the preset. Reach for these first; the literals are for exact requirements.
+@each $step in ('sm' 'md' 'lg')
+	.radius-#{$step}
+		border-radius: var(--radius-#{$step})
+
 // Size
 @each $n in $literals
 	.w-#{$n}
@@ -134,6 +141,9 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 				border-radius: #{$n}px
 		.radius-full-#{$mode}
 			border-radius: var(--radius-full)
+		@each $step in ('sm' 'md' 'lg')
+			.radius-#{$step}-#{$mode}
+				border-radius: var(--radius-#{$step})
 		@each $n in $literals
 			.w-#{$n}-#{$mode}
 				width: #{$n}px

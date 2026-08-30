@@ -4,8 +4,6 @@ description: Master rules, styling constraints, ecosystem contracts, and guideli
 type: fractalstyler2
 ---
 
-# AGENTS
-
 > You cannot add ad-hoc CSS anywhere. Styles are added ONLY inside the system's designated files (`fractalstyler2` templates / the project's global SASS sections), always via fractal composition and existing tokens. No scoped `<style>` blocks anywhere, including components. 
 
 > All colors, spacing, radii, and shadows resolve from the shared 30-token vocabulary. Source of truth: `fractalstyler2` `_00_tokens.sass` for the contract, `_00_themes.sass` for the 41 palettes that fill it. Never invent token names, never use legacy aliases (`--theme`, `--theme-hover`), never hardcode a value a token covers.
@@ -75,10 +73,20 @@ of these before calling it done — the ones marked *generated* need only a
 | `package.json` / `plugin.json` | `description`, `keywords`, `exports` |
 | `src/lib/styles/canonical-markups.md` | Shell structures, if L4 moved |
 
-`pnpm check` runs `scripts/validate-deck.js`, which mechanically catches the
-two failure modes that have actually happened here: a class name that is not in
-the registry, and prose that teaches an API the system does not have. It cannot
-catch a stale sentence — that is what the table is for.
+`pnpm check` runs `scripts/validate-deck.js`, which walks `docs/` (recursively —
+`agents/` and `specs/` included), `skills/`, the components, and the MCP surface,
+asserting six things mechanically:
+
+1. **Class names** resolve against the *compiled stylesheet*, not `registry.json`.
+   The registry carries wildcard families, and matching on those stems accepted
+   `.radius-md` — a class that does not exist — everywhere it appeared.
+2. **Links** resolve, and **anchors** match a real heading (GitHub's slug rules).
+3. **Stated counts** match reality — token contract size, theme count.
+4. **No phantom API**: nothing teaches the mixins that never shipped.
+5. **No `>` combinators** in the stylesheet, one allowlisted exception.
+6. **Framing**: the system is never described as SASS-only.
+
+It still cannot catch a stale sentence — that is what the table is for.
 
 **Two framing rules that keep getting broken:**
 
@@ -88,6 +96,11 @@ catch a stale sentence — that is what the table is for.
    fallback. The validator asserts this for the four identity strings.
 2. **There are no authoring mixins.** `+stack`, `+surface`, `space()` and
    friends do not exist. If a surface teaches them, it is wrong.
+3. **No child combinators.** Opinion #1 in the introduction forbids `> *` and
+   its relatives; selectors are plain descendants, and anything that needs to
+   be targeted precisely gets a name instead. Exactly one exception exists —
+   the `.reel` snap rail — and it is allowlisted by literal match in
+   `scripts/validate-deck.js`. Reach for a name, not a combinator.
 - For any icons, use the installed package `fractalicons` or install it from [NPM](https://www.npmjs.com/package/fractalicons).
 - Do not use local reference file paths for package dependencies in production configuration; always use the NPM sources.
 

@@ -7,11 +7,8 @@ summary: Reference guide for Level 2 container fractals (.box, .row, .grid) and 
 updated: 2026-08-30
 ---
 
-# Containers & Flow (L2)
-
 Level 2 (L2) fractals provide structure and flow for web interfaces. In Fractalstyler2, 90% of layout composition relies on three core container primitives: `.box` (vertical flex column), `.row` (horizontal flex row), and `.grid` (CSS grid).
 
----
 
 ## 1. The Core Primitives
 
@@ -44,7 +41,7 @@ Level 2 (L2) fractals provide structure and flow for web interfaces. In Fractals
 
 ## 2. Physical Alignment Contract
 
-Alignment classes in Fractalstyler2 strictly adhere to **physical axes**, eliminating the mental overhead of switching between flexbox main-axis and cross-axis terms (`justify-content` vs `align-items`):
+Alignment classes strictly adhere to **physical axes**, eliminating the mental overhead of switching between flexbox main-axis and cross-axis terms (`justify-content` vs `align-items`):
 
 - **`x*` classes ALWAYS control the horizontal (X) axis.**
 - **`y*` classes ALWAYS control the vertical (Y) axis.**
@@ -109,9 +106,4 @@ Fractalstyler2 includes lightweight layout flow modifiers to control wrapping, e
 | `.fixed` | `position: fixed` | Positions element relative to viewport |
 | `.sticky` | `position: sticky` | Sticks element during scrolling |
 
----
-
-## Next Steps
-
-- Explore [07-layouts.md](./07-layouts.md) for responsive grid stepping rules and reading columns.
-- Review [08-shells-and-markups.md](./08-shells-and-markups.md) to compose complete application shells.
+[Next - Layouts](./07-layouts.md)

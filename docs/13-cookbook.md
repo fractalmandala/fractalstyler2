@@ -7,18 +7,11 @@ summary: Practical, copy-pasteable UI component recipes demonstrating how to bui
 updated: 2026-08-30
 ---
 
-# The Zero-SASS Cookbook & Recipe Gallery
-
-Before you write a single line of custom CSS in `_08_own.sass` or a component `<style>` block, **check this cookbook**. 
-
 99% of modern web and desktop interface patterns can be composed directly in HTML using Fractalstyler2's existing tokens, containers, layouts, and interaction classes.
-
----
 
 ## 1. Navigation & Workspace Controls
 
 ### Segmented Control (Mode Switcher)
-Replaces custom `.mode-segmented` / `.rc-segmented`:
 ```html
 <div class="row ycenter shrink-0 pad-2 raised border radius-sm">
   <button class="button ghost text-xs active">View</button>
@@ -28,7 +21,6 @@ Replaces custom `.mode-segmented` / `.rc-segmented`:
 ```
 
 ### Scrollable Tab Strip with Close Triggers
-Replaces custom `.tabbar` / `.tab`:
 ```html
 <div class="tab-list reel border-bottom">
   <div class="row ycenter gap-2xs pad-x-sm pad-y-2xs surface border-bottom tab-trigger active">
@@ -43,12 +35,11 @@ Replaces custom `.tabbar` / `.tab`:
 ```
 
 ### Search Input Bar with Icon & Reset Button
-Replaces custom `.search-bar` / `.search-input`:
 ```html
 <div class="row ycenter gap-xs pad-x-xs pad-y-3xs surface border radius-sm grow min0">
   <span class="text-muted text-xs">🔍</span>
-  <input class="grow min0 bg-transparent border-0 text-sm text-primary" type="search" placeholder="Search entries..." />
-  <kbd class="kbd text-3xs">⌘K</kbd>
+  <input class="input grow min0 text-sm" type="search" placeholder="Search entries..." />
+  <kbd class="kbd text-xs">⌘K</kbd>
 </div>
 ```
 
@@ -68,7 +59,6 @@ Replaces custom `.search-bar` / `.search-input`:
 ## 2. Telemetry, Analytics & Metrics
 
 ### Metric / KPI Tile
-Replaces custom `.metric-tile`:
 ```html
 <div class="card box ycenter xcenter gap-3xs pad-sm surface border">
   <span class="text-2xl weight-700 text-primary">1,429</span>
@@ -99,7 +89,6 @@ Replaces custom `.metric-tile`:
 ```
 
 ### Activity Feed / Timeline Row
-Replaces custom `.timeline-item`:
 ```html
 <div class="row ycenter gap-sm pad-xs border-bottom">
   <div class="square-24 center raised radius-full text-xs text-muted">●</div>
@@ -107,7 +96,7 @@ Replaces custom `.timeline-item`:
     <span class="text-sm weight-500 text-primary truncate">Merged pull request #142</span>
     <span class="text-xs text-muted">2 hours ago by @amrit</span>
   </div>
-  <span class="badge text-success text-3xs">Merged</span>
+  <span class="badge text-success text-xs">Merged</span>
 </div>
 ```
 
@@ -135,7 +124,6 @@ Replaces custom `.timeline-item`:
 ```
 
 ### Settings Row with Toggle Switch
-Replaces custom `.settings-row`:
 ```html
 <div class="row ycenter xbetween gap-md pad-y-sm border-bottom">
   <div class="box gap-3xs">
@@ -153,7 +141,6 @@ Replaces custom `.settings-row`:
 ## 4. Modals, Dialogs & Overlays
 
 ### Standard Action Dialog with Header & Footer
-Replaces custom `.dialog-card` / `.dialog-header`:
 ```html
 <dialog class="dialog pad-0 surface border radius-md">
   <!-- Header Bar -->
@@ -178,7 +165,6 @@ Replaces custom `.dialog-card` / `.dialog-header`:
 ```
 
 ### Dropdown Action Menu
-Replaces custom `.dropdown` / `.dropdown-item`:
 ```html
 <div class="relative">
   <button class="button ghost">Actions ▾</button>
@@ -237,3 +223,4 @@ When about to create a new class in `_08_own.sass`:
 - [ ] **Can `.button`, `.badge`, `.input`, or `.select` handle the interactive state?**
 
 If the answer to all of the above is **YES**, compose it in markup. Keep your codebase clean and your stylesheets small!
+

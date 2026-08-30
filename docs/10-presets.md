@@ -7,15 +7,9 @@ summary: Reference guide for Fractalstyler2's four preset tuning axes (Layout, S
 updated: 2026-08-30
 ---
 
-# Presets & Runtime Tuning
-
 Fractalstyler2 includes a runtime tuning engine governing four fundamental aesthetic axes: **Layout Density**, **Shape Sharpness**, **Color Saturation**, and **Motion Physics**. 
 
 Presets allow users and applications to adjust character (such as switching from a soft rounded interface to a sharp professional IDE aesthetic) without breaking token contracts.
-
----
-
-## 1. The Four Preset Axes
 
 Presets are applied as data attributes on the `<html>` root element (`data-layout`, `data-shape`, `data-color`, `data-motion`). When an axis is set to its default value, the attribute is removed to keep the DOM clean.
 
@@ -24,7 +18,7 @@ Presets are applied as data attributes on the `<html>` root element (`data-layou
 <html data-shape="pro" data-layout="tight">
 ```
 
-### 1. Layout Axis (`data-layout`)
+## 1. Layout Axis (`data-layout`)
 Controls spacing multipliers across gap, padding, and layout measures:
 
 | Value | Multiplier Description | Best Used For |
@@ -33,7 +27,7 @@ Controls spacing multipliers across gap, padding, and layout measures:
 | `comfortable` | `--gap-scale: 1.0`, `--pad-scale: 1.0` *(Default)* | Standard web apps, documentation, dashboards |
 | `sprawling` | `--gap-scale: 1.35`, `--pad-scale: 1.35` | Marketing hero pages, luxury portfolios, reading layouts |
 
-### 2. Shape Axis (`data-shape`)
+## 2. Shape Axis (`data-shape`)
 Controls border-radius channels across cards, buttons, badges, and modals:
 
 | Value | Radius Scale | Character |
@@ -43,7 +37,7 @@ Controls border-radius channels across cards, buttons, badges, and modals:
 | `pro` | Compact 2px–3px radius | Technical developer tools, telemetry interfaces |
 | `sharp` | Strict 0px radius (`--radius-*: 0px`) | Architectural, terminal-inspired, minimal zero-radius UIs |
 
-### 3. Color Axis (`data-color`)
+## 3. Color Axis (`data-color`)
 Tunes background contrasts, surface elevations, and border prominence:
 
 | Value | Contrast Behavior |
@@ -52,7 +46,7 @@ Tunes background contrasts, surface elevations, and border prominence:
 | `general` | Balanced surface elevation and standard 1px hairline borders *(Default)* |
 | `vibrant` | High-contrast cards, deep panel backgrounds, and saturated brand accents |
 
-### 4. Motion Axis (`data-motion`)
+## 4. Motion Axis (`data-motion`)
 Controls transition durations and spring easing curves:
 
 | Value | Transition Behavior |
@@ -62,11 +56,10 @@ Controls transition durations and spring easing curves:
 | `active` | Crisp 150ms transitions for responsive feedback *(Default)* |
 | `springy` | Bouncy spring curve (`cubic-bezier(0.34, 1.56, 0.64, 1)`) |
 
----
 
-## 2. Svelte 5 Runtime API
+## Svelte 5 Runtime API
 
-Fractalstyler2 exports reactive state and helpers from `fractalstyler2`:
+Fractalstyler2 exports reactive state and helpers:
 
 ```ts
 import {
@@ -101,11 +94,7 @@ setPreset('shape', 'sharp');
 setPreset('layout', 'tight');
 ```
 
----
-
-## 3. Zero-Flicker Inline Head Script
-
-To prevent Flash of Unstyled Content (FOUC) before client-side hydration, inject `getPresetScript()` into your HTML `<head>`:
+> To prevent Flash of Unstyled Content (FOUC) before client-side hydration, inject `getPresetScript()` into your HTML `<head>`:
 
 ```svelte
 <!-- src/routes/+layout.svelte or src/app.html -->
@@ -118,7 +107,7 @@ The script runs synchronously before first paint, reading `localStorage` and sta
 
 ---
 
-## 4. UI Picker Components
+## UI Picker Components
 
 Fractalstyler2 ships four ready-to-use Svelte 5 picker components:
 
@@ -155,9 +144,4 @@ Fractalstyler2 ships four ready-to-use Svelte 5 picker components:
 </div>
 ```
 
----
-
-## Next Steps
-
-- Learn how coding agents query tokens and compile styles in [11-mcp-server.md](./11-mcp-server.md).
-- Review agent skills and workflows in [12-agent-plugin.md](./12-agent-plugin.md).
+[Next - MCP](./11-mcp-server.md)

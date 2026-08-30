@@ -7,11 +7,7 @@ summary: Reference guide for the Fractalstyler2 Model Context Protocol server, c
 updated: 2026-08-30
 ---
 
-# Model Context Protocol (MCP) Server
-
-Fractalstyler2 includes a high-performance **Model Context Protocol (MCP)** server (`fractalstyler2-mcp`). The MCP server equips AI coding agents (such as Claude Code, Codex, Gemini Antigravity, and OpenCode) to query the class registry and design tokens, snap raw pixel designs to token scales, translate inspected CSS into composed markup, and catch invented class names before they land.
-
----
+Fractalstyler2 includes a high-performance MCP server (`fractalstyler2-mcp`). The MCP server equips AI coding agents (such as Claude Code, Codex, Gemini Antigravity, and OpenCode) to query the class registry and design tokens, snap raw pixel designs to token scales, translate inspected CSS into composed markup, and catch invented class names before they land.
 
 ## 1. Available MCP Tools
 
@@ -64,6 +60,7 @@ declaration the registry does not cover:
   "css": "display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 8px; background-color: #141824;"
 }
 ```
+
 **Output**:
 
 ```
@@ -163,9 +160,4 @@ Add to `~/.config/opencode/opencode.json`:
 }
 ```
 
----
-
-## Next Steps
-
-- Learn about agent integration and skills in [12-agent-plugin.md](./12-agent-plugin.md).
-- Review [08-shells-and-markups.md](./08-shells-and-markups.md) for canonical HTML structures.
+[Next - Agents](./12-agent-plugin.md)

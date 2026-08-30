@@ -19,7 +19,7 @@ Each entry is a **command**: a reusable prompt directing an AI coding agent to p
 
 | Command | Use when the user wants to… | Primary Documentation |
 |:---|:---|:---|
-| [`fs2:init`](#fs2init) | Scaffold SASS design system into a project | [02. Getting Started](../02-getting-started.md) |
+| [`fs2:init`](#fs2init) | Scaffold the system into a project — CSS or SASS | [02. Getting Started](../02-getting-started.md) |
 | [`fs2:page`](#fs2page) | Build a whole page, route, or marketing shell | [08. Shells & Canonical Markups](../08-shells-and-markups.md) |
 | [`fs2:component`](#fs2component) | Build a reusable component block with Svelte 5 runes | [06. Containers](../06-containers.md), [09. Visuals](../09-visuals-and-interactions.md) |
 | [`fs2:layout`](#fs2layout) | Build a responsive page-layout template or grid | [07. Layouts & Grids](../07-layouts.md) |
@@ -33,7 +33,7 @@ Each entry is a **command**: a reusable prompt directing an AI coding agent to p
 
 Applied to every command:
 
-1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 30-token contract in `_00_tokens.sass`.
+1. **Strict 31-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 31-token contract in `_00_tokens.sass`.
 2. **Never hardcode values that tokens cover**: Route through token-scale classes (`.gap-sm`, `.pad-md`, `.radius-8`, `.surface`, `.text-primary`). Exact pixel literals (`.gap-12`, `.pad-16`) are the sanctioned opt-out.
 3. **Physical Alignment Law**: Always use `.xleft`/`.xcenter`/`.xright` for horizontal alignment and `.ytop`/`.ycenter`/`.ybot` for vertical alignment.
 4. **Reading Column Max Columns Law**: Any grid placed inside a reading column (`.prose`, `.content-shell`, or container $\le 760\text{px}$) must **never exceed 2 columns** (`.grid-2` or `.card-grid`). 3, 4, and 6-column grids are strictly reserved for full-width views.
@@ -46,13 +46,20 @@ Applied to every command:
 
 ## fs2:init
 
-> **Goal:** Scaffold the complete editable SASS design system into the user's project.
+> **Goal:** Scaffold the system into the user's project.
 >
 > **Procedure:**
-> 1. Run `npx fractalstyler2 init [dest]` (default destination: `src/lib/styles`).
-> 2. Ensure `sass` is installed in `devDependencies` (`pnpm add -D sass`).
-> 3. Verify `import '$lib/styles/index.sass'` in `src/routes/+layout.svelte`.
-> 4. Verify that the preprocessor is enabled in `vite.config.ts`.
+> 1. Establish which flavour the project wants. **Ask if it is not obvious, and
+>    do not assume a SASS toolchain** — most projects want the compiled CSS.
+> 2. **CSS (the default):** run `npx fractalstyler2 init --css [dest]` (default
+>    destination `src/styles`). Link `fractalstyler.css`, or import it if there
+>    is a bundler. Nothing else is required — no preprocessor, no config.
+> 3. **SASS (only if they want to retune the generators):** run
+>    `npx fractalstyler2 init [dest]` (default `src/lib/styles`), ensure `sass`
+>    is in `devDependencies`, import `index.sass` once globally, and verify the
+>    preprocessor is enabled.
+> 4. Either way, point the user at the scaffolded `canonical-markups.md` before
+>    they build any shell.
 
 ---
 
@@ -64,7 +71,8 @@ Applied to every command:
 > 1. Select a layout shell: `.app-shell` (desktop/web app), `.page-split` (master-detail with sidebar), or `.page-shell` (standard content page).
 > 2. Structure content sections with layout fractals — `.grid-4`/`.grid-3` for full-width dashboards, `.grid-2`/`.card-grid` for reading views, `.hero` for leads.
 > 3. Populate with canonical components (`.card`, `.field`, `.button`, `.badge`, `.select`).
-> 4. Keep markup semantic and clean; use utility classes for layout flow and one-off spacing.
+> 4. Compose in markup. Do not invent class names, and do not tidy a composed
+>    class string into a semantic one — that string is the finished state.
 
 ---
 
@@ -119,7 +127,7 @@ Applied to every command:
 > **Goal:** Audit code for fractal-idiom compliance and UI invariants.
 >
 > **Checklist:**
-> - [ ] **30-Token Contract**: Zero references to foreign tokens (`--card`, `--primary`, `--border-strong`).
+> - [ ] **31-Token Contract**: Zero references to foreign tokens (`--card`, `--primary`, `--border-strong`).
 > - [ ] **Reading Column Law**: No 3 or 4-column grids inside `.prose` or reading views ($\le 760\text{px}$).
 > - [ ] **Partition Breathing Room**: Every `border-top` divider has reciprocal `padding-top: var(--space-xs)` / `var(--space-sm)`.
 > - [ ] **Card Containment**: Action rows and tag clusters inside cards use `.row.wrap`. Fixed controls have `.shrink-0`.

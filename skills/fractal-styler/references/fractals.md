@@ -1,7 +1,7 @@
 # Fractalstyler2 — Class Reference
 
 GENERATED FILE — do not edit. Emitted by `scripts/update-registry.js` from the
-parsed stylesheet. 244 classes across 89 tokens.
+parsed stylesheet. 250 classes across 89 tokens.
 
 **The classes below are the entire public API.** The system defines no
 authoring mixins and no SASS functions — `+stack`, `+surface`, `space()` and
@@ -195,6 +195,8 @@ Page and application scaffolding. Each shell class is paired with a canonical ma
 | `.sidebar-right` | .sidebar-right component / container | `_05_shells.sass` |
 | `.sidebar-left` | .sidebar-left component / container | `_05_shells.sass` |
 | `.sidebar-right` | .sidebar-right component / container | `_05_shells.sass` |
+| `.sidebar-left` | Required child of .sidebar-right — see canonical-markups.md | `_05_shells.sass` |
+| `.sidebar-right` | Required child of .sidebar-right — see canonical-markups.md | `_05_shells.sass` |
 | `.content-shell` | .content-shell component / container | `_05_shells.sass` |
 | `.app-footer` | .app-footer component / container | `_05_shells.sass` |
 | `.mobile-toc` | .mobile-toc component / container | `_05_shells.sass` |
@@ -225,7 +227,8 @@ Page and application scaffolding. Each shell class is paired with a canonical ma
 | `.accordion` | .accordion component / container | `_05_shells.sass` |
 | `.accordion-item` | .accordion-item component / container | `_05_shells.sass` |
 | `.accordion-content` | Required child of .accordion-item — see canonical-markups.md | `_05_shells.sass` |
-| `.accordion-item.open` | > .accordion-content | `_05_shells.sass` |
+| `.accordion-panel` | Required child of .accordion-item — see canonical-markups.md | `_05_shells.sass` |
+| `.accordion-item.open` | .accordion-content | `_05_shells.sass` |
 | `.accordion-trigger` | .accordion-trigger component / container | `_05_shells.sass` |
 | `.hero` | .hero component / container | `_05_shells.sass` |
 
@@ -253,6 +256,10 @@ Surfaces, ink, borders, type, controls. The outermost layer.
 | `.text-warning` | .text-warning component / container | `_06_visuals.sass` |
 | `.text-danger` | .text-danger component / container | `_06_visuals.sass` |
 | `.text-info` | .text-info component / container | `_06_visuals.sass` |
+| `.bg-success` | .bg-success component / container | `_06_visuals.sass` |
+| `.bg-warning` | .bg-warning component / container | `_06_visuals.sass` |
+| `.bg-danger` | .bg-danger component / container | `_06_visuals.sass` |
+| `.bg-info` | .bg-info component / container | `_06_visuals.sass` |
 | `.border` | .border component / container | `_06_visuals.sass` |
 | `.border-subtle` | .border-subtle component / container | `_06_visuals.sass` |
 | `.border-top` | .border-top component / container | `_06_visuals.sass` |
@@ -290,6 +297,7 @@ Surfaces, ink, borders, type, controls. The outermost layer.
 | `.switch-thumb` | .switch-thumb component / container | `_06_visuals.sass` |
 | `.switch-track` | [aria-checked='true'], | `_06_visuals.sass` |
 | `.switch-track` | .checked | `_06_visuals.sass` |
+| `.switch-thumb` | Required child of .switch-track — see canonical-markups.md | `_06_visuals.sass` |
 | `.hide-mobile` | .hide-mobile component / container | `_06_visuals.sass` |
 | `.hide-desktop` | .hide-desktop component / container | `_06_visuals.sass` |
 | `.only-mobile` | .only-mobile component / container | `_06_visuals.sass` |
@@ -302,6 +310,7 @@ Surfaces, ink, borders, type, controls. The outermost layer.
 | `.link` | .link component / container | `_07_interactions.sass` |
 | `.link-plain` | .link-plain component / container | `_07_interactions.sass` |
 | `.link-parent` | .link-parent component / container | `_07_interactions.sass` |
+| `.link-plain` | Required child of .link-parent — see canonical-markups.md | `_07_interactions.sass` |
 | `.button` | .button component / container | `_07_interactions.sass` |
 | `.button.primary` | Modifier for .button | `_07_interactions.sass` |
 | `.button.ghost` | Modifier for .button | `_07_interactions.sass` |

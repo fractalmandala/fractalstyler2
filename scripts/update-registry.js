@@ -145,12 +145,15 @@ function extractStylesData() {
 					addEntry(subClass, layer, '', file, desc || `Modifier for ${currentParent}`);
 				}
 			}
-			// Nested CHILD: > .foo — its own class, required by the parent's
-			// markup. These were never indexed, so .page-main, .page-sidebar and
-			// .accordion-content existed and worked but were absent from the
-			// registry an agent greps.
-			else if (/^\s+(&\.[a-zA-Z0-9_-]+\s+)?>\s*\.[a-zA-Z0-9_-]+/.test(line)) {
-				const match = line.match(/>\s*(\.[a-zA-Z0-9_-]+)/);
+			// Nested CHILD: an indented `.foo` under a parent — its own class,
+			// required by the parent's markup. These were never indexed, so
+			// .page-main, .page-sidebar and .accordion-content existed and
+			// worked but were absent from the registry an agent greps.
+			// (The `>` form is gone from the system; the pattern is kept so a
+			// reintroduced combinator still yields a registry entry rather than
+			// a silent gap.)
+			else if (/^\s+(&\.[a-zA-Z0-9_-]+\s+)?(>\s*)?\.[a-zA-Z0-9_-]+\s*$/.test(line)) {
+				const match = line.match(/(?:>\s*)?(\.[a-zA-Z0-9_-]+)\s*$/);
 				if (match && currentParent && !seenClasses.has(match[1])) {
 					seenClasses.add(match[1]);
 					addEntry(

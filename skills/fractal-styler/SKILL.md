@@ -62,7 +62,7 @@ Each layer is built from the one below it. Naming follows all the way down.
 
 | Layer | What it is | Reach for |
 |:---|:---|:---|
-| **L0** Tokens | Fluid scales and 30 colour roles | `--space-md`, `--text-lg`, `--bg-surface` |
+| **L0** Tokens | Fluid scales and 31 colour roles | `--space-md`, `--text-lg`, `--bg-surface` |
 | **L1** Dimensions | Space, size, radius | `.gap-sm`, `.pad-x-md`, `.marg--xs`, `.w-240`, `.min0` |
 | **L2** Containers | Flow and alignment | `.box`, `.row`, `.grid`, `.xcenter`, `.ycenter`, `.grow` |
 | **L3** Layouts | Grids, measures, frames | `.grid-3`, `.card-grid`, `.prose`, `.frame-16-9`, `.reel` |

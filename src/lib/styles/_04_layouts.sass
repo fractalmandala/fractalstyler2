@@ -59,12 +59,16 @@ $lg: map.get($breakpoints, lg)
 	max-width: min(100%, 760px)
 	margin-inline: auto
 	line-height: 1.65
-	> * + *
-		margin-top: calc(var(--space-sm) * var(--gap-scale, 1))
+	// Rhythm comes from gap, not from adjacent-sibling margins: one rule
+	// instead of a combinator, and it cannot leak into nested content.
+	display: flex
+	flex-direction: column
+	gap: calc(var(--space-sm) * var(--gap-scale, 1))
 	h1, h2, h3, h4
 		line-height: 1.25
 		font-weight: 600
-		margin-top: calc(var(--space-md) * var(--gap-scale, 1))
+		// Extra breathing above a heading, on top of the gap.
+		margin-top: calc(var(--space-2xs) * var(--gap-scale, 1))
 		&:first-child
 			margin-top: 0
 
@@ -75,10 +79,9 @@ $frame-ratios: ('16-9': '16 / 9', '9-16': '9 / 16', '4-3': '4 / 3', '3-4': '3 / 
 		aspect-ratio: #{$ratio}
 		overflow: hidden
 		position: relative
-		> *
+		img, video, iframe
 			width: 100%
 			height: 100%
-		> :is(img, video, iframe)
 			object-fit: cover
 
 // Reel — the human-driven scroll-snap rail (filmstrip). Open for carousel duty.
@@ -88,6 +91,10 @@ $frame-ratios: ('16-9': '16 / 9', '9-16': '9 / 16', '4-3': '4 / 3', '3-4': '3 / 
 	overflow-x: auto
 	overscroll-behavior-inline: contain
 	scroll-snap-type: inline mandatory
+	// The system's one permitted `>`. Snap targets must be the rail's own
+	// children: a descendant selector would make nested elements snap too and
+	// the rail would catch in the wrong places. Kept deliberately — see the
+	// combinator guard in scripts/validate-deck.js.
 	> *
 		flex: 0 0 auto
 		scroll-snap-align: start

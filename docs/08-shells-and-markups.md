@@ -7,11 +7,7 @@ summary: Reference guide for Level 4 shell fractals, canonical application marku
 updated: 2026-08-30
 ---
 
-# Shells & Canonical Markups (L4)
-
 Level 4 (L4) fractals provide complete page and application scaffolding. In Fractalstyler2, an L4 class without a canonical markup is considered an incomplete definition: every shell class is paired with an authored, semantic HTML markup structure.
-
----
 
 ## 1. The Canonical App Shell
 
@@ -47,7 +43,7 @@ The canonical application shell establishes the viewport frame, sticky chrome, a
 
   <!-- Fixed Bottom Footer -->
   <footer class="app-footer row ycenter xbetween text-xs text-muted">
-    <span>© 2026 Fractalstyler</span>
+    <span>© 2026 Fractalstyler2</span>
     <span>v2.0.0</span>
   </footer>
 </div>
@@ -68,7 +64,7 @@ The canonical application shell establishes the viewport frame, sticky chrome, a
 
 ## 2. Canonical Docs & Navigation (Role-Bound Rails)
 
-Under Fractalstyler2's Amendment A1, docs layouts are role-bound to `.sidebar-left` and `.sidebar-right` without requiring a separate `.docs` layout wrapper:
+Docs layouts are role-bound to `.sidebar-left` and `.sidebar-right`:
 
 ```html
 <div class="app-shell">
@@ -208,7 +204,7 @@ Fractalstyler2 includes native classes for drawers, modals, popovers, and accord
       <span class="text-xs">▾</span>
     </button>
     <div class="accordion-content">
-      <div class="box pad-xs">
+      <div class="accordion-panel box pad-xs">
         <p class="text-sm text-secondary">Collapsible content goes here.</p>
       </div>
     </div>
@@ -236,9 +232,4 @@ The `.hero` class is documented sugar for a centered, spacious landing section (
 </section>
 ```
 
----
-
-## Next Steps
-
-- Review [09-visuals-and-interactions.md](./09-visuals-and-interactions.md) for surface tokens, buttons, and form inputs.
-- Learn how to configure runtime presets in [10-presets.md](./10-presets.md).
+[Next - Visuals, Interactions](./09-visuals-and-interactions.md)

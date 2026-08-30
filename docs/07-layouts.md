@@ -7,11 +7,7 @@ summary: Reference guide for Level 3 layout fractals, gridding golden rules, car
 updated: 2026-08-30
 ---
 
-# Layouts & Grids (L3)
-
 Level 3 (L3) fractals govern responsive grid layouts, reading columns, media aspect-ratio frames, and scroll-snap rails. All grids in Fractalstyler2 enforce mathematical harmony and self-sufficiency: grids provide stepping only and carry no hardcoded default gap—compose spacing using `.gap-*`.
-
----
 
 ## 1. Gridding Golden Rules
 
@@ -130,9 +126,4 @@ The `.reel` class provides a human-driven, smooth horizontal scroll rail with na
 - Inertial containment: `overscroll-behavior-inline: contain`.
 - Snap alignment: `scroll-snap-align: start` on every direct child.
 
----
-
-## Next Steps
-
-- Explore [08-shells-and-markups.md](./08-shells-and-markups.md) to compose full application shells, sidebars, and overlays.
-- Review [09-visuals-and-interactions.md](./09-visuals-and-interactions.md) for surface colors, buttons, and form controls.
+[Next - Shells and Markups](./08-shells-and-markups.md)

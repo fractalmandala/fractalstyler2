@@ -2,12 +2,11 @@
 id: readme
 title: Fractalstyler2 Documentation
 type: design
-tags: [documentation, index, fractalstyler2, design-system, tokens, sveltekit]
+tags: [documentation, index, fractalstyler, design-system, tokens, sveltekit]
 summary: Master index of all Fractalstyler2 documentation chapters, covering philosophy, tokens, dimensions, containers, layouts, shells, presets, and MCP agent tooling.
 updated: 2026-08-30
 ---
 
-# Fractalstyler2 Documentation
 
 Welcome to the **Fractalstyler2** design system documentation. Every style unit in this system is a modular fractal: unitary tokens, dimensions, and container classes that compose into higher layers while retaining mathematical harmony and responsiveness.
 
@@ -26,7 +25,7 @@ Available three ways, all from one source:
 | **01** | [Introduction](01-introduction.md) | The fractal mental model ($L0 \to L5$), philosophy, and design principles. |
 | **02** | [Getting Started](02-getting-started.md) | Installation (CSS or SASS), SvelteKit configuration, themes and preset runtime. |
 | **03** | [Structure & Hierarchy](03-structure.md) | Directory anatomy, the canonical numbered physical scale, and cascade order. |
-| **04** | [Tokens & Theming](04-tokens.md) | The 30 semantic colors, fluid Utopia type and space scales, and dark/light modes. |
+| **04** | [Tokens & Theming](04-tokens.md) | The 31 semantic colors, fluid Utopia type and space scales, and dark/light modes. |
 | **05** | [Dimensions & Spacing](05-dimensions.md) | Level 1 space families (gaps, pads, margins), literal pixel utilities, and `-mob`/`-desk` bands. |
 | **06** | [Containers & Flow](06-containers.md) | Level 2 `.box`, `.row`, and `.grid` primitives with strict physical X/Y axis alignment. |
 | **07** | [Layouts & Grids](07-layouts.md) | Level 3 gridding golden rules ($3\to1, 4\to2\to1, 6\to3\to2\to1$), `.card-grid`, `.prose`, frames, and reels. |
@@ -43,7 +42,7 @@ Available three ways, all from one source:
 
 > **Tokens (L0)** $\rightarrow$ **Dimensions (L1)** $\rightarrow$ **Containers (L2)** $\rightarrow$ **Layouts (L3)** $\rightarrow$ **Shells (L4)** $\rightarrow$ **Visuals & Interactions (L5)**
 
-1. **Tokens (L0)** define fluid scales (`--space-sm`, `--text-lg`) and 30 semantic colors (`--bg-surface`, `--text-primary`, `--theme-color`).
+1. **Tokens (L0)** define fluid scales (`--space-sm`, `--text-lg`) and 31 semantic colors (`--bg-surface`, `--text-primary`, `--theme-color`).
 2. **Dimensions (L1)** spread out space with 17 role-split families (`.gap-sm`, `.pad-md`, `.marg-xs`, `.radius-8`).
 3. **Containers (L2)** establish flow with `.box`, `.row`, `.grid` and physical alignment (`.xcenter`, `.ycenter`, `.xbetween`).
 4. **Layouts (L3)** enforce harmonious reflow with `.grid-1` through `.grid-6`, `.card-grid`, and `.prose`.

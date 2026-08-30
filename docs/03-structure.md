@@ -8,7 +8,7 @@ Everything below describes the SASS source. If you took the CSS path
 from exactly these partials — and this chapter is background rather than
 instruction.
 
-All stylesheets in `fractalstyler2` live inside a single, unified directory (`src/lib/styles/`). Files are numbered sequentially from token fractals up to layouts and visuals.
+All stylesheets in live inside a single, unified directory (`src/lib/styles/`). Files are numbered sequentially from token fractals up to layouts and visuals.
 
 ```
 src/lib/styles/
@@ -38,7 +38,7 @@ A theme beats the light/dark default; a preset tunes whatever theme is active.
 Reversing the last two would let a chosen theme silently cancel the colour axis,
 since both write the same three surface tokens.
 
-> Remember, at all layers Fractalstyler sets consistent, modular styling and gives you guidelines for usage. But it is never restrictive. You can eschew `space-xs` and use `gap-2` and `gap-20` if you like. Nothing stops you. And if you find good layouts, consistent component fits - send `em back to us! They can join the fractals.
+> Remember, at all layers Fractalstyler2 sets consistent, modular styling and gives you guidelines for usage. But it is never restrictive. You can eschew `space-xs` and use `gap-2` and `gap-20` if you like. Nothing stops you. And if you find good layouts, consistent component fits - send `em back to us! They can join the fractals. Also remember - best not to tell your agents working with this system that they have such freedom! Agents working in a styling system need tight rules.
 
 ## Registry
 

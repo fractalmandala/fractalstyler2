@@ -67,7 +67,7 @@ $xl: map.get($breakpoints, xl)
 	width: var(--toc-width)
 
 @media (max-width: #{$lg - 1})
-	.app-shell.open > .app-main > .sidebar-left
+	.app-shell.open .sidebar-left
 		display: block
 		position: fixed
 		left: 0
@@ -239,14 +239,14 @@ $xl: map.get($breakpoints, xl)
 .page-split
 	display: grid
 	grid-template-columns: minmax(0, 1fr)
-	> .page-main
+	.page-main
 		min-width: 0
 		padding: var(--page-gutter)
-	> .page-sidebar
+	.page-sidebar
 		display: none
 	@media #{string.unquote('(min-width: #{$md})')}
 		grid-template-columns: var(--sidebar-width) minmax(0, 1fr)
-		> .page-sidebar
+		.page-sidebar
 			display: block
 			position: sticky
 			top: var(--header-height)
@@ -328,15 +328,18 @@ $xl: map.get($breakpoints, xl)
 	border: 1px solid var(--border)
 	border-radius: var(--radius-md)
 	background: var(--bg-surface)
-	> .accordion-content
+	.accordion-content
 		display: grid
 		grid-template-rows: 0fr
 		padding: 0
 		transition: grid-template-rows var(--motion-base) var(--ease-out)
-		> *
-			overflow: hidden
-			min-height: 0
-	&.open > .accordion-content
+	// The panel is what collapses. It needs min-height: 0 so the grid row can
+	// size it, and overflow: hidden so the content clips while closed — which
+	// is why it carries a name rather than being reached at by position.
+	.accordion-panel
+		overflow: hidden
+		min-height: 0
+	&.open .accordion-content
 		grid-template-rows: 1fr
 		padding: calc(var(--space-xs) * var(--pad-scale, 1))
 

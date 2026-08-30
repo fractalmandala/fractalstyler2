@@ -7,18 +7,11 @@ summary: Reference guide for Level 1 dimension fractals, covering the 17 space f
 updated: 2026-08-30
 ---
 
-# Dimensions & Spacing (L1)
-
 Level 1 (L1) fractals translate Level 0 design tokens into physical dimensions. All spacing, sizing, radius, and margin utilities are loop-generated from `_02_dimensions.sass` across three distinct viewport bands: base, mobile (`-mob`), and desktop (`-desk`).
 
----
+1. Fractalstyler2 divides spacing into 17 role-split families across three primary categories: gaps, paddings, and margins.
 
-## 1. Space Families
-
-Fractalstyler2 divides spacing into 17 role-split families across three primary categories: gaps, paddings, and margins.
-
-### Gap Families
-Gaps separate child elements inside flexboxes and grids. Token steps scale with the `--gap-scale` preset multiplier:
+2. Gaps separate child elements inside flexboxes and grids. Token steps scale with the `--gap-scale` preset multiplier:
 
 | Class Pattern | CSS Property | What It Applies |
 |:---|:---|:---|
@@ -27,6 +20,7 @@ Gaps separate child elements inside flexboxes and grids. Token steps scale with 
 | `.cgap-#{$step}` | `column-gap` | `calc(var(--space-#{$step}) * var(--gap-scale, 1))` |
 
 ### Padding Families
+
 Paddings control container breathing room. Token steps scale with the `--pad-scale` preset multiplier:
 
 | Class Pattern | CSS Property | What It Applies |
@@ -40,6 +34,7 @@ Paddings control container breathing room. Token steps scale with the `--pad-sca
 | `.pad-left-#{$step}` | `padding-left` | `calc(var(--space-#{$step}) * var(--pad-scale, 1))` |
 
 ### Margin Families & Negatives
+
 Margins handle element offsets and external spacing. Negative margins use the `--` infix notation:
 
 | Class Pattern | CSS Property | What It Applies |
@@ -62,14 +57,14 @@ Available fluid token steps: `3xs`, `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, 
 When an interface requires an exact, non-fluid pixel dimension (for example, a 16px icon box or a 1px hairline border), literal utilities emit exact pixel values from a discrete ladder:
 
 ```
-0, 1, 2, 4, 6, 8, 12, then every multiple of 8
+0, 1, 2, 4, 6, 8, 12, then every multiple of 8*
 ```
 
 Fine at the bottom, where interfaces genuinely need 1px and 2px precision;
-coarse above, because nothing is served by `.gap-137`.
+coarse above.
 
-The ladder stops at different heights per family, because the families are not
-alike:
+*512 is the ceiling for sizing. Spacing and radius stop earlier, because the
+families are not alike:
 
 | Families | Ceiling | Why |
 |:---|:---|:---|
@@ -138,9 +133,4 @@ Every dimension, spacing, padding, margin, radius, and sizing utility is automat
 </div>
 ```
 
----
-
-## Next Steps
-
-- Explore [06-containers.md](./06-containers.md) to compose flexbox and grid containers.
-- Review [07-layouts.md](./07-layouts.md) for responsive grid stepping rules.
+[Next - Containers](./06-containers.md)

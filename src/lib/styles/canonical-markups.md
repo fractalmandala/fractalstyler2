@@ -52,7 +52,7 @@ One markup — the shell is role-bound (Amendment A1): `.sidebar-left` is the na
 					<div class="accordion-item open">
 						<button class="accordion-trigger" aria-expanded="true">Section title</button>
 						<div class="accordion-content">
-							<div class="box">
+							<div class="accordion-panel box">
 								<a class="navtree-link active" href="…"></a>
 								<div class="navtree-sub">
 									<a class="navtree-link" href="…"></a>
@@ -110,18 +110,26 @@ Status: **implemented** — `_05_shells.sass` (Amendment A1 rails + `.navtree*`/
 		<div class="accordion-item open">
 			<button class="accordion-trigger" aria-expanded="true"></button>
 			<div class="accordion-content">
-				<a class="navtree-link" href="…"></a>
+				<div class="accordion-panel">
+					<a class="navtree-link" href="…"></a>
+				</div>
 			</div>
 		</div>
 		<div class="accordion-item">
 			<button class="accordion-trigger" aria-expanded="false"></button>
-			<div class="accordion-content"></div>
+			<div class="accordion-content">
+				<div class="accordion-panel"></div>
+			</div>
 		</div>
 	</div>
 </aside>
 ```
 
 `.open` on `.accordion-item` shows the content; triggers carry native `aria-expanded`.
+
+`.accordion-panel` is required — it is the element that actually collapses, and
+it carries the `overflow` and `min-height` the grid transition needs. Without it
+the panel will not clip while closed.
 
 Status: accordion family **implemented** — `_05_shells.sass`.
 

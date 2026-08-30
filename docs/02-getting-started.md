@@ -53,6 +53,8 @@ seam — before compiling.
 
 ## Option B: Editable SASS
 
+SASS is amazing! I know the systemic and ecosystem reasons that inhibited its wider adoption, but I personally can never go back to styling with curly braces and semi-colons. 
+
 Scaffold the complete, editable SASS design system into your project's `src/lib/styles`:
 
 ```bash
@@ -94,7 +96,7 @@ import 'fractalstyler2/styles';
 
 ## Option D: Install as an Agent Plugin (Codex, Claude, Gemini, OpenCode)
 
-`fractalstyler2` implements the [agent-plugins.org](https://agent-plugins.org/specification) standard. You can install it directly into your AI coding agent or design tool to enable design token queries, live SASS compilation, and automated component generation:
+Fractalstyler2 implements the [agent-plugins.org](https://agent-plugins.org/specification) standard. You can install it directly into your AI coding agent or design tool to enable design token queries, live SASS compilation, and automated component generation:
 
 ### OpenCode
 
@@ -234,18 +236,5 @@ paint:
 ```
 
 This is the framework-free runtime; it works the same in a plain HTML page.
-
-### Going further: `fractalthemer`
-
-The 41 palettes cover the token contract. If you want more than colour —
-atmospheric GPU auras, CSS background patterns, gradient backdrops, a ready-made
-theme picker UI, and a studio for building custom palettes — the companion
-package `fractalthemer` adds that layer on top:
-
-```bash
-pnpm add fractalthemer
-```
-
-It is genuinely optional. Themes work without it.
 
 [Next - Structure](./03-structure.md)
