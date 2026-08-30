@@ -1,27 +1,28 @@
 {
 	"name": "fractalstyler2",
 	"version": "0.6.1",
-	"description": "A fractal-composition styling system for SvelteKit. The class registry is the public API (composable fractal classes with preset and literal values), and mixins remain as internal generators.",
+	"description": "A composition styling system, shipped as plain CSS and as editable SASS. The class registry is the public API: compose in markup, write no stylesheet.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
 		"fractalstyler": "./dist/cli.js",
 		"fractalstyler2-mcp": "./dist/mcp/server.js"
 	},
 	"scripts": {
-		"dev": "vite dev",
 		"registry": "node scripts/update-registry.js",
-		"build": "npm run registry && vite build && npm run prepack",
-		"preview": "vite preview",
+		"build": "npm run registry && npm run prepack",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "npm run registry && svelte-kit sync && svelte-package && chmod +x dist/cli.js && chmod +x dist/mcp/server.js && publint",
+		"prepack": "npm run registry && svelte-kit sync && svelte-package && npm run css && chmod +x dist/cli.js && chmod +x dist/mcp/server.js && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/validate-deck.js",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"validate:deck": "node scripts/validate-deck.js"
+		"validate:deck": "node scripts/validate-deck.js",
+		"css": "node scripts/build-css.js",
+		"version": "npm run registry && git add -A"
 	},
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
+		"registry.json",
 		"skills",
 		"plugin.json",
 		"mcp.json"
@@ -41,7 +42,15 @@
 		"./styles/*": "./dist/styles/*",
 		"./tokens": "./dist/styles/_00_tokens.sass",
 		"./mcp": "./dist/mcp/server.js",
-		"./package.json": "./package.json"
+		"./package.json": "./package.json",
+		"./themes": "./dist/styles/_00_themes.sass",
+		"./presets": {
+			"types": "./dist/presets.core.d.ts",
+			"default": "./dist/presets.core.js"
+		},
+		"./css": "./dist/css/fractalstyler.css",
+		"./css/min": "./dist/css/fractalstyler.min.css",
+		"./styles/presets": "./dist/styles/_00_presets.sass"
 	},
 	"peerDependencies": {
 		"svelte": "^5.0.0"
@@ -60,12 +69,14 @@
 		"vite": "^8.0.16"
 	},
 	"keywords": [
+		"css",
+		"sass",
+		"design-system",
+		"styling",
 		"svelte",
 		"sveltekit",
-		"sass",
-		"css",
-		"design-system",
-		"mixins",
+		"utility-classes",
+		"design-tokens",
 		"fractal"
 	],
 	"dependencies": {

@@ -16,7 +16,7 @@ All literal values in `fractalstyler2` live inside `_00_tokens.sass`. Components
 
 ## The 30 Colors
 
-The system defines 30 semantic CSS custom properties across 6 core categories. Every theme in `fractalthemer` maps 1:1 onto these exact token variables:
+The system defines 30 semantic CSS custom properties across 6 core categories. All 41 built-in palettes map 1:1 onto these exact token variables — as does any theme you write yourself:
 
 | Category | Token Variable | Purpose | Light Default | Dark Default |
 | :--- | :--- | :--- | :--- | :--- |
@@ -76,16 +76,18 @@ And here's how things get fractal - every token also exists as a class! Use `.te
 
 ## The Themes and Backgrounds
 
-`fractalstyler2` provides the static CSS contract and mixin scaffolding; `fractalthemer` provides the dynamic runtime engine.
+`fractalstyler2` owns the contract, the 41 palettes that fill it, and the runtime that applies them. Nothing else is required.
 
 ### Zero-JS Baseline
 With JavaScript disabled or before hydration, `_00_tokens.sass` renders `=light-theme-tokens` by default, or `=dark-theme-tokens` when `@media (prefers-color-scheme: dark)` is active.
 
 ### Dynamic Runtime State
-When `fractalthemer` is installed, `themeState.apply(themeId)` dynamically writes the full token dictionary to `document.documentElement.style`, instantly updating all `fractalstyler2` components across:
+`setTheme(id)` swaps the palette class on `<html>` and pairs it with `data-mode`. Everything below is a class or an attribute, so all of it works with JavaScript disabled:
 - Dark/Light mode flipping (`[data-mode='dark']`, `[data-mode='light']`)
 - Preset color families (`theme-night-dark`, `theme-frozen-dark`, `theme-nord-dark`, etc.)
 - User-customized accent colors (`--theme-color`, `--theme-color-alt`)
-- GPU Atmospheric Shaders (`[data-bg-style='aura']`, `[data-bg-style='gradient']`, `[data-bg-style='pattern']`)
+- Preset axes (`[data-shape]`, `[data-layout]`, `[data-color]`, `[data-motion]`)
+
+Atmospheric backgrounds — GPU auras, gradients, CSS patterns — are the companion package `fractalthemer`'s layer, and are optional.
 
 [Next - Dimensions & Spacing](./05-dimensions.md)

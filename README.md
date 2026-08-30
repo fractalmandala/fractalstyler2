@@ -1,11 +1,24 @@
 # Fractalstyler
 
-> **A fractal-composition SASS styling system, fluid design token engine, and runtime preset architecture for SvelteKit and AI coding agents.**
+> **A composition styling system — plain CSS or editable SASS — with a fluid design token engine and a runtime preset architecture.**
+>
+> The class registry is the public API. You compose in markup; you do not write a stylesheet.
 
 [![npm version](https://img.shields.io/npm/v/fractalstyler2.svg?style=flat-square)](https://www.npmjs.com/package/fractalstyler2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 Every styling decision in `Fractalstyler` is a modular fractal: unitary tokens, dimensions, and container primitives that compose into higher layers while retaining mathematical harmony, responsiveness, and zero-runtime bloat.
+
+Ships two ways, from one source:
+
+| | | |
+|:--|:--|:--|
+| **Plain CSS** | one file, no toolchain | `npx fractalstyler2 init --css` |
+| **SASS** | editable partials, retunable generators | `npx fractalstyler2 init` |
+
+The compiled CSS is emitted from the same partials the SASS path scaffolds, so
+the two are byte-identical. SASS buys exactly one thing: the ability to retune
+the generators — the literal ladder and the responsive seam — before compiling.
 
 ---
 
@@ -15,7 +28,7 @@ Every styling decision in `Fractalstyler` is a modular fractal: unitary tokens, 
 Tokens (L0) ──► Dimensions (L1) ──► Containers (L2) ──► Layouts (L3) ──► Shells (L4) ──► Visuals (L5)
 ```
 
-1. **Tokens (L0)**: 30 semantic color tokens (`_00_tokens.sass`) and fluid Utopia typography/space scales.
+1. **Tokens (L0)**: 30 semantic color tokens, 41 themes, and fluid Utopia typography/space scales.
 2. **Dimensions (L1)**: 17 space families (`.gap-sm`, `.pad-md`, `.marg-xs`), negative margins (`.marg--sm`), literal pixel utilities (`.w-120`, `.radius-8`), and `-mob` / `-desk` bands.
 3. **Containers (L2)**: Flexible flow primitives (`.box`, `.row`, `.grid`) with strict physical X/Y axis alignment (`.xcenter`, `.ycenter`, `.xbetween`).
 4. **Layouts (L3)**: Gridding Golden Rules ($3\to1$, $4\to2\to1$, $6\to3\to2\to1$), `.card-grid`, reading measure `.prose`, and scroll-snap `.reel`.
@@ -26,19 +39,39 @@ Tokens (L0) ──► Dimensions (L1) ──► Containers (L2) ──► Layout
 
 ## Quick Start
 
-### 1. Installation
+### Plain CSS — no build step
+
+Most projects want this. One stylesheet, nothing to configure:
+
+```bash
+npx fractalstyler2 init --css
+```
+
+```html
+<link rel="stylesheet" href="/src/styles/fractalstyler.css" />
+```
+
+Themes and the four preset axes are classes and attributes, so they work with
+JavaScript disabled:
+
+```html
+<html class="theme-night-dark" data-mode="dark" data-shape="sharp">
+```
+
+For runtime switching and zero-flicker restore, there is a framework-free
+runtime at `fractalstyler2/presets`:
+
+```js
+import { initPresets, setPreset, getPresetScript } from 'fractalstyler2/presets';
+initPresets();
+```
+
+### SASS — if you want to retune the generators
 
 ```bash
 pnpm add -D sass fractalstyler2
-```
-
-Or scaffold the editable SASS source directly into your project:
-
-```bash
 npx fractalstyler2 init
 ```
-
-### 2. Import Stylesheet
 
 In your root layout (`src/routes/+layout.svelte`):
 
@@ -47,6 +80,8 @@ In your root layout (`src/routes/+layout.svelte`):
   import 'fractalstyler2/styles';
   import { initPresets, getPresetScript } from 'fractalstyler2';
   import { onMount } from 'svelte';
+
+  let { children } = $props();
 
   onMount(() => {
     initPresets();
@@ -57,7 +92,7 @@ In your root layout (`src/routes/+layout.svelte`):
   {@html `<script>${getPresetScript()}</script>`}
 </svelte:head>
 
-<slot />
+{@render children()}
 ```
 
 ---
@@ -97,17 +132,17 @@ pnpm registry
 | Chapter | Document | Scope & Contents |
 |:---|:---|:---|
 | **01** | [**`01-introduction.md`**](./docs/01-introduction.md) | Philosophy, $L0 \to L5$ mental model, and design invariants. |
-| **02** | [**`02-getting-started.md`**](./docs/02-getting-started.md) | Installation, CLI init, SvelteKit setup, and Fractalthemer. |
+| **02** | [**`02-getting-started.md`**](./docs/02-getting-started.md) | Installation (CSS or SASS), CLI init, SvelteKit setup, and the 41 built-in themes. |
 | **03** | [**`03-structure.md`**](./docs/03-structure.md) | Numbered physical scale (`_00` through `_08`) and cascade order. |
 | **04** | [**`04-tokens.md`**](./docs/04-tokens.md) | 30 semantic colors, fluid Utopia scales, and dark/light modes. |
-| **05** | [**`05-dimensions.md`**](./docs/05-dimensions.md) | 17 space families, literal px (1–256), and `-mob`/`-desk` bands. |
+| **05** | [**`05-dimensions.md`**](./docs/05-dimensions.md) | 17 space families, the literal px ladder, and `-mob`/`-desk` bands. |
 | **06** | [**`06-containers.md`**](./docs/06-containers.md) | `.box`, `.row`, `.grid`, and physical X/Y axis alignment. |
 | **07** | [**`07-layouts.md`**](./docs/07-layouts.md) | Gridding Golden Rules, `.card-grid`, `.prose`, and `.reel`. |
 | **08** | [**`08-shells-and-markups.md`**](./docs/08-shells-and-markups.md) | Canonical App Shell, role-bound sidebars, mobile disclosures, overlays. |
 | **09** | [**`09-visuals-and-interactions.md`**](./docs/09-visuals-and-interactions.md) | Surfaces, inks, hairline borders, buttons, and form inputs. |
 | **10** | [**`10-presets.md`**](./docs/10-presets.md) | Presets runtime, `presets.svelte.ts` API, and Svelte UI pickers. |
 | **11** | [**`11-mcp-server.md`**](./docs/11-mcp-server.md) | Model Context Protocol server tools and agent connection configs. |
-| **12** | [**`12-agent-plugin.md`**](./docs/12-agent-plugin.md) | `agent-plugins.org` spec, bundled skills (`fractal-styler`, `style-migration`). |
+| **12** | [**`12-agent-plugin.md`**](./docs/12-agent-plugin.md) | `agent-plugins.org` spec, the bundled `fractal-styler` skill. |
 | **13** | [**`13-cookbook.md`**](./docs/13-cookbook.md) | The Zero-SASS Recipe Gallery: real-world UI patterns composed in HTML. |
 | **Registry** | [**`REGISTRY.md`**](./REGISTRY.md) | Comprehensive, grepable class dictionary and token table. |
 
@@ -116,7 +151,7 @@ pnpm registry
 ## AI Agent Integration & MCP
 
 Fractalstyler2 includes a native MCP server (`fractalstyler2-mcp`) providing 7 tools for AI coding agents:
-- `compile_fractals`: Live compilation of indented SASS recipes into CSS.
+- `compile_fractals`: Compiles a SASS snippet to CSS, for the rare declaration that genuinely does not compose.
 - `get_design_tokens`: Structured token queries by category.
 - `snap_to_tokens`: Snaps raw pixel measurements to nearest token steps.
 - `css_to_fractals`: Converts raw CSS declarations to idiomatic markup classes.

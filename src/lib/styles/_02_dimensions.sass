@@ -6,10 +6,26 @@
 
 @use 'sass:string'
 @use 'sass:list'
+@use 'sass:math'
 @use '01_config' as *
 
-$lo: list.nth($utility-range, 1)
-$hi: list.nth($utility-range, 2)
+// The literal ladder, built once: the fine tail, then every $literal-step up
+// to $literal-max. Radius and sizing iterate all of it.
+$literals: $literal-fine
+@for $i from 2 through math.div($literal-max, $literal-step)
+	$literals: list.append($literals, $i * $literal-step)
+
+// The space families take the same ladder truncated at $literal-space-max,
+// radius at $literal-radius-max. Only sizing runs the whole thing.
+$space-literals: ()
+@each $n in $literals
+	@if $n <= $literal-space-max
+		$space-literals: list.append($space-literals, $n)
+
+$radius-literals: ()
+@each $n in $literals
+	@if $n <= $literal-radius-max
+		$radius-literals: list.append($radius-literals, $n)
 $steps: ('3xs' '2xs' 'xs' 'sm' 'md' 'lg' 'xl' '2xl' '3xl')
 
 // Space families, role-split for the layout preset: gaps/margins separate
@@ -26,7 +42,7 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 	@each $step in $steps
 		.#{$name}-#{$step}
 			#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1))
-	@for $n from $lo through $hi
+	@each $n in $space-literals
 		.#{$name}-#{$n}
 			#{$prop}: #{$n}px
 
@@ -34,7 +50,7 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 	@each $step in $steps
 		.#{$name}-#{$step}
 			#{$prop}: calc(var(--space-#{$step}) * var(--pad-scale, 1))
-	@for $n from $lo through $hi
+	@each $n in $space-literals
 		.#{$name}-#{$n}
 			#{$prop}: #{$n}px
 
@@ -44,14 +60,14 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 			#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1))
 		.#{$name}--#{$step}
 			#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1) * -1)
-	@for $n from $lo through $hi
+	@each $n in $space-literals
 		.#{$name}-#{$n}
 			#{$prop}: #{$n}px
 		.#{$name}--#{$n}
 			#{$prop}: -#{$n}px
 
 // Radius — literal px (0 = the reset); never rides shape presets.
-@for $n from 0 through $hi
+@each $n in $radius-literals
 	.radius-#{$n}
 		border-radius: #{$n}px
 
@@ -59,7 +75,7 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 	border-radius: var(--radius-full)
 
 // Size
-@for $n from $lo through $hi
+@each $n in $literals
 	.w-#{$n}
 		width: #{$n}px
 	.h-#{$n}
@@ -92,14 +108,14 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 			@each $step in $steps
 				.#{$name}-#{$step}-#{$mode}
 					#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1))
-			@for $n from $lo through $hi
+			@each $n in $space-literals
 				.#{$name}-#{$n}-#{$mode}
 					#{$prop}: #{$n}px
 		@each $name, $prop in $pad-families
 			@each $step in $steps
 				.#{$name}-#{$step}-#{$mode}
 					#{$prop}: calc(var(--space-#{$step}) * var(--pad-scale, 1))
-			@for $n from $lo through $hi
+			@each $n in $space-literals
 				.#{$name}-#{$n}-#{$mode}
 					#{$prop}: #{$n}px
 		@each $name, $prop in $marg-families
@@ -108,17 +124,17 @@ $marg-families: (marg: margin, marg-x: margin-inline, marg-y: margin-block, marg
 					#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1))
 				.#{$name}--#{$step}-#{$mode}
 					#{$prop}: calc(var(--space-#{$step}) * var(--gap-scale, 1) * -1)
-			@for $n from $lo through $hi
+			@each $n in $space-literals
 				.#{$name}-#{$n}-#{$mode}
 					#{$prop}: #{$n}px
 				.#{$name}--#{$n}-#{$mode}
 					#{$prop}: -#{$n}px
-		@for $n from 0 through $hi
+		@each $n in $radius-literals
 			.radius-#{$n}-#{$mode}
 				border-radius: #{$n}px
 		.radius-full-#{$mode}
 			border-radius: var(--radius-full)
-		@for $n from $lo through $hi
+		@each $n in $literals
 			.w-#{$n}-#{$mode}
 				width: #{$n}px
 			.h-#{$n}-#{$mode}

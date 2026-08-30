@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * fractalstyler2 MCP Server
- * Model Context Protocol server exposing design tokens, SASS mixin compilation,
+ * Model Context Protocol server exposing design tokens, the class registry,
  * token snapping, component generation, and linting for OpenDesign, Claude Desktop, Cursor, etc.
  */
 
@@ -20,17 +20,26 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '0.4.0';
+const VERSION: string = (() => {
+	// Read from package.json so this can never drift from the published version.
+	const HERE = dirname(fileURLToPath(import.meta.url));
+	for (const c of [join(HERE, '..', '..', 'package.json'), join(HERE, '..', 'package.json')]) {
+		try {
+			if (existsSync(c)) return JSON.parse(readFileSync(c, 'utf8')).version as string;
+		} catch {
+			/* fall through */
+		}
+	}
+	return '0.0.0';
+})();
 
 // Resolve styles directory for SASS compiler loadPaths
 function getStylesDir(): string {
 	const HERE = dirname(fileURLToPath(import.meta.url));
 	const candidates = [
-		join(HERE, '..', 'styles'),
-		join(HERE, '..', '..', 'templates'),
+		join(HERE, '..', 'styles'), // dist/mcp -> dist/styles
 		join(HERE, 'styles'),
-		join(process.cwd(), 'src', 'lib', 'styles'),
-		join(process.cwd(), 'templates')
+		join(process.cwd(), 'src', 'lib', 'styles')
 	];
 	for (const candidate of candidates) {
 		if (existsSync(candidate) && existsSync(join(candidate, '_00_tokens.sass'))) {
@@ -169,77 +178,71 @@ const DESIGN_TOKENS = {
 };
 
 // Catalog of Fractals (Mixins)
-const FRACTAL_CATALOG = {
-	atoms: [
-		{ name: 'box', signature: '+box($x: null, $y: null)', description: 'Flex column layout with optional cross/main axis alignment.' },
-		{ name: 'row', signature: '+row($x: null, $y: null)', description: 'Flex row layout with optional main/cross axis alignment.' },
-		{ name: 'wrap', signature: '+wrap', description: 'Enables flex-wrap: wrap on container.' },
-		{ name: 'grid', signature: '+grid($cols: 1)', description: 'CSS grid with fixed column count repeat($cols, minmax(0, 1fr)).' },
-		{ name: 'auto-grid', signature: '+auto-grid($min: 15rem, $gap: s)', description: 'Intrinsic auto-fit CSS grid without breakpoints.' },
-		{ name: 'center', signature: '+center', description: 'Dead-center anything using display: grid; place-items: center.' },
-		{ name: 'gap', signature: '+gap($v: s)', description: 'Applies gap from space token or raw px value.' },
-		{ name: 'pad', signature: '+pad($v: s)', description: 'Applies padding on all sides from space token or raw px.' },
-		{ name: 'px', signature: '+px($v: s)', description: 'Applies inline padding (left/right) from space token or raw px.' },
-		{ name: 'py', signature: '+py($v: s)', description: 'Applies block padding (top/bottom) from space token or raw px.' },
-		{ name: 'mx-auto', signature: '+mx-auto', description: 'Sets margin-inline: auto for horizontal centering.' },
-		{ name: 'my-auto', signature: '+my-auto', description: 'Sets margin-block: auto for vertical centering.' },
-		{ name: 'w', signature: '+w($v: 100%)', description: 'Sets width.' },
-		{ name: 'h', signature: '+h($v: 100%)', description: 'Sets height.' },
-		{ name: 'full', signature: '+full', description: 'Sets width: 100% and height: 100%.' },
-		{ name: 'square', signature: '+square($v)', description: 'Sets equal width and height.' },
-		{ name: 'grow', signature: '+grow($n: 1)', description: 'Sets flex-grow.' },
-		{ name: 'shrink', signature: '+shrink($n: 0)', description: 'Sets flex-shrink.' },
-		{ name: 'min0', signature: '+min0', description: 'Sets min-width: 0 and min-height: 0 to prevent overflow.' },
-		{ name: 'bg', signature: '+bg($role: surface)', description: 'Sets background-color to any of the 21 surface tokens.' },
-		{ name: 'ink', signature: '+ink($role: primary)', description: 'Sets text color to primary, secondary, muted, inverse, theme-color, theme-color-alt.' },
-		{ name: 'border', signature: '+border($side: all, $color: var(--border))', description: 'Applies 1px solid border on all sides or a specific side.' },
-		{ name: 'radius', signature: '+radius($v: 6)', description: 'Applies border-radius from radius token or raw px.' },
-		{ name: 'shadow', signature: '+shadow($v: md)', description: 'Applies box-shadow from shadow scale (sm, md, lg).' },
-		{ name: 'type', signature: '+type($v)', description: 'Applies font-size from fluid type scale (xs..4xl).' },
-		{ name: 'weight', signature: '+weight($w: 500)', description: 'Sets font-weight.' },
-		{ name: 'leading', signature: '+leading($lh: 1.5)', description: 'Sets line-height.' },
-		{ name: 'truncate', signature: '+truncate', description: 'Single-line text truncation with ellipsis.' },
-		{ name: 'clamp-lines', signature: '+clamp-lines($n: 2)', description: 'Multi-line clamp using -webkit-line-clamp.' },
-		{ name: 'transition', signature: '+transition($props: all, $dur: 150ms, $ease: ease)', description: 'Smooth CSS transition.' },
-		{ name: 'ring', signature: '+ring($color: var(--ring))', description: 'Focus outline ring with 1px offset.' }
-	],
-	molecules: [
-		{ name: 'stack', signature: '+stack($gap: xs, $x: null)', description: 'Vertical rhythm: flex column + gap.' },
-		{ name: 'cluster', signature: '+cluster($gap: xs, $x: start, $y: center)', description: 'Wrapping row for tags/buttons/chips.' },
-		{ name: 'center-column', signature: '+center-column($max: var(--measure, 60ch), $pad: s)', description: 'Bounded reading column with max-width measure.' },
-		{ name: 'cover', signature: '+cover($min: 100vh, $pad: s)', description: 'Full-height container with vertically centered focal child.' },
-		{ name: 'frame', signature: '+frame($ratio: 16 / 9)', description: 'Aspect-ratio container for media (images, video, iframe).' },
-		{ name: 'reel', signature: '+reel($gap: xs)', description: 'Horizontal scroll-snap rail.' },
-		{ name: 'with-sidebar', signature: '+with-sidebar($rail: 240px, $gap: s, $min: 60%)', description: 'Intrinsic sidebar and fluid main content.' },
-		{ name: 'surface', signature: '+surface($bg: surface, $pad: null, $radius: 6, $elevation: none)', description: 'All-in-one material fractal: skin, radius, pad, and elevation.' },
-		{ name: 'cols', signature: '+cols($map, $gap: s)', description: 'Responsive column grid mapped across breakpoints, e.g. (base: 1, sm: 2, lg: 3).' }
-	],
-	recipes: [
-		{ name: 'card', signature: '+card($bg: surface, $pad: null, $radius: 6, $elevation: none)', description: 'Vertical card container recipe with optional pad and elevation.' },
-		{ name: 'control', signature: '+control($size: md, $radius: 4)', description: 'Universal interactive control recipe (buttons, triggers, inputs).' },
-		{ name: 'select', signature: '+select($size: md, $radius: 4)', description: 'Select input recipe with embedded SVG chevron.' },
-		{ name: 'badge', signature: '+badge($radius: 4)', description: 'Compact status badge recipe.' }
-	],
-	layouts: [
-		{ name: 'grid-3', class: '.grid-3', description: 'Responsive 1 → 2 → 3 column reflow.' },
-		{ name: 'card-grid', class: '.card-grid', description: 'Intrinsic auto-fit grid for cards.' },
-		{ name: 'hero', class: '.hero', description: 'Full viewport cover with centered hero message.' },
-		{ name: 'holy-grail', class: '.holy-grail', description: 'Responsive header / (nav · main · aside) / footer.' },
-		{ name: 'docs', class: '.docs', description: 'Docs template with sidebar nav, center reading column, and right TOC.' },
-		{ name: 'app-shell', class: '.app-shell', description: 'Sticky header, fluid body, and footer application frame.' }
-	]
+/**
+ * The class registry — the public API — read from registry.json.
+ *
+ * This was previously a hardcoded catalog of authoring mixins (+box, +stack,
+ * +surface...). Those never shipped in v2; the registry replaced them. It is
+ * loaded from the generated file now so this surface cannot describe an API
+ * the stylesheet does not have.
+ */
+function getRegistryPath(): string | null {
+	const HERE = dirname(fileURLToPath(import.meta.url));
+	const candidates = [
+		join(HERE, '..', '..', 'registry.json'), // dist/mcp -> package root
+		join(HERE, '..', 'registry.json'),
+		join(process.cwd(), 'registry.json')
+	];
+	return candidates.find((c) => existsSync(c)) ?? null;
+}
+
+interface RegistryEntry {
+	class: string;
+	layer: string;
+	property: string;
+	file: string;
+	description: string;
+	example: string;
+}
+
+const REGISTRY: RegistryEntry[] = (() => {
+	const p = getRegistryPath();
+	if (!p) return [];
+	try {
+		return JSON.parse(readFileSync(p, 'utf8')) as RegistryEntry[];
+	} catch {
+		return [];
+	}
+})();
+
+const LAYER_NAMES: Record<string, string> = {
+	L0: 'Tokens',
+	L1: 'Dimensions',
+	L2: 'Containers',
+	L3: 'Layouts',
+	L4: 'Shells',
+	L5: 'Visuals & Interactions'
 };
+
+/** Registry grouped by layer, which is what list_fractals serves. */
+const FRACTAL_CATALOG: Record<string, RegistryEntry[]> = REGISTRY.reduce(
+	(acc, entry) => {
+		(acc[entry.layer] ??= []).push(entry);
+		return acc;
+	},
+	{} as Record<string, RegistryEntry[]>
+);
 
 // Guidelines & Golden Rules
 const GUIDELINES = `
 # fractalstyler2 Design System Rules
 
-1. Never hardcode a value that a token covers (+gap(sm), +radius(sm), +bg(surface)); literals like .gap-16 are the sanctioned escape hatch.
-2. Classes are the public API (.gap-sm, .pad-x-sm, .box.xcenter, .button.primary); mixins are internal generators, callable during migration only.
+1. Never hardcode a value that a token covers: reach for .gap-sm, .radius-md, .surface. Literals like .gap-16 are the sanctioned escape hatch when an exact pixel is load-bearing.
+2. Classes are the ONLY public API (.gap-sm, .pad-x-sm, .box.xcenter, .button.primary). The system defines no authoring mixins and no SASS functions; +stack, +surface, space() and the like do not exist.
 3. Visual toggles ride classes (.open, .active, .elevated); semantic state stays on native attributes ([disabled], [aria-expanded='true'], :focus-visible).
-4. Markup stays thin and semantic: prefer clean tags (<article class="card elevated">) over utility class soup.
-5. Mobile-first: define base styles first, then grow with +at(md/lg/xl) or +cols(); viewport locks use -mob / -desk suffixes (.gap-sm-desk).
-6. Literal utilities are family-{N} px within the configured range (.gap-16, .radius-4, .w-64); negative margins use the -- infix (.marg--16).
+4. Do NOT invent class names. A composed string like class="row ycenter xbetween gap-sm pad-md surface border" is the finished state, not something to tidy into a semantic class. _08_own.sass is for third-party widget overrides only; check docs/13-cookbook.md before writing any custom declaration.
+5. Mobile-first: define base classes first, then bind to a side of the 768px seam with the -mob / -desk suffixes (.pad-xs-mob .pad-lg-desk). Grids step on their own; .grid-6 goes 6 -> 3 -> 2 -> 1 and never strands a row.
+6. Literal utilities come from a discrete ladder, not any integer: 0, 1, 2, 4, 6, 8, 12, then every multiple of 8 — to 64px for gap/pad/marg and radius, to 512px for w/h/square (.gap-16, .radius-4, .w-240). Negative margins use the -- infix (.marg--16).
 `.trim();
 
 // Snapping helper: find closest token
@@ -280,13 +283,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 		tools: [
 			{
 				name: 'compile_fractals',
-				description: 'Compiles indented SASS fractal mixins into CSS. Useful for live preview in OpenDesign or web apps.',
+				description: 'Compiles indented SASS into CSS to verify output. The system exposes no authoring mixins — compose in markup and use this for the rare custom declaration.',
 				inputSchema: {
 					type: 'object',
 					properties: {
 						sassCode: {
 							type: 'string',
-							description: 'Indented SASS code. Can use any fractal mixin (+surface, +stack, +gap, etc.).'
+							description: 'Indented SASS code (plain declarations; the styles directory is on the load path).'
 						},
 						className: {
 							type: 'string',
@@ -325,7 +328,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 			},
 			{
 				name: 'css_to_fractals',
-				description: 'Converts raw CSS declarations (from Figma/OpenDesign inspection) into idiomatic fractalstyler2 SASS mixins.',
+				description: 'Converts raw CSS declarations (from Figma/OpenDesign inspection) into fractalstyler2 registry classes, composed in markup.',
 				inputSchema: {
 					type: 'object',
 					properties: {
@@ -339,7 +342,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 			},
 			{
 				name: 'generate_component',
-				description: 'Generates a production-ready Svelte 5 component with runes and scoped SASS fractal mixins.',
+				description: 'Generates a production-ready Svelte 5 component with runes, composed entirely from registry classes and carrying no style block.',
 				inputSchema: {
 					type: 'object',
 					properties: {
@@ -361,25 +364,27 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 			},
 			{
 				name: 'validate_recipe',
-				description: 'Lints a SASS snippet or Svelte component against fractalstyler2 golden rules (flags legacy classes, unmapped pixels, etc.).',
+				description: 'Lints markup against the golden rules: flags class names absent from the registry, component <style> blocks, and hardcoded pixel values.',
 				inputSchema: {
 					type: 'object',
 					properties: {
-						code: { type: 'string', description: 'The SASS or Svelte code to validate.' }
+						code: { type: 'string', description: 'The Svelte or HTML markup to validate.' }
 					},
 					required: ['code']
 				}
 			},
 			{
 				name: 'list_fractals',
-				description: 'Returns the catalog of all available atom & molecule mixins with their signatures and descriptions.',
+				description:
+					'Returns the class registry — the public API. Every composable class with the CSS it applies and its source file, grouped by layer. Query this before naming any class.',
 				inputSchema: {
 					type: 'object',
 					properties: {
-						tier: {
+						layer: {
 							type: 'string',
-							enum: ['all', 'atoms', 'molecules', 'recipes', 'layouts'],
-							description: 'Filter by fractal tier.'
+							enum: ['all', 'L0', 'L1', 'L2', 'L3', 'L4', 'L5'],
+							description:
+								'Filter by layer: L0 tokens, L1 dimensions, L2 containers, L3 layouts, L4 shells, L5 visuals & interactions.'
 						}
 					}
 				}
@@ -406,12 +411,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 				.map((line) => (line.trim() ? `\t${line}` : ''))
 				.join('\n');
 
-			const fullSass = `
-@use 'tokens'
-@use 'base'
-@use 'fractals' as *
-
-.${className}
+			// No @use is injected: the system exposes no mixin module to import.
+			// loadPaths is set to the styles directory, so a caller that wants
+			// the token layer can `@use '00_tokens'` explicitly.
+			const fullSass = `.${className}
 ${indented}
 `;
 
@@ -464,7 +467,6 @@ ${indented}
 					inputPx: args.gap,
 					nearestToken: match.token,
 					cssVar: `var(--space-${match.token})`,
-					suggestedMixin: `+gap(${match.token})`,
 					utilityClass: `.gap-${match.token}`
 				};
 			}
@@ -475,7 +477,6 @@ ${indented}
 					inputPx: args.padding,
 					nearestToken: match.token,
 					cssVar: `var(--space-${match.token})`,
-					suggestedMixin: `+pad(${match.token})`,
 					utilityClass: `.pad-${match.token}`
 				};
 			}
@@ -487,7 +488,6 @@ ${indented}
 					inputPx: args.radius,
 					nearestToken: match.token,
 					cssVar: `var(--radius-${match.token})`,
-					suggestedMixin: `+radius(${match.token})`,
 					utilityClass: `.radius-${match.token}`
 				};
 			}
@@ -498,7 +498,6 @@ ${indented}
 					inputPx: args.fontSize,
 					nearestToken: match.token,
 					cssVar: `var(--text-${match.token})`,
-					suggestedMixin: `+type(${match.token})`,
 					utilityClass: `.text-${match.token}`
 				};
 			}
@@ -509,75 +508,175 @@ ${indented}
 		}
 
 		case 'css_to_fractals': {
+			// Emits registry CLASSES, not mixins. The system has no authoring
+			// mixins; earlier versions of this tool suggested +surface/+stack,
+			// which do not compile.
 			const rawCss = (args.css as string) || '';
-			const lines = rawCss.split(/[;\n]/).map((l) => l.trim()).filter(Boolean);
+			const decls = rawCss
+				.split(/[;\n]/)
+				.map((l) => l.trim())
+				.filter(Boolean);
 
-			const mixins: string[] = [];
-			let hasFlexCol = false;
-			let hasFlexRow = false;
-			let gapVal: string | null = null;
-			let padVal: string | null = null;
-			let radiusVal: string | null = null;
-			let bgVal: string | null = null;
-			let elevationVal: string | null = null;
+			const classes: string[] = [];
+			const unmapped: string[] = [];
+			let display: string | null = null;
+			let direction: string | null = null;
 
-			for (const line of lines) {
-				const [prop, val] = line.split(':').map((s) => s?.trim());
-				if (!prop || !val) continue;
+			const spaceStep = (n: number): string => findNearestToken(n, DESIGN_TOKENS.space.approxPx).token;
+			const px = (v: string): number | null => {
+				const n = parseInt(v, 10);
+				return isNaN(n) ? null : n;
+			};
 
-				if (prop === 'display' && val === 'flex') {
-					// wait for flex-direction
-				} else if (prop === 'flex-direction' && val === 'column') {
-					hasFlexCol = true;
-				} else if (prop === 'flex-direction' && val === 'row') {
-					hasFlexRow = true;
-				} else if (prop === 'gap') {
-					const num = parseInt(val, 10);
-					if (!isNaN(num)) {
-						gapVal = findNearestToken(num, DESIGN_TOKENS.space.approxPx).token;
+			for (const decl of decls) {
+				const idx = decl.indexOf(':');
+				if (idx < 0) continue;
+				const prop = decl.slice(0, idx).trim();
+				const val = decl.slice(idx + 1).trim();
+				const n = px(val);
+
+				switch (prop) {
+					case 'display':
+						display = val;
+						break;
+					case 'flex-direction':
+						direction = val;
+						break;
+					case 'gap':
+						if (n !== null) classes.push(`gap-${spaceStep(n)}`);
+						break;
+					case 'row-gap':
+						if (n !== null) classes.push(`rgap-${spaceStep(n)}`);
+						break;
+					case 'column-gap':
+						if (n !== null) classes.push(`cgap-${spaceStep(n)}`);
+						break;
+					case 'padding':
+						if (n !== null) classes.push(`pad-${spaceStep(n)}`);
+						break;
+					case 'padding-inline':
+						if (n !== null) classes.push(`pad-x-${spaceStep(n)}`);
+						break;
+					case 'padding-block':
+						if (n !== null) classes.push(`pad-y-${spaceStep(n)}`);
+						break;
+					case 'margin':
+						if (n !== null) classes.push(`marg-${spaceStep(n)}`);
+						break;
+					case 'border-radius':
+						if (n !== null) classes.push(`radius-${n}`);
+						break;
+					case 'width':
+						if (val === '100%') classes.push('wfull');
+						else if (n !== null) classes.push(`w-${n}`);
+						break;
+					case 'height':
+						if (val === '100%') classes.push('hfull');
+						else if (n !== null) classes.push(`h-${n}`);
+						break;
+					case 'background':
+					case 'background-color':
+						if (val.includes('raised')) classes.push('raised');
+						else if (val.includes('panel')) classes.push('panel');
+						else if (val.includes('surface') || /^#(fff|ffffff)$/i.test(val)) classes.push('surface');
+						else unmapped.push(`${prop}: ${val}`);
+						break;
+					case 'color':
+						if (val.includes('muted')) classes.push('text-muted');
+						else if (val.includes('secondary')) classes.push('text-secondary');
+						else if (val.includes('primary')) classes.push('text-primary');
+						else unmapped.push(`${prop}: ${val}`);
+						break;
+					case 'border':
+						classes.push('border');
+						break;
+					case 'border-bottom':
+						classes.push('border-bottom');
+						break;
+					case 'border-top':
+						classes.push('border-top');
+						break;
+					case 'box-shadow': {
+						// Depth is a three-step scale; pick by the blur radius.
+						const blur = parseInt(val.split(/\s+/)[3] ?? '0', 10);
+						classes.push(blur >= 24 ? 'shadow-lg' : blur >= 8 ? 'shadow-md' : 'shadow-sm');
+						break;
 					}
-				} else if (prop === 'padding') {
-					const num = parseInt(val, 10);
-					if (!isNaN(num)) {
-						padVal = findNearestToken(num, DESIGN_TOKENS.space.approxPx).token;
-					}
-				} else if (prop === 'border-radius') {
-					const num = parseInt(val, 10);
-					if (!isNaN(num)) {
-						radiusVal = String(num);
-					}
-				} else if (prop === 'background-color' || prop === 'background') {
-					if (val.includes('raised')) bgVal = 'raised';
-					else if (val.includes('surface') || val === '#ffffff' || val === '#fff') bgVal = 'surface';
-					else bgVal = 'bg';
-				} else if (prop === 'box-shadow') {
-					elevationVal = 'md';
+					case 'flex-wrap':
+						if (val === 'wrap') classes.push('wrap');
+						break;
+					case 'flex-grow':
+						if (val !== '0') classes.push('grow');
+						break;
+					case 'flex-shrink':
+						if (val === '0') classes.push('shrink-0');
+						break;
+					case 'min-width':
+					case 'min-height':
+						if (val === '0') classes.push('min0');
+						break;
+					case 'position':
+						if (['relative', 'absolute', 'fixed', 'sticky'].includes(val)) classes.push(val);
+						break;
+					case 'text-overflow':
+						if (val === 'ellipsis') classes.push('truncate');
+						break;
+					case 'font-weight':
+						if (['400', '500', '600', '700'].includes(val)) classes.push(`weight-${val}`);
+						else unmapped.push(`${prop}: ${val}`);
+						break;
+					case 'justify-content':
+					case 'align-items':
+						// resolved below, once the container is known
+						unmapped.push(`${prop}: ${val}`);
+						break;
+					default:
+						unmapped.push(`${prop}: ${val}`);
 				}
 			}
 
-			// If surface combination
-			if (bgVal || padVal || radiusVal) {
-				mixins.push(`+surface(${bgVal || 'surface'}, ${padVal || 'sm'}, ${radiusVal || 'md'}${elevationVal ? `, ${elevationVal}` : ''})`);
-			}
+			// Container first, so alignment can be named on the physical axis.
+			const container =
+				display === 'grid' ? 'grid' : display === 'flex' ? (direction === 'row' ? 'row' : 'box') : null;
+			if (container) classes.unshift(container);
 
-			if (hasFlexCol) {
-				mixins.push(`+stack(${gapVal || 'sm'})`);
-			} else if (hasFlexRow) {
-				mixins.push(`+cluster(${gapVal || 'xs'})`);
-			} else if (gapVal && !hasFlexCol && !hasFlexRow) {
-				mixins.push(`+gap(${gapVal})`);
-			}
-
-			const output = mixins.length > 0 ? mixins.join('\n') : '// No direct fractal match; use atoms:\n+box\n+gap(s)';
-
-			return {
-				content: [
-					{
-						type: 'text',
-						text: `Suggested fractalstyler2 recipe:\n\n${output}`
-					}
-				]
+			const ALIGN: Record<string, string> = {
+				'flex-start': 'left',
+				start: 'left',
+				center: 'center',
+				'flex-end': 'right',
+				end: 'right',
+				'space-between': 'between',
+				'space-evenly': 'evenly',
+				'space-around': 'around'
 			};
+			const resolved: string[] = [];
+			for (const u of unmapped.slice()) {
+				const m = /^(justify-content|align-items):\s*(.+)$/.exec(u);
+				if (!m || !container) continue;
+				const word = ALIGN[m[2]];
+				if (!word) continue;
+				// In a row, justify-content is the X axis; in a column it is Y.
+				const isX = container === 'row' ? m[1] === 'justify-content' : m[1] === 'align-items';
+				resolved.push(`${isX ? 'x' : 'y'}${word === 'left' && !isX ? 'top' : word === 'right' && !isX ? 'bot' : word}`);
+				unmapped.splice(unmapped.indexOf(u), 1);
+			}
+			classes.push(...resolved);
+
+			const attr = classes.length ? `<div class="${classes.join(' ')}">` : '';
+			let text = classes.length
+				? `Compose in markup:\n\n${attr}`
+				: 'No registry class matched. Check list_fractals for the full API.';
+
+			if (unmapped.length) {
+				text +=
+					`\n\nNot covered by the registry:\n` +
+					unmapped.map((u) => `  ${u}`).join('\n') +
+					`\n\nThese are candidates for a component <style> block or _08_own.sass — ` +
+					`but check docs/13-cookbook.md first; most patterns compose.`;
+			}
+
+			return { content: [{ type: 'text', text }] };
 		}
 
 		case 'generate_component': {
@@ -595,20 +694,17 @@ ${indented}
 	let { title = 'Card Title', description = '${desc || 'Card summary text'}', children } = $props();
 </script>
 
-<article class="card"${elevation !== 'none' ? ' data-elevated' : ''}>
-	<div class="row ycenter xbetween">
-		<h3 class="text-lg">{title}</h3>
+<article class="card box gap-sm pad-md surface border"${elevation !== 'none' ? ' data-elevated' : ''}>
+	<div class="row ycenter xbetween gap-sm">
+		<h3 class="text-lg weight-600 m-0">{title}</h3>
 		<span class="badge">Active</span>
 	</div>
-	<p class="body muted">{description}</p>
+	<p class="text-sm text-secondary">{description}</p>
 	{#if children}
 		{@render children()}
 	{/if}
 </article>
-
-<style lang="sass">
-	@use '$lib/styles/fractals' as *
-</style>`;
+`;
 					break;
 
 				case 'panel':
@@ -616,20 +712,17 @@ ${indented}
 	let { heading = 'Panel Heading', children } = $props();
 </script>
 
-<section class="panel">
-	<header class="row ycenter xbetween">
-		<h2 class="text-xl">{heading}</h2>
+<section class="panel box gap-md pad-md">
+	<header class="row ycenter xbetween gap-sm">
+		<h2 class="text-xl weight-600 m-0">{heading}</h2>
 	</header>
-	<div class="box gap-s">
+	<div class="box gap-sm">
 		{#if children}
 			{@render children()}
 		{/if}
 	</div>
 </section>
-
-<style lang="sass">
-	@use '$lib/styles/fractals' as *
-</style>`;
+`;
 					break;
 
 				case 'button':
@@ -644,10 +737,7 @@ ${indented}
 		Action
 	{/if}
 </button>
-
-<style lang="sass">
-	@use '$lib/styles/fractals' as *
-</style>`;
+`;
 					break;
 
 				case 'badge':
@@ -658,10 +748,7 @@ ${indented}
 <span class="badge" data-status={variant}>
 	{label}
 </span>
-
-<style lang="sass">
-	@use '$lib/styles/fractals' as *
-</style>`;
+`;
 					break;
 
 				default:
@@ -669,19 +756,11 @@ ${indented}
 	let { children } = $props();
 </script>
 
-<div class="custom-container">
+<div class="box gap-sm pad-md surface border radius-md">
 	{#if children}
 		{@render children()}
 	{/if}
-</div>
-
-<style lang="sass">
-	@use '$lib/styles/fractals' as *
-
-	.custom-container
-		+surface(surface, m, 16)
-		+stack(s)
-</style>`;
+</div>`;
 					break;
 			}
 
@@ -699,30 +778,37 @@ ${indented}
 			const code = (args.code as string) || '';
 			const diagnostics: Array<{ line?: number; severity: 'error' | 'warning' | 'info'; message: string }> = [];
 
-			const legacyClassPatterns = [
-				{ regex: /\bgap\d+\b/g, name: 'gapN (e.g. gap8)', replacement: '.gap-xs / .gap-s or +gap(N)' },
-				{ regex: /\bpad\d+\b/g, name: 'padN (e.g. pad16)', replacement: '.pad-s or +pad(N)' },
-				{ regex: /\bw100\b/g, name: 'w100', replacement: '.wfull or +w(100%)' },
-				{ regex: /\bh100\b/g, name: 'h100', replacement: '.hfull or +h(100%)' },
-				{ regex: /\bmin-w-0\b/g, name: 'min-w-0', replacement: '.min0' },
-				{ regex: /\bclass="[^"]*\bstack\b[^"]*"/g, name: 'class="stack"', replacement: '+stack() in SASS (no markup class)' },
-				{ regex: /\bclass="[^"]*\bcluster\b[^"]*"/g, name: 'class="cluster"', replacement: '+cluster() in SASS (no markup class)' },
-				{ regex: /\bclass="[^"]*\bappshell\b[^"]*"/g, name: 'class="appshell"', replacement: '.app-shell' }
-			];
-
-			for (const p of legacyClassPatterns) {
-				if (p.regex.test(code)) {
-					diagnostics.push({
-						severity: 'error',
-						message: `Found legacy v1 pattern "${p.name}". In fractalstyler2 use: ${p.replacement}.`
-					});
+			// The failure mode worth catching is an invented class, not a legacy one.
+			const INVENTED = /class="([^"]*)"/g
+			let m: RegExpExecArray | null
+			while ((m = INVENTED.exec(code)) !== null) {
+				for (const cls of m[1].split(/\s+/).filter(Boolean)) {
+					if (cls.includes('{') || cls.includes('$')) continue;
+					const known =
+						REGISTRY.some((e) => e.class.split('.').filter(Boolean).includes(cls)) ||
+						/^(gap|rgap|cgap|pad|marg|radius|w|h|square|text|weight|clamp|grid|frame)-/.test(cls) ||
+						['open', 'active', 'checked', 'primary', 'ghost', 'is-icon'].includes(cls);
+					if (!known) {
+						diagnostics.push({
+							severity: 'error',
+							message: `Unknown class ".${cls}". It is not in the registry. Compose from existing classes — call list_fractals — or check docs/13-cookbook.md for the pattern you are building.`
+						});
+					}
 				}
+			}
+
+			if (/<style/.test(code)) {
+				diagnostics.push({
+					severity: 'error',
+					message:
+						'Component <style> block found. Compose in markup instead; the registry covers nearly every pattern (docs/13-cookbook.md).'
+				});
 			}
 
 			if (/padding:\s*\d+px/i.test(code) || /gap:\s*\d+px/i.test(code)) {
 				diagnostics.push({
 					severity: 'warning',
-					message: 'Hardcoded px values detected in CSS. Prefer token resolvers like +gap(s) or +pad(m).'
+					message: 'Hardcoded px values in CSS. Compose .gap-sm / .pad-md in the markup instead — or a literal .gap-18 if the exact value is load-bearing.'
 				});
 			}
 
@@ -746,13 +832,15 @@ ${indented}
 		}
 
 		case 'list_fractals': {
-			const tier = (args.tier as string) || 'all';
-			if (tier === 'all') {
-				return { content: [{ type: 'text', text: JSON.stringify(FRACTAL_CATALOG, null, 2) }] };
+			const layer = (args.layer as string) || 'all';
+			if (REGISTRY.length === 0) {
+				throw new Error(
+					'Class registry not found. registry.json ships with the package; run `npm run registry` if working from source.'
+				);
 			}
-			return {
-				content: [{ type: 'text', text: JSON.stringify({ [tier]: (FRACTAL_CATALOG as any)[tier] || [] }, null, 2) }]
-			};
+			const payload =
+				layer === 'all' ? FRACTAL_CATALOG : { [layer]: FRACTAL_CATALOG[layer] ?? [] };
+			return { content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }] };
 		}
 
 		default:
@@ -774,8 +862,8 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
 			},
 			{
 				uri: 'fractalstyler2://fractals',
-				name: 'Fractal Mixin Catalog',
-				description: 'Catalog of atom and molecule mixins, signatures, and descriptions.',
+				name: 'Class Registry',
+				description: 'The public API: every composable class, grouped by layer L0-L5, with the CSS it applies and its source file.',
 				mimeType: 'application/json'
 			},
 			{
@@ -841,7 +929,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
 		prompts: [
 			{
 				name: 'design_system_review',
-				description: 'Audit and refactor a component or screen to follow fractalstyler2 SASS mixin rules.'
+				description: 'Audit and refactor a component or screen to compose from the fractalstyler2 class registry.'
 			},
 			{
 				name: 'generate_ui',
@@ -865,7 +953,7 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
 					role: 'user',
 					content: {
 						type: 'text',
-						text: `Please review the following code and refactor it into idiomatic fractalstyler2 Svelte 5 + indented SASS (.sass):\n\n${GUIDELINES}`
+						text: `Review the following code and refactor it to compose from the fractalstyler2 class registry in the markup. Remove stylesheet declarations the registry already covers; do not introduce new class names. Call list_fractals if unsure of a class:\n\n${GUIDELINES}`
 					}
 				}
 			]
@@ -880,7 +968,7 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
 					role: 'user',
 					content: {
 						type: 'text',
-						text: `Generate a responsive UI component using Svelte 5 runes ($props, $state) and scoped indented SASS with fractal mixins (+surface, +stack, +cluster, +cols). Adhere to the golden rules:\n\n${GUIDELINES}`
+						text: `Generate a responsive UI component using Svelte 5 runes ($props, $state), composed entirely from fractalstyler2 registry classes in the markup. Do not write a style block and do not invent class names — call list_fractals if unsure. Adhere to the golden rules:\n\n${GUIDELINES}`
 					}
 				}
 			]

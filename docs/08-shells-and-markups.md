@@ -176,7 +176,7 @@ Fractalstyler2 includes native classes for drawers, modals, popovers, and accord
 ```html
 <dialog class="dialog" open={isDialogOpen}>
   <div class="box gap-md pad-md">
-    <h3 class="text-md weight-600 m-0">Confirm Action</h3>
+    <h3 class="text-md weight-600 marg-0">Confirm Action</h3>
     <p class="text-sm text-secondary">Are you sure you want to proceed?</p>
     <div class="row ycenter xright gap-2xs">
       <button class="button ghost">Cancel</button>
@@ -223,7 +223,7 @@ Fractalstyler2 includes native classes for drawers, modals, popovers, and accord
 The `.hero` class is documented sugar for a centered, spacious landing section (`.box.ycenter` + `gap-lg` + `pad-y-xl`):
 
 ```html
-<section class="hero text-center">
+<section class="hero">
   <span class="badge">Announcing v2.0</span>
   <h1 class="text-4xl weight-700">Design System for Modern Software</h1>
   <p class="text-lg text-secondary prose">

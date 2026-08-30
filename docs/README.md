@@ -11,7 +11,11 @@ updated: 2026-08-30
 
 Welcome to the **Fractalstyler2** design system documentation. Every style unit in this system is a modular fractal: unitary tokens, dimensions, and container classes that compose into higher layers while retaining mathematical harmony and responsiveness.
 
-Available as a **scaffolder** (`npx fractalstyler2 init`) and as a **direct package dependency** (`import 'fractalstyler2/styles'`).
+Available three ways, all from one source:
+
+- **Plain CSS** — `npx fractalstyler2 init --css`, or `import 'fractalstyler2/css'`. No toolchain.
+- **Editable SASS** — `npx fractalstyler2 init`. Scaffolds the partials so you can retune the generators.
+- **Direct dependency** — `import 'fractalstyler2/styles'` for the SASS entry, `'fractalstyler2/css'` for the compiled one.
 
 ---
 
@@ -20,7 +24,7 @@ Available as a **scaffolder** (`npx fractalstyler2 init`) and as a **direct pack
 | Chapter | Document | What It Teaches |
 |:---|:---|:---|
 | **01** | [Introduction](01-introduction.md) | The fractal mental model ($L0 \to L5$), philosophy, and design principles. |
-| **02** | [Getting Started](02-getting-started.md) | Installation, SvelteKit configuration, and Fractalthemer integration. |
+| **02** | [Getting Started](02-getting-started.md) | Installation (CSS or SASS), SvelteKit configuration, themes and preset runtime. |
 | **03** | [Structure & Hierarchy](03-structure.md) | Directory anatomy, the canonical numbered physical scale, and cascade order. |
 | **04** | [Tokens & Theming](04-tokens.md) | The 30 semantic colors, fluid Utopia type and space scales, and dark/light modes. |
 | **05** | [Dimensions & Spacing](05-dimensions.md) | Level 1 space families (gaps, pads, margins), literal pixel utilities, and `-mob`/`-desk` bands. |
@@ -30,7 +34,7 @@ Available as a **scaffolder** (`npx fractalstyler2 init`) and as a **direct pack
 | **09** | [Visuals & Interactions](09-visuals-and-interactions.md) | Level 5 bare surfaces, text inks, borders, typography, button quartet, and form inputs. |
 | **10** | [Presets & Runtime Tuning](10-presets.md) | The 4 preset axes (Layout, Shape, Color, Motion), Svelte 5 runtime state, and UI pickers. |
 | **11** | [MCP Server](11-mcp-server.md) | Model Context Protocol server tools (`compile_fractals`, `snap_to_tokens`, `validate_recipe`). |
-| **12** | [Agent Plugin & Coding Skills](12-agent-plugin.md) | `agent-plugins.org` architecture, bundled agent skills (`fractal-styler`, `style-migration`), and agent golden rules. |
+| **12** | [Agent Plugin & Coding Skills](12-agent-plugin.md) | `agent-plugins.org` architecture, the bundled `fractal-styler` skill, and agent golden rules. |
 | **13** | [Zero-SASS Cookbook & Recipe Gallery](13-cookbook.md) | Real-world UI patterns (segmented controls, tabs, modals, search) built with pure Fractalstyler2. |
 
 ---

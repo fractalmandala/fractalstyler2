@@ -59,7 +59,26 @@ Available fluid token steps: `3xs`, `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, 
 
 ## 2. Literal Pixel Utilities
 
-When an interface requires an exact, non-fluid pixel dimension (for example, a 16px icon box or a 1px hairline border), literal utilities emit values directly in pixels from the configured utility range (`1` to `256`):
+When an interface requires an exact, non-fluid pixel dimension (for example, a 16px icon box or a 1px hairline border), literal utilities emit exact pixel values from a discrete ladder:
+
+```
+0, 1, 2, 4, 6, 8, 12, then every multiple of 8
+```
+
+Fine at the bottom, where interfaces genuinely need 1px and 2px precision;
+coarse above, because nothing is served by `.gap-137`.
+
+The ladder stops at different heights per family, because the families are not
+alike:
+
+| Families | Ceiling | Why |
+|:---|:---|:---|
+| `gap`, `pad`, `marg` | **64px** | 24 of the 28 classes emitted per rung. Large spacing is the preset steps' job — `--space-3xl` is already ~120px. |
+| `radius` | **64px** | `.radius-full` already handles pills, and the shape presets top out around 32px. A 512px corner is not a corner. |
+| `w`, `h`, `square` | **512px** | A 512px width is an ordinary sidebar. |
+
+Tune with `$literal-fine`, `$literal-step`, `$literal-max`,
+`$literal-space-max` and `$literal-radius-max` in `_01_config.sass`.
 
 ```html
 <!-- Exact 12px gap, 16px padding, 8px radius -->
@@ -68,14 +87,14 @@ When an interface requires an exact, non-fluid pixel dimension (for example, a 1
 </div>
 ```
 
-| Utility Pattern | Output Range | Generated CSS |
+| Utility Pattern | Values | Generated CSS |
 |:---|:---|:---|
-| `.gap-{N}`, `.rgap-{N}`, `.cgap-{N}` | 1–256 | `gap: {N}px`, `row-gap: {N}px`, etc. |
-| `.pad-{N}`, `.pad-x-{N}`, `.pad-y-{N}` | 1–256 | `padding: {N}px`, `padding-inline: {N}px` |
-| `.marg-{N}` / `.marg--{N}` | 1–256 | `margin: {N}px` / `margin: -{N}px` |
-| `.radius-{N}` | 0–256 | `border-radius: {N}px` (`.radius-0` is the reset) |
-| `.w-{N}`, `.h-{N}` | 1–256 | `width: {N}px`, `height: {N}px` |
-| `.square-{N}` | 1–256 | `width: {N}px; height: {N}px` |
+| `.gap-{N}`, `.rgap-{N}`, `.cgap-{N}` | ladder | `gap: {N}px`, `row-gap: {N}px`, etc. |
+| `.pad-{N}`, `.pad-x-{N}`, `.pad-y-{N}` | ladder | `padding: {N}px`, `padding-inline: {N}px` |
+| `.marg-{N}` / `.marg--{N}` | ladder | `margin: {N}px` / `margin: -{N}px` |
+| `.radius-{N}` | ladder | `border-radius: {N}px` (`.radius-0` is the reset) |
+| `.w-{N}`, `.h-{N}` | ladder | `width: {N}px`, `height: {N}px` |
+| `.square-{N}` | ladder | `width: {N}px; height: {N}px` |
 
 ---
 

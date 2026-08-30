@@ -3,7 +3,7 @@ id: 12-agent-plugin
 title: Agent Plugin & Coding Skills
 type: design
 tags: [agent-plugin, skills, ai-agents, automation, opencode, codex, claude]
-summary: Reference guide for the Fractalstyler2 Agent Plugin, bundled coding skills (fractal-styler, style-migration), and automated design system integration for AI agents.
+summary: Reference guide for the Fractalstyler2 Agent Plugin, the bundled fractal-styler skill, and automated design system integration for AI agents.
 updated: 2026-08-30
 ---
 
@@ -17,17 +17,12 @@ Fractalstyler2 is built from the ground up for the agentic era, fully conforming
 
 The plugin includes two core agent skills located under `skills/`:
 
-### 1. `fractal-styler`
-Provides autonomous agents with comprehensive rules and recipes for authoring new Svelte 5 components and layouts:
-- **Token Discipline**: Prevents agents from introducing arbitrary pixel measurements or foreign custom properties.
-- **Semantic Layering**: Guides composition from L1 dimensions up to L4 canonical shells.
-- **Svelte 5 Runes Integration**: Combines `$state`, `$derived`, and `$props` with Fractalstyler2 markup classes.
-
-### 2. `style-migration`
-Guides automated refactoring of legacy stylesheets, Tailwind utility classes, or older CSS into idiomatic Fractalstyler2 recipes:
-- Replaces legacy JIT utilities (`gap16`, `pad24`, `w100`) with token-routed classes (`.gap-sm`, `.pad-md`, `.wfull`).
-- Refactors utility class soup into clean semantic container recipes.
-- Migrates old layout abstractions into the canonical L4 shells.
+### `fractal-styler`
+The one bundled skill. It gives an agent the composition discipline the system depends on:
+- **The prohibition**: no new class names, anywhere. Compose from the registry in the markup.
+- **Token discipline**: no arbitrary pixel measurements, no foreign custom properties.
+- **Semantic layering**: composition from L1 dimensions up to the canonical L4 shells.
+- **Two generated references**: `references/fractals.md` (every class) and `references/tokens.md` (every token), both emitted from the stylesheet so they cannot go stale.
 
 ---
 
@@ -66,7 +61,7 @@ Agents running in Codex or Cursor can query MCP tools (`get_design_tokens`, `com
 When generating or editing styles in a Fractalstyler2 project, agents must adhere to the following contract:
 
 1. **Strict Token Resolution**: Never invent new CSS variables or hardcode hex colors when a semantic token exists in `_00_tokens.sass`.
-2. **Indented SASS Syntax**: Author new styles in single-tab indented `.sass` without curly braces or semicolons.
+2. **Compose in Markup**: The class registry is the API. Agents compose classes in the `class` attribute rather than authoring stylesheets — the same instruction holds whether the project took the CSS or the SASS path.
 3. **No Component `<style>` Blocks**: In strict project configurations, author styles in `_08_own.sass` or shared SASS modules rather than in-component style tags.
 4. **Zero Border-Radius Discipline**: When projects configure `data-shape="sharp"`, ensure all cards, modals, and buttons respect sharp $90^\circ$ corners.
 5. **Physical Alignment**: Use `.xleft`/`.xcenter`/`.xright` for horizontal alignment and `.ytop`/`.ycenter`/`.ybot` for vertical alignment.

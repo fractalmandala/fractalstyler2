@@ -36,9 +36,22 @@ function getStylesDir(): string {
 	);
 }
 
+/** The compiled CSS distribution, emitted by scripts/build-css.js at pack time. */
+function getCssDir(): string {
+	const HERE = dirname(fileURLToPath(import.meta.url));
+	const candidates = [join(HERE, 'css'), join(HERE, '..', 'css'), join(HERE, '..', 'dist', 'css')];
+	for (const candidate of candidates) {
+		if (existsSync(join(candidate, 'fractalstyler.css'))) return candidate;
+	}
+	throw new Error(
+		`fractalstyler2 CSS distribution not found. Searched in:\n  ${candidates.join('\n  ')}\n` +
+			`If you are working from a clone, run \`npm run css\` first.`
+	);
+}
+
 function printUsage(): void {
 	console.log(`
-fractalstyler2 — SASS fractal design system scaffolder & MCP server
+fractalstyler2 — composition styling system scaffolder & MCP server
 
 Usage:
   npx fractalstyler2 init [dest] [options]
@@ -47,35 +60,47 @@ Usage:
   npx fractalstyler2 mcp:export [dest]
 
 Commands:
-  init [dest]         Scaffold SASS partials into target directory (default: src/lib/styles)
+  init [dest]         Scaffold the design system into a target directory
+                      (default: src/lib/styles)
   mcp                 Start the Model Context Protocol (MCP) server for OpenDesign, Claude, etc.
   mcp:install         Automatically install MCP schemas & config into Antigravity & OpenCode
   mcp:export [dest]   Export static MCP tool schema JSON files to target directory (default: .mcp)
 
 Options:
+      --css           Scaffold the compiled stylesheet (no toolchain needed)
+      --sass          Scaffold the editable SASS partials (the default)
   -f, --force         Overwrite files if they already exist
   -h, --help          Show this help message
 
 Examples:
   npx fractalstyler2 init
+  npx fractalstyler2 init --css
+  npx fractalstyler2 init src/styles --css
   npx fractalstyler2 mcp
   npx fractalstyler2 mcp:install
   npx fractalstyler2 mcp:export ~/.gemini/antigravity/mcp/fractalstyler2
 `);
 }
 
-function init(destArg: string | undefined, force: boolean): void {
-	const dest = destArg ?? 'src/lib/styles';
+function init(destArg: string | undefined, force: boolean, flavour: 'sass' | 'css'): void {
+	const dest = destArg ?? (flavour === 'css' ? 'src/styles' : 'src/lib/styles');
 	const cwd = process.cwd();
 	const targetDir = resolve(cwd, dest);
 
 	console.log(`\n▲ fractalstyler2 init\n`);
-	console.log(`Scaffolding SASS design system into: ${dest}\n`);
+	console.log(`Scaffolding ${flavour === 'css' ? 'compiled CSS' : 'SASS'} into: ${dest}\n`);
 
 	mkdirSync(targetDir, { recursive: true });
 
-	const stylesDir = getStylesDir();
-	const files = readdirSync(stylesDir).filter((f: string) => f.endsWith('.sass'));
+	const stylesDir = flavour === 'css' ? getCssDir() : getStylesDir();
+	const files =
+		flavour === 'css'
+			? ['fractalstyler.css', 'fractalstyler.min.css']
+			: readdirSync(stylesDir).filter((f: string) => f.endsWith('.sass'));
+
+	// The L4 shells are only half a definition without their markup, so the
+	// contract ships alongside the stylesheet in both flavours.
+	const markups = join(getStylesDir(), 'canonical-markups.md');
 
 	let created = 0;
 	let overwritten = 0;
@@ -101,7 +126,51 @@ function init(destArg: string | undefined, force: boolean): void {
 		}
 	}
 
+	if (existsSync(markups)) {
+		const target = join(targetDir, 'canonical-markups.md');
+		if (!existsSync(target) || force) {
+			copyFileSync(markups, target);
+			console.log(`  \x1b[32mcreate\x1b[0m    ${relative(cwd, target)}`);
+			created++;
+		}
+	}
+
 	console.log(`\nDone: ${created} created, ${overwritten} overwritten, ${skipped} skipped.\n`);
+
+	if (flavour === 'css') {
+		const cssPath = `${dest}/fractalstyler.css`;
+		console.log(`Next steps:
+  1. Link the stylesheet once, in your document head:
+       <link rel="stylesheet" href="/${cssPath}" />
+
+     Or import it, if you have a bundler:
+       import '${cssPath}';
+
+  2. Compose in markup. The registry is the API — .box, .row and .grid
+     carry most layouts, with .gap-* / .pad-* for space and .surface /
+     .border for the dress:
+       <div class="row ycenter xbetween gap-sm pad-md surface border">
+         <span class="text-md weight-600">Title</span>
+         <button class="button primary">Continue</button>
+       </div>
+
+  3. Themes and presets need no JavaScript to work:
+       <html class="theme-night-dark" data-mode="dark" data-shape="sharp">
+
+     To let people change them at runtime, and to avoid a flash of the
+     wrong theme on load:
+       import { initPresets, setPreset, getPresetScript } from 'fractalstyler2/presets';
+
+  4. For page and application shells, copy the structures in the scaffolded
+     canonical-markups.md verbatim. The responsive behaviour — rails that
+     retract, drawers that open — follows from the markup, so an
+     approximation of it will not behave.
+
+  5. Before writing any custom CSS, check docs/13-cookbook.md. Nearly every
+     common pattern is already composable.
+`);
+		return;
+	}
 
 	const importPath = dest === 'src/lib/styles' ? '$lib/styles/index.sass' : `${dest}/index.sass`;
 	const ownPath = dest === 'src/lib/styles' ? '$lib/styles/_08_own.sass' : `${dest}/_08_own.sass`;
@@ -130,6 +199,7 @@ function init(destArg: string | undefined, force: boolean): void {
 const args = process.argv.slice(2);
 const showHelp = args.includes('-h') || args.includes('--help');
 const force = args.includes('-f') || args.includes('--force');
+const flavour: 'sass' | 'css' = args.includes('--css') ? 'css' : 'sass';
 const positional = args.filter((a: string) => !a.startsWith('-'));
 const command = positional[0];
 
@@ -172,8 +242,8 @@ if (showHelp || (command && !VALID_COMMANDS.includes(command))) {
 		console.log(`\nDone! fractalstyler2 MCP is ready.\n`);
 	});
 } else if (command === 'init') {
-	init(positional[1], force);
+	init(positional[1], force, flavour);
 } else {
 	// Default to init if no subcommand given (e.g., `npx fractalstyler2`)
-	init(positional[0], force);
+	init(positional[0], force, flavour);
 }

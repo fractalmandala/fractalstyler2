@@ -4,7 +4,7 @@
     "layer": "L1",
     "property": "gap: calc(var(--space-*) * var(--gap-scale)) | {N}px",
     "file": "_02_dimensions.sass",
-    "description": "Flex and grid gap spacing (presets: 3xs..3xl, literals: 1..256)",
+    "description": "Flex and grid gap spacing (presets: 3xs..3xl, literals: ladder to 64px)",
     "example": "<div class=\"gap-*\">"
   },
   {
@@ -164,7 +164,7 @@
     "layer": "L1",
     "property": "border-radius: {N}px",
     "file": "_02_dimensions.sass",
-    "description": "Corner border radius (0..256)",
+    "description": "Corner border radius (ladder to 64px; .radius-0 is the reset, .radius-full for pills)",
     "example": "<div class=\"radius-*\">"
   },
   {
@@ -180,7 +180,7 @@
     "layer": "L1",
     "property": "width: {N}px",
     "file": "_02_dimensions.sass",
-    "description": "Width in pixels (1..256)",
+    "description": "Width in pixels (ladder to 512px)",
     "example": "<div class=\"w-*\">"
   },
   {
@@ -188,7 +188,7 @@
     "layer": "L1",
     "property": "height: {N}px",
     "file": "_02_dimensions.sass",
-    "description": "Height in pixels (1..256)",
+    "description": "Height in pixels (ladder to 512px)",
     "example": "<div class=\"h-*\">"
   },
   {
@@ -196,7 +196,7 @@
     "layer": "L1",
     "property": "width: {N}px; height: {N}px",
     "file": "_02_dimensions.sass",
-    "description": "Square dimensions in pixels (1..256)",
+    "description": "Square dimensions in pixels (ladder to 512px)",
     "example": "<div class=\"square-*\">"
   },
   {
@@ -246,6 +246,390 @@
     "file": "_02_dimensions.sass",
     "description": "Viewport height fitted between header and footer",
     "example": "<div class=\"hfull-vh-fitted\">"
+  },
+  {
+    "class": ".frame-16-9",
+    "layer": "L3",
+    "property": "aspect-ratio: 16 / 9",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (16/9)",
+    "example": "<div class=\"frame-16-9\">"
+  },
+  {
+    "class": ".frame-9-16",
+    "layer": "L3",
+    "property": "aspect-ratio: 9 / 16",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (9/16)",
+    "example": "<div class=\"frame-9-16\">"
+  },
+  {
+    "class": ".frame-4-3",
+    "layer": "L3",
+    "property": "aspect-ratio: 4 / 3",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (4/3)",
+    "example": "<div class=\"frame-4-3\">"
+  },
+  {
+    "class": ".frame-3-4",
+    "layer": "L3",
+    "property": "aspect-ratio: 3 / 4",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (3/4)",
+    "example": "<div class=\"frame-3-4\">"
+  },
+  {
+    "class": ".frame-3-2",
+    "layer": "L3",
+    "property": "aspect-ratio: 3 / 2",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (3/2)",
+    "example": "<div class=\"frame-3-2\">"
+  },
+  {
+    "class": ".frame-2-3",
+    "layer": "L3",
+    "property": "aspect-ratio: 2 / 3",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (2/3)",
+    "example": "<div class=\"frame-2-3\">"
+  },
+  {
+    "class": ".frame-1-1",
+    "layer": "L3",
+    "property": "aspect-ratio: 1 / 1",
+    "file": "_04_layouts.sass",
+    "description": "Aspect-ratio media frame (1/1)",
+    "example": "<div class=\"frame-1-1\">"
+  },
+  {
+    "class": ".theme-light-default",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-light-default\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-himalaya-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-himalaya-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-editorial-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-editorial-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-space-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-space-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-sun-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-sun-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-monochrono-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-monochrono-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-molly-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-molly-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-malana-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-malana-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-coresync-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-coresync-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-studio-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-studio-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-matcha-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-matcha-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-sakura-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-sakura-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-nordic-frost-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-nordic-frost-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-desert-dune-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-desert-dune-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-lavender-mist-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-lavender-mist-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-botanical-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-botanical-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-clay-studio-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-clay-studio-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-solaris-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-solaris-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-cyberpunk-day-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-cyberpunk-day-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-copper-patina-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-copper-patina-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-dracula-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-dracula-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-lagoona-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-lagoona-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-frozen-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-frozen-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-night-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-night-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-inkworm-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-inkworm-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-monochrono-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-monochrono-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-fouram-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-fouram-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-wintercame-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-wintercame-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-sun-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-sun-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-console-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-console-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-dracula-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-dracula-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-catppuccin-mocha",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-catppuccin-mocha\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-nord-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-nord-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-gruvbox-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-gruvbox-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-onedark-pro",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-onedark-pro\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-rose-pine-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-rose-pine-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-midnight-emerald-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-midnight-emerald-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-obsidian-crimson-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-obsidian-crimson-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-synthwave-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-synthwave-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-deep-ocean-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-deep-ocean-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-amethyst-void-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-amethyst-void-dark\" data-mode=\"dark\">"
   },
   {
     "class": ".box",
@@ -872,6 +1256,22 @@
     "example": "<div class=\"page-split\">"
   },
   {
+    "class": ".page-main",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .page-split — see canonical-markups.md",
+    "example": "<div class=\"page-main\">"
+  },
+  {
+    "class": ".page-sidebar",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .page-split — see canonical-markups.md",
+    "example": "<div class=\"page-sidebar\">"
+  },
+  {
     "class": ".drawer",
     "layer": "L4",
     "property": "",
@@ -934,6 +1334,14 @@
     "file": "_05_shells.sass",
     "description": ".accordion-item component / container",
     "example": "<div class=\"accordion-item\">"
+  },
+  {
+    "class": ".accordion-content",
+    "layer": "L4",
+    "property": "",
+    "file": "_05_shells.sass",
+    "description": "Required child of .accordion-item — see canonical-markups.md",
+    "example": "<div class=\"accordion-content\">"
   },
   {
     "class": ".accordion-item.open",

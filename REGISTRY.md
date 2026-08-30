@@ -44,6 +44,54 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .full                    | L1 | width: 100%; height: 100%                                  | _02_dimensions.sass    | <div class="full">
 .hfull-vh                | L1 | min-height: 100vh                                          | _02_dimensions.sass    | <div class="hfull-vh">
 .hfull-vh-fitted         | L1 | min-height: calc(100vh - var(--header-height) - var(--footer-height)) | _02_dimensions.sass    | <div class="hfull-vh-fitted">
+.frame-16-9              | L3 | aspect-ratio: 16 / 9                                       | _04_layouts.sass       | <div class="frame-16-9">
+.frame-9-16              | L3 | aspect-ratio: 9 / 16                                       | _04_layouts.sass       | <div class="frame-9-16">
+.frame-4-3               | L3 | aspect-ratio: 4 / 3                                        | _04_layouts.sass       | <div class="frame-4-3">
+.frame-3-4               | L3 | aspect-ratio: 3 / 4                                        | _04_layouts.sass       | <div class="frame-3-4">
+.frame-3-2               | L3 | aspect-ratio: 3 / 2                                        | _04_layouts.sass       | <div class="frame-3-2">
+.frame-2-3               | L3 | aspect-ratio: 2 / 3                                        | _04_layouts.sass       | <div class="frame-2-3">
+.frame-1-1               | L3 | aspect-ratio: 1 / 1                                        | _04_layouts.sass       | <div class="frame-1-1">
+.theme-light-default     | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-light-default" data-mode="light">
+.theme-himalaya-light    | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-himalaya-light" data-mode="light">
+.theme-editorial-light   | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-editorial-light" data-mode="light">
+.theme-space-light       | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-space-light" data-mode="light">
+.theme-sun-light         | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-sun-light" data-mode="light">
+.theme-monochrono-light  | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-monochrono-light" data-mode="light">
+.theme-molly-light       | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-molly-light" data-mode="light">
+.theme-malana-light      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-malana-light" data-mode="light">
+.theme-coresync-light    | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-coresync-light" data-mode="light">
+.theme-studio-light      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-studio-light" data-mode="light">
+.theme-matcha-light      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-matcha-light" data-mode="light">
+.theme-sakura-light      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-sakura-light" data-mode="light">
+.theme-nordic-frost-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-nordic-frost-light" data-mode="light">
+.theme-desert-dune-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-desert-dune-light" data-mode="light">
+.theme-lavender-mist-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-lavender-mist-light" data-mode="light">
+.theme-botanical-light   | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-botanical-light" data-mode="light">
+.theme-clay-studio-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-clay-studio-light" data-mode="light">
+.theme-solaris-light     | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-solaris-light" data-mode="light">
+.theme-cyberpunk-day-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-cyberpunk-day-light" data-mode="light">
+.theme-copper-patina-light | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-copper-patina-light" data-mode="light">
+.theme-dracula-light     | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-dracula-light" data-mode="light">
+.theme-lagoona-dark      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-lagoona-dark" data-mode="dark">
+.theme-frozen-dark       | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-frozen-dark" data-mode="dark">
+.theme-night-dark        | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-night-dark" data-mode="dark">
+.theme-inkworm-dark      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-inkworm-dark" data-mode="dark">
+.theme-monochrono-dark   | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-monochrono-dark" data-mode="dark">
+.theme-fouram-dark       | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-fouram-dark" data-mode="dark">
+.theme-wintercame-dark   | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-wintercame-dark" data-mode="dark">
+.theme-sun-dark          | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-sun-dark" data-mode="dark">
+.theme-console-dark      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-console-dark" data-mode="dark">
+.theme-dracula-dark      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-dracula-dark" data-mode="dark">
+.theme-catppuccin-mocha  | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-catppuccin-mocha" data-mode="light">
+.theme-nord-dark         | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-nord-dark" data-mode="dark">
+.theme-gruvbox-dark      | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-gruvbox-dark" data-mode="dark">
+.theme-onedark-pro       | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-onedark-pro" data-mode="light">
+.theme-rose-pine-dark    | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-rose-pine-dark" data-mode="dark">
+.theme-midnight-emerald-dark | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-midnight-emerald-dark" data-mode="dark">
+.theme-obsidian-crimson-dark | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-obsidian-crimson-dark" data-mode="dark">
+.theme-synthwave-dark    | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-synthwave-dark" data-mode="dark">
+.theme-deep-ocean-dark   | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-deep-ocean-dark" data-mode="dark">
+.theme-amethyst-void-dark | L0 | 22 colour tokens                                           | _00_themes.sass        | <html class="theme-amethyst-void-dark" data-mode="dark">
 .box                     | L2 | .box component / container                                 | _03_containers.sass    | <div class="box">
 .box.xcenter             | L2 | Modifier for .box                                          | _03_containers.sass    | <div class="box.xcenter">
 .box.xleft               | L2 | Modifier for .box                                          | _03_containers.sass    | <div class="box.xleft">
@@ -122,6 +170,8 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .tab-trigger.active      | L4 | Modifier for .tab-trigger                                  | _05_shells.sass        | <div class="tab-trigger.active">
 .page-shell              | L4 | .page-shell component / container                          | _05_shells.sass        | <div class="page-shell">
 .page-split              | L4 | .page-split component / container                          | _05_shells.sass        | <div class="page-split">
+.page-main               | L4 | Required child of .page-split — see canonical-markups.md   | _05_shells.sass        | <div class="page-main">
+.page-sidebar            | L4 | Required child of .page-split — see canonical-markups.md   | _05_shells.sass        | <div class="page-sidebar">
 .drawer                  | L4 | .drawer component / container                              | _05_shells.sass        | <div class="drawer">
 .drawer.open             | L4 | Modifier for .drawer                                       | _05_shells.sass        | <div class="drawer.open">
 .dialog                  | L4 | .dialog component / container                              | _05_shells.sass        | <div class="dialog">
@@ -130,6 +180,7 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .popover.open            | L4 | Modifier for .popover                                      | _05_shells.sass        | <div class="popover.open">
 .accordion               | L4 | .accordion component / container                           | _05_shells.sass        | <div class="accordion">
 .accordion-item          | L4 | .accordion-item component / container                      | _05_shells.sass        | <div class="accordion-item">
+.accordion-content       | L4 | Required child of .accordion-item — see canonical-markups.md | _05_shells.sass        | <div class="accordion-content">
 .accordion-item.open     | L4 | > .accordion-content                                       | _05_shells.sass        | <div class="accordion-item.open">
 .accordion-trigger       | L4 | .accordion-trigger component / container                   | _05_shells.sass        | <div class="accordion-trigger">
 .hero                    | L4 | .hero component / container                                | _05_shells.sass        | <div class="hero">

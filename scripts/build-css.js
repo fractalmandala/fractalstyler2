@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+/**
+ * Compile the stylesheet to plain CSS for consumers with no SASS toolchain —
+ * which is most of them.
+ *
+ * The CSS distribution is a build artifact, never hand-edited: it is emitted
+ * from the same _00…_08 partials the SASS consumer scaffolds, so the two paths
+ * cannot describe different systems.
+ *
+ *   node scripts/build-css.js
+ */
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
+import * as sass from 'sass';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const entry = join(root, 'src/lib/styles/index.sass');
+const outDir = join(root, 'dist/css');
+
+mkdirSync(outDir, { recursive: true });
+
+const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
+const banner = (min) =>
+	min
+		? `/*! fractalstyler2 v${version} | MIT | compose in markup */\n`
+		: `/*!\n * fractalstyler2 v${version} — the compiled stylesheet.\n *\n * Generated from src/lib/styles/*.sass. Do not edit: your changes are\n * overwritten on the next build. To change the system, edit the SASS and\n * recompile, or override tokens in your own stylesheet after this one.\n *\n * MIT licensed. https://github.com/fractalmandala/fractalstyler2\n */\n`;
+
+const targets = [
+	{ file: 'fractalstyler.css', style: 'expanded' },
+	{ file: 'fractalstyler.min.css', style: 'compressed' }
+];
+
+const rows = [];
+for (const { file, style } of targets) {
+	const { css } = sass.compile(entry, { style, sourceMap: false });
+	const out = banner(style === 'compressed') + css + '\n';
+	writeFileSync(join(outDir, file), out, 'utf8');
+	rows.push([file, out.length, gzipSync(out).length]);
+}
+
+const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
+console.log('✔ CSS distribution built:');
+for (const [file, raw, gz] of rows) {
+	console.log(`    dist/css/${file.padEnd(22)} ${kb(raw).padStart(9)}   ${kb(gz).padStart(8)} gzipped`);
+}

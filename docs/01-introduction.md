@@ -16,7 +16,7 @@ From tokens and dimensions, to layouts and shells, to colors and themes, Fractal
 **Why another styling system? And why in SASS?!**
 
 1. I don't like Tailwind, period. And viable alternatives like StyleX, Bulma or Web Awesome don't do what I want my styling system to do.
-2. This entire system is usable in vanila CSS. SASS is a personal preference this system does not force on you.
+2. This entire system ships as plain CSS. SASS is how it is generated, and a personal preference this system does not force on you.
 
 The system is opinionated about a few things -
 
@@ -99,10 +99,17 @@ So Fractalstyler isn’t my system or *a* system. It’s actually your system, b
 
 **Fractalstyler** is primarily for those looking for alternatives to Tailwind, and seeking the perfect balance of a scaffold + harness. A scaffold gently lifts us up, making a climb easier. A harness holds us safe, keeping our ascent controlled. 
 
-A final point, on personal and subjective leanings. I have no idea why, with the elegant braces and semi-colons free existence of SASS, its not more common and why SCSS has wider adoption. And with all sorts of preprocessors and post-processors available these days, why does anyone write in vanilla CSS? 
+A final point, on personal and subjective leanings. I have no idea why, with the elegant braces and semi-colons free existence of SASS, its not more common and why SCSS has wider adoption. If I recommend anything to people, I tell them - get onto SASS!
 
-I know, I know. SCSS is just a CSS superset, aka, zero adoption friction. Copy-paste compatibilities. Tooling, linting, blah blah. If I recommend anything to people, I tell them - get onto SASS!
-But you won't, and that's okay. This system can easily roleplay that it doesn't have a SASS core at all. CSS is the way, proceed. 
+But you won't, and that's entirely okay - because there is nothing to adopt. **Fractalstyler ships as plain CSS.** One file, one `<link>`, no build step, no preprocessor, no config. Everything in this documentation - every class, every token, all 41 themes, all four preset axes - works exactly the same either way. Themes and presets are classes and attributes, so they hold up with JavaScript disabled too.
+
+SASS is not the product. It is how the stylesheet is *generated*, and the generators are the one thing taking the SASS path buys you: the literal ladder and the responsive seam are configurable before compiling. If you never want to retune those - and most people never will - take the CSS and never think about it again.
+
+```bash
+npx fractalstyler2 init --css
+```
+
+The compiled CSS is emitted from the very same partials the SASS scaffold gives you, so the two are byte-identical. There is no second-class path here.
 
 Oh, and since it's 2026 - actually you don't have to use this system at all, your agents do. So just point them to it (see [Agent Plugin](./12-agent-plugin.md)) and let them lead the way. Or ask them to orient you. Or use the bundled skills. 
 

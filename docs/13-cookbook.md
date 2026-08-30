@@ -70,7 +70,7 @@ Replaces custom `.search-bar` / `.search-input`:
 ### Metric / KPI Tile
 Replaces custom `.metric-tile`:
 ```html
-<div class="card box ycenter text-center gap-3xs pad-sm surface border">
+<div class="card box ycenter xcenter gap-3xs pad-sm surface border">
   <span class="text-2xl weight-700 text-primary">1,429</span>
   <span class="text-xs text-muted tt-u weight-500">Active Sessions</span>
 </div>
@@ -79,19 +79,19 @@ Replaces custom `.metric-tile`:
 ### 4-Column Responsive Metrics Grid
 ```html
 <div class="grid-4 gap-sm">
-  <div class="card box ycenter text-center gap-3xs pad-sm surface border">
+  <div class="card box ycenter xcenter gap-3xs pad-sm surface border">
     <span class="text-xl weight-600 text-primary">99.98%</span>
     <span class="text-xs text-muted">Availability</span>
   </div>
-  <div class="card box ycenter text-center gap-3xs pad-sm surface border">
+  <div class="card box ycenter xcenter gap-3xs pad-sm surface border">
     <span class="text-xl weight-600 text-success">14ms</span>
     <span class="text-xs text-muted">Avg Latency</span>
   </div>
-  <div class="card box ycenter text-center gap-3xs pad-sm surface border">
+  <div class="card box ycenter xcenter gap-3xs pad-sm surface border">
     <span class="text-xl weight-600 text-primary">8.4 GB</span>
     <span class="text-xs text-muted">Memory Usage</span>
   </div>
-  <div class="card box ycenter text-center gap-3xs pad-sm surface border">
+  <div class="card box ycenter xcenter gap-3xs pad-sm surface border">
     <span class="text-xl weight-600 text-theme">v2.4.0</span>
     <span class="text-xs text-muted">Build Target</span>
   </div>
@@ -158,13 +158,13 @@ Replaces custom `.dialog-card` / `.dialog-header`:
 <dialog class="dialog pad-0 surface border radius-md">
   <!-- Header Bar -->
   <header class="row ycenter xbetween pad-x-md pad-y-sm border-bottom">
-    <h3 class="text-sm weight-600 m-0">Confirm Deletion</h3>
+    <h3 class="text-sm weight-600 marg-0">Confirm Deletion</h3>
     <button class="button is-icon text-muted text-xs" aria-label="Close">✕</button>
   </header>
 
   <!-- Body Content -->
   <div class="box gap-sm pad-md">
-    <p class="text-sm text-secondary m-0">
+    <p class="text-sm text-secondary marg-0">
       Are you sure you want to delete this workspace? This action cannot be undone.
     </p>
   </div>
@@ -186,7 +186,7 @@ Replaces custom `.dropdown` / `.dropdown-item`:
   <div class="popover open box gap-3xs pad-3xs surface border shadow-md radius-sm">
     <button class="button ghost text-xs wfull xleft">Duplicate Document</button>
     <button class="button ghost text-xs wfull xleft">Export as PDF</button>
-    <hr class="divider m-0" />
+    <hr class="divider marg-0" />
     <button class="button ghost text-xs wfull xleft text-danger">Delete</button>
   </div>
 </div>

@@ -1,12 +1,15 @@
-// fractalstyler2 — a fractal-composition styling system for SvelteKit.
+// fractalstyler2 — a composition styling system.
 //
-// The product is the SASS in ./fractals and ./styles, surfaced as:
-//   import 'fractalstyler2/styles'          // emit the full stylesheet
-//   @use 'fractalstyler2/fractals' as *     // compose your own with the mixins
+// The product is the class registry, emitted as a stylesheet:
+//   import 'fractalstyler2/css'      // compiled CSS — the default path
+//   import 'fractalstyler2/styles'   // SASS source, if you want to retune it
 //
-// This entry ships runtime helpers and token metadata.
+// There are no authoring mixins and no SASS functions: compose in markup.
+// This entry ships runtime helpers and token metadata for Svelte consumers;
+// framework-free equivalents live at 'fractalstyler2/presets'.
 
-export const version = '0.3.0';
+import { version } from './version.js';
+export { version };
 
 export type Mode = 'light' | 'dark';
 
@@ -116,6 +119,12 @@ export {
 	initPresets,
 	setPreset,
 	getPresetScript,
+	setTheme,
+	getTheme,
+	toggleThemeMode,
+	themes,
+	themeIds,
+	type ThemeMeta,
 	type PresetAxis
 } from './presets.svelte.js';
 export { default as ShapePicker } from './components/ShapePicker.svelte';

@@ -1,6 +1,6 @@
 {
   "name": "css_to_fractals",
-  "description": "Converts raw CSS declarations (from Figma/OpenDesign inspection) into idiomatic fractalstyler2 SASS mixin recipes (+surface, +stack, +cluster, etc.).",
+  "description": "Converts raw CSS declarations (from Figma/OpenDesign inspection) into fractalstyler2 registry classes, composed in markup. Reports any declaration the registry does not cover.",
   "parameters": {
     "type": "object",
     "properties": {

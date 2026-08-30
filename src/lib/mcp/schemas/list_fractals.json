@@ -1,19 +1,21 @@
 {
   "name": "list_fractals",
-  "description": "Returns the catalog of all available atom & molecule mixins and layout templates with their signatures and descriptions.",
+  "description": "Returns the class registry \u2014 the public API of fractalstyler2. Every composable class with the CSS it applies and its source file, grouped by layer. Query this before naming any class.",
   "parameters": {
     "type": "object",
     "properties": {
-      "tier": {
+      "layer": {
         "type": "string",
         "enum": [
           "all",
-          "atoms",
-          "molecules",
-          "recipes",
-          "layouts"
+          "L0",
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5"
         ],
-        "description": "Filter by fractal tier (all, atoms, molecules, recipes, layouts)."
+        "description": "Filter by layer: L0 tokens, L1 dimensions, L2 containers, L3 layouts, L4 shells, L5 visuals & interactions."
       }
     }
   }

@@ -9,21 +9,25 @@ updated: 2026-08-30
 
 # Model Context Protocol (MCP) Server
 
-Fractalstyler2 includes a high-performance **Model Context Protocol (MCP)** server (`fractalstyler2-mcp`). The MCP server equips AI coding agents (such as Claude Code, Codex, Gemini Antigravity, and OpenCode) to query design tokens, compile indented SASS on the fly, snap raw pixel designs to token scales, and validate code against the design contract.
+Fractalstyler2 includes a high-performance **Model Context Protocol (MCP)** server (`fractalstyler2-mcp`). The MCP server equips AI coding agents (such as Claude Code, Codex, Gemini Antigravity, and OpenCode) to query the class registry and design tokens, snap raw pixel designs to token scales, translate inspected CSS into composed markup, and catch invented class names before they land.
 
 ---
 
 ## 1. Available MCP Tools
 
-### `compile_fractals`
-Compiles an indented SASS snippet using Fractalstyler2 mixins and tokens into valid, clean CSS:
+### `list_fractals`
+Returns the class registry — the public API — grouped by layer. Query this
+before naming any class you are not certain of:
 
 ```json
 {
-  "sassCode": "+card(surface, sm, 8)\n+stack(xs)\n.title\n  +type(lg)\n  +ink(primary)",
-  "className": "project-card"
+  "layer": "L2"
 }
 ```
+
+Accepts `all` or `L0`–`L5` (tokens, dimensions, containers, layouts, shells,
+visuals and interactions). Each entry carries the class, the CSS it applies,
+and its source file.
 
 ### `get_design_tokens`
 Returns structured JSON definitions for all token scales. Supports category filtering (`all`, `space`, `typography`, `radius`, `shadows`, `surfaces`, `ink`, `breakpoints`):
@@ -49,20 +53,35 @@ Takes arbitrary pixel values (e.g. from Figma or screenshot inspection) and calc
 - `gap`: `15px` $\rightarrow$ `--space-xs` (14–15px)
 - `padding`: `26px` $\rightarrow$ `--space-md` (27–30px)
 - `fontSize`: `19px` $\rightarrow$ `--text-md` (18–20px)
-- `radius`: `5px` $\rightarrow$ `6px` (`.radius-6`)
+- `radius`: `5px` $\rightarrow$ `4px` (`.radius-4`)
 
 ### `css_to_fractals`
-Converts raw CSS declarations into idiomatic Fractalstyler2 markup classes or indented SASS mixins:
+Converts raw CSS declarations into a composed class string, and reports any
+declaration the registry does not cover:
 
 ```json
 {
   "css": "display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 8px; background-color: #141824;"
 }
 ```
-**Output**: `class="box gap-sm pad-md radius-8 surface border"`
+**Output**:
+
+```
+Compose in markup:
+
+<div class="box gap-xs pad-md radius-8">
+
+Not covered by the registry:
+  background-color: #141824
+```
+
+Note what it refuses to guess. `16px` snaps to `.gap-xs` (14–15px) rather than
+`.gap-sm` (18–20px), and a raw hex is reported rather than mapped to a surface
+role — the tool will not invent a semantic it cannot verify.
 
 ### `generate_component`
-Generates boilerplate Svelte components or SASS blocks using canonical markups:
+Generates a Svelte 5 component composed entirely from registry classes. The
+output carries no style block — that is the expected outcome, not an omission:
 
 ```json
 {
@@ -73,10 +92,29 @@ Generates boilerplate Svelte components or SASS blocks using canonical markups:
 ```
 
 ### `validate_recipe`
-Scans a code snippet for design system violations (such as hardcoded hex colors, missing token variables, or arbitrary pixel gaps) and suggests token-compliant replacements.
+Scans markup for the failure modes that matter: class names that are not in
+the registry, component `<style>` blocks, and hardcoded pixel values.
 
-### `list_fractals`
-Returns the complete registry of available fractals, mixins, containers, layouts, and shell classes with usage signatures.
+```json
+{
+  "code": "<aside class=\"wiki-sidebar box gap-sm\">…</aside>"
+}
+```
+
+**Output**: an error naming `.wiki-sidebar` as absent from the registry, with a
+pointer to `list_fractals` and the cookbook.
+
+### `compile_fractals`
+Compiles an indented SASS snippet to CSS. The system exposes no authoring
+mixins, so this is for the rare custom declaration that genuinely does not
+compose — not the normal path:
+
+```json
+{
+  "sassCode": "border-image: linear-gradient(#000, #fff) 1",
+  "className": "gradient-edge"
+}
+```
 
 ---
 
@@ -103,8 +141,8 @@ Add to `mcp.json` or run the setup command:
 {
   "mcpServers": {
     "fractalstyler2": {
-      "command": "node",
-      "args": ["/Users/amrit/fractalmandala/fractalstyler2/dist/mcp/server.js"]
+      "command": "npx",
+      "args": ["-y", "fractalstyler2-mcp"]
     }
   }
 }

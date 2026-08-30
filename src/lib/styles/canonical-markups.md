@@ -3,7 +3,10 @@ title: Canonical Markups
 description: Source of truth for shell and layout markups
 ---
 
-> Transcribed from registry-v1.md (L4 ruling: "an L4 class without a canonical markup is an incomplete definition"). Implementation status is noted per section against `src/lib/styles/`.
+> An L4 class without a canonical markup is an incomplete definition: the
+> stylesheet cannot hold up its end alone. These are the structures the shell
+> classes in `_05_shells.sass` assume — copy them verbatim and the responsive
+> behaviour follows.
 
 ## 1 - Canonical App Shell and Children
 

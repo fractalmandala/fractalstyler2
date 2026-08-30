@@ -3,7 +3,57 @@ title: Getting Started
 description: Installation and setup.
 ---
 
-The recommended way is to scaffold the complete, editable SASS design system into your project's `src/lib/styles`:
+## Option A: Plain CSS
+
+If you have no SASS toolchain — which is most projects — take the compiled
+stylesheet. One file, no build step, nothing to configure:
+
+```bash
+npx fractalstyler2 init --css
+```
+
+That scaffolds `fractalstyler.css` (and a minified twin) plus
+`canonical-markups.md` into `src/styles`. Link it and start composing:
+
+```html
+<link rel="stylesheet" href="/src/styles/fractalstyler.css" />
+```
+
+Or, if you have a bundler and the package installed:
+
+```js
+import 'fractalstyler2/css';       // expanded
+import 'fractalstyler2/css/min';   // minified
+```
+
+Themes and the four preset axes work with no JavaScript at all — they are
+plain classes and attributes:
+
+```html
+<html class="theme-night-dark" data-mode="dark" data-shape="sharp">
+```
+
+To let people change them at runtime, and to stamp the saved choice before
+first paint so there is no flash of the wrong theme, there is a framework-free
+runtime at `fractalstyler2/presets`:
+
+```js
+import { initPresets, setPreset, cyclePreset, getPresetScript } from 'fractalstyler2/presets';
+
+initPresets();                  // apply what was saved
+setPreset('shape', 'sharp');    // change one axis
+cyclePreset('motion');          // step to the next value
+```
+
+You lose nothing structural by taking this path. The only thing SASS buys is
+the ability to retune the generators — the literal ladder and the responsive
+seam — before compiling.
+
+---
+
+## Option B: Editable SASS
+
+Scaffold the complete, editable SASS design system into your project's `src/lib/styles`:
 
 ```bash
 # npm
@@ -13,7 +63,7 @@ npx fractalstyler2 init
 pnpm --package=fractalstyler2 dlx fractalstyler2 init
 ```
 
-Install `sass` as a dev dependency if you haven't already:
+Only this path needs the preprocessor. Install `sass` as a dev dependency:
 
 ```bash
 pnpm add -D sass
@@ -21,18 +71,28 @@ pnpm add -D sass
 npm install -D sass
 ```
 
-## Option B: Direct Package Dependency
+## Option C: Direct Package Dependency
 
 If you prefer to import from `node_modules` without scaffolding files:
 
 ```bash
 pnpm add fractalstyler2
-pnpm add -D sass
+```
+
+```js
+import 'fractalstyler2/css';       // compiled — nothing else needed
+import 'fractalstyler2/css/min';   // minified
+```
+
+Or the SASS entry, which additionally needs `pnpm add -D sass`:
+
+```js
+import 'fractalstyler2/styles';
 ```
 
 ---
 
-## Option C: Install as an Agent Plugin (Codex, Claude, Gemini, OpenCode)
+## Option D: Install as an Agent Plugin (Codex, Claude, Gemini, OpenCode)
 
 `fractalstyler2` implements the [agent-plugins.org](https://agent-plugins.org/specification) standard. You can install it directly into your AI coding agent or design tool to enable design token queries, live SASS compilation, and automated component generation:
 
@@ -140,44 +200,52 @@ Should you use a class `sidebar-left` which you define as a flex in column direc
 
 ## Display Mode and Themes
 
-Fractalstyler's kindred package `fractalthemer` unlocks a whole new layer to the system - themes and backgrounds. To get started:
+**41 palettes ship with the system** — 21 light, 19 dark. They are plain classes
+on `<html>`, so the simplest version needs no JavaScript at all:
 
+```html
+<html class="theme-night-dark" data-mode="dark">
 ```
+
+Always pair the class with its `data-mode`. The colour preset's dark variants
+key off `prefers-color-scheme`, so a palette applied without its mode can end up
+tuned against the OS preference rather than against itself.
+
+### Switching at runtime
+
+```js
+import { setTheme, getTheme, themes, initPresets } from 'fractalstyler2/presets';
+
+themes;                          // [{ id: 'theme-night-dark', mode: 'dark' }, …]
+setTheme('theme-himalaya-light'); // swaps the class, sets data-mode, persists
+getTheme();                       // the active id, or null
+setTheme(null);                   // back to the plain mode defaults
+```
+
+`initPresets()` restores the saved palette and preset axes on load. For
+zero-flicker — no flash of the default palette before hydration — inject the
+inline head script, which reads the same storage synchronously before first
+paint:
+
+```svelte
+<svelte:head>
+  {@html `<script>${getPresetScript()}</script>`}
+</svelte:head>
+```
+
+This is the framework-free runtime; it works the same in a plain HTML page.
+
+### Going further: `fractalthemer`
+
+The 41 palettes cover the token contract. If you want more than colour —
+atmospheric GPU auras, CSS background patterns, gradient backdrops, a ready-made
+theme picker UI, and a studio for building custom palettes — the companion
+package `fractalthemer` adds that layer on top:
+
+```bash
 pnpm add fractalthemer
-# or
-npm install fractalthemer
 ```
 
-Then, import into your root layout:
-
-```
-<script lang="ts">
-	# fractalstyler2 existing import:
-	import '$lib/styles/index.sass';
-
-	# add:
-	import 'fractalthemer/styles.css';
-	import { ThemeScript, AuraBackground, ThemePicker } from 'fractalthemer';
-</script> 
-```
-
-Assuming your layout's outer container is app-shell, add ThemePicker, ThemeScript and AuraBackground:
-```
-<ThemeScript />
-<AuraBackground />
-<div class="appshell">
-  <header>
-    <!-- Drawer launcher & mode switcher -->
-    <ThemePicker />
-  </header>
-  <main>
-    {@render children()}
-  </main>
-</div>
-```
-
-ThemeScript injects a tiny synchronous script into `<head>` that reads localStorage (theme, background style, custom theme tokens, and the custom accent) and applies everything before first paint, ensuring zero-flicker. 
-
-Get going with modes and themes by reading the Fractalthemer documentation.
+It is genuinely optional. Themes work without it.
 
 [Next - Structure](./03-structure.md)

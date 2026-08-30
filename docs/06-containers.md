@@ -30,7 +30,7 @@ Level 2 (L2) fractals provide structure and flow for web interfaces. In Fractals
 
 <!-- Grid Matrix -->
 <div class="grid center pad-lg">
-  <div class="spinner"></div>
+  <span class="badge">Centred</span>
 </div>
 ```
 

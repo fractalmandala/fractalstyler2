@@ -87,7 +87,7 @@ Fractalstyler2 includes semantic container compositions that inherit shape and l
 ### Card (`.card`)
 ```html
 <article class="card border">
-  <h3 class="text-md weight-600 m-0">Card Title</h3>
+  <h3 class="text-md weight-600 marg-0">Card Title</h3>
   <p class="text-sm text-secondary">Card content automatically receives standard padding and gap.</p>
 </article>
 ```

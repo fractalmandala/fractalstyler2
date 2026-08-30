@@ -1,12 +1,12 @@
 {
   "name": "validate_recipe",
-  "description": "Lints a SASS snippet or Svelte component against fractalstyler2 golden rules (flags legacy v1 classes like gap8/pad16, hardcoded pixels, modifier classes).",
+  "description": "Lints markup against the golden rules. Flags class names that are not in the registry, component <style> blocks, and hardcoded pixel values.",
   "parameters": {
     "type": "object",
     "properties": {
       "code": {
         "type": "string",
-        "description": "The SASS or Svelte code to validate."
+        "description": "The Svelte or HTML markup to validate."
       }
     },
     "required": [
