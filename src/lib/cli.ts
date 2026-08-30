@@ -9,17 +9,31 @@ import { dirname, join, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
 
-function getTemplatesDir(): string {
+/**
+ * Where the scaffoldable partials live.
+ *
+ * These ARE the published stylesheet — `svelte-package` copies
+ * src/lib/styles into dist/styles, so `init` hands over the same files the
+ * package imports. There is deliberately no separate templates/ copy to
+ * drift out of sync.
+ *
+ * Resolves for both layouts: dist/cli.js -> dist/styles, and the in-repo
+ * src/lib/cli.ts -> src/lib/styles.
+ */
+function getStylesDir(): string {
 	const HERE = dirname(fileURLToPath(import.meta.url));
 	const candidates = [
-		join(HERE, '..', 'templates'),
-		join(HERE, '..', '..', 'templates'),
-		join(HERE, 'templates')
+		join(HERE, 'styles'),
+		join(HERE, '..', 'styles'),
+		join(HERE, '..', 'lib', 'styles')
 	];
 	for (const candidate of candidates) {
-		if (existsSync(candidate)) return candidate;
+		// index.sass is the marker: an empty or unrelated directory is not it.
+		if (existsSync(join(candidate, 'index.sass'))) return candidate;
 	}
-	throw new Error(`Templates directory not found. Searched in: ${candidates.join(', ')}`);
+	throw new Error(
+		`fractalstyler2 stylesheet source not found. Searched in:\n  ${candidates.join('\n  ')}`
+	);
 }
 
 function printUsage(): void {
@@ -60,8 +74,8 @@ function init(destArg: string | undefined, force: boolean): void {
 
 	mkdirSync(targetDir, { recursive: true });
 
-	const templatesDir = getTemplatesDir();
-	const files = readdirSync(templatesDir).filter((f: string) => f.endsWith('.sass'));
+	const stylesDir = getStylesDir();
+	const files = readdirSync(stylesDir).filter((f: string) => f.endsWith('.sass'));
 
 	let created = 0;
 	let overwritten = 0;
@@ -73,7 +87,7 @@ function init(destArg: string | undefined, force: boolean): void {
 
 		if (existsSync(targetFile)) {
 			if (force) {
-				copyFileSync(join(templatesDir, file), targetFile);
+				copyFileSync(join(stylesDir, file), targetFile);
 				console.log(`  \x1b[33moverwrite\x1b[0m ${relPath}`);
 				overwritten++;
 			} else {
@@ -81,7 +95,7 @@ function init(destArg: string | undefined, force: boolean): void {
 				skipped++;
 			}
 		} else {
-			copyFileSync(join(templatesDir, file), targetFile);
+			copyFileSync(join(stylesDir, file), targetFile);
 			console.log(`  \x1b[32mcreate\x1b[0m    ${relPath}`);
 			created++;
 		}
@@ -90,7 +104,7 @@ function init(destArg: string | undefined, force: boolean): void {
 	console.log(`\nDone: ${created} created, ${overwritten} overwritten, ${skipped} skipped.\n`);
 
 	const importPath = dest === 'src/lib/styles' ? '$lib/styles/index.sass' : `${dest}/index.sass`;
-	const fractalsPath = dest === 'src/lib/styles' ? '$lib/styles/fractals' : `${dest}/fractals`;
+	const ownPath = dest === 'src/lib/styles' ? '$lib/styles/_08_own.sass' : `${dest}/_08_own.sass`;
 
 	console.log(`Next steps:
   1. Import the stylesheet once globally (e.g. in src/routes/+layout.svelte):
@@ -98,14 +112,18 @@ function init(destArg: string | undefined, force: boolean): void {
          import '${importPath}';
        </script>
 
-  2. Compose your components with fractal mixins:
-       <style lang="sass">
-         @use '${fractalsPath}' as *
+  2. Compose in markup. The registry is the API — .box, .row and .grid
+     carry most layouts, with .gap-* / .pad-* for space and .surface /
+     .border for the dress:
+       <div class="row ycenter xbetween gap-sm pad-md surface border">
+         <span class="text-md weight-600">Title</span>
+         <button class="button primary">Continue</button>
+       </div>
 
-         .card
-           +surface(surface, s, 6)
-           +stack(s)
-       </style>
+  3. Before writing any custom class, check docs/13-cookbook.md — nearly
+     every common pattern is already composable. Keep
+       ${ownPath}
+     for what genuinely is not (third-party widget overrides, mostly).
 `);
 }
 

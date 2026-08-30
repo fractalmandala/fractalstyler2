@@ -1,7 +1,7 @@
 {
 	"name": "fractalstyler2",
-	"version": "0.5.1",
-	"description": "A fractal-composition styling system for SvelteKit — the class registry is the public API (composable fractal classes with preset and literal values), and mixins remain as internal generators.",
+	"version": "0.6.1",
+	"description": "A fractal-composition styling system for SvelteKit. The class registry is the public API (composable fractal classes with preset and literal values), and mixins remain as internal generators.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
 		"fractalstyler": "./dist/cli.js",
@@ -9,18 +9,19 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && npm run prepack",
+		"registry": "node scripts/update-registry.js",
+		"build": "npm run registry && vite build && npm run prepack",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "svelte-kit sync && svelte-package && chmod +x dist/cli.js && chmod +x dist/mcp/server.js && publint",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"prepack": "npm run registry && svelte-kit sync && svelte-package && chmod +x dist/cli.js && chmod +x dist/mcp/server.js && publint",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/validate-deck.js",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"validate:deck": "node scripts/validate-deck.js"
 	},
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"templates",
 		"skills",
 		"plugin.json",
 		"mcp.json"
@@ -38,7 +39,6 @@
 		},
 		"./styles": "./dist/styles/index.sass",
 		"./styles/*": "./dist/styles/*",
-		"./fractals": "./dist/styles/_fractals.sass",
 		"./tokens": "./dist/styles/_00_tokens.sass",
 		"./mcp": "./dist/mcp/server.js",
 		"./package.json": "./package.json"

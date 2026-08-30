@@ -1,10 +1,10 @@
 {
   "name": "fractalstyler2",
-  "version": "0.4.0",
+  "version": "0.6.1",
   "description": "Fractal-composition styling system and design token engine for SvelteKit and AI design tools (OpenDesign, Pencil, Cursor).",
   "author": {
     "name": "Amrit",
-    "url": "https://github.com/fractal-mandala"
+    "url": "https://github.com/fractalmandala"
   },
   "license": "MIT",
   "keywords": [
@@ -17,6 +17,6 @@
     "tokens",
     "fractals"
   ],
-  "homepage": "https://github.com/fractal-mandala/fractalstyler2",
-  "repository": "https://github.com/fractal-mandala/fractalstyler2"
+  "homepage": "https://github.com/fractalmandala/fractalstyler2",
+  "repository": "https://github.com/fractalmandala/fractalstyler2"
 }

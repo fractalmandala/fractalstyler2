@@ -1,6 +1,14 @@
 // ============================================================================
 // config — the builder knobs the Contract names. All !default: overridable at
-// compile time via `@use 'config' with (…)`, never edited in place.
+// compile time, never edited in place. The numbered filename is not a valid
+// Sass identifier, so a consumer MUST namespace the configuring load:
+//
+//   @use 'styles/01_config' as cfg with ($utility-range: (1, 64))
+//   @use 'styles/index' as *
+//
+// Configure before anything else loads 01_config, or Sass rejects it.
+// $utility-range is the one worth touching: 1–256 emits ~778 KB minified,
+// 1–64 emits ~241 KB, and the system without literals at all is ~75 KB.
 // ============================================================================
 
 // The responsive seam. Every loop-generated class takes -mob (below) and

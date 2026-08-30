@@ -22,11 +22,12 @@ description: Design, compose, and build UI components and page layouts using the
 
 ## Golden Rules for Agents
 
-1. **Never hardcode values that tokens cover**: Use `.gap-sm` / `+gap(sm)`, `+bg(surface)` instead of arbitrary pixel values.
-2. **Compose fractals; don't write raw CSS**: Raw CSS is strictly for unique lines that no fractal covers.
-3. **Visual toggles ride classes; semantics stay native**: `.open` / `.active` / `.elevated` for JS-toggled looks; `[disabled]`, `[aria-expanded]`, `:focus-visible` keep their native meaning.
-4. **Markup stays semantic**: Prefer `<article class="card">` over 20 nested utility classes.
-5. **Mobile-first**: Define base layout first, grow with `+at(md/lg/xl)` and `+cols()`.
+1. **Check the Zero-SASS Cookbook First**: Before declaring new custom classes in `_08_own.sass` or writing custom CSS, check `docs/13-cookbook.md`. Segmented controls (`.row.ycenter.shrink-0.pad-2.raised.border`), tab strips (`.tab-list.reel`), search bars, metrics, and modals can all be composed in HTML with 0 lines of custom CSS.
+2. **Never hardcode values that tokens cover**: Use `.gap-sm` / `+gap(sm)`, `.surface` / `.raised` instead of arbitrary pixel values or foreign hex colors.
+3. **Compose fractals; don't write raw CSS**: Raw CSS is strictly for unique lines that no fractal covers.
+4. **Visual toggles ride classes; semantics stay native**: `.open` / `.active` / `.elevated` for JS-toggled looks; `[disabled]`, `[aria-expanded]`, `:focus-visible` keep their native meaning.
+5. **Markup stays semantic**: Prefer clean tags (`<article class="card">`) over utility class soup.
+6. **Mobile-first**: Define base layout first, grow with `+at(md/lg/xl)` and `+cols()`.
 
 ---
 

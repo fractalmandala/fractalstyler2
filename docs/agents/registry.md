@@ -1,28 +1,31 @@
 ---
+id: registry
 title: Agent Command Registry
-description: Named, self-contained agent prompts that direct an agent to build pages, components, layouts, fractals, themes, and audits with fractalstyler2.
+type: design
+tags: [agents, commands, registry, prompts, workflows, ai]
+summary: Named, self-contained agent prompts that direct an AI agent to build pages, components, layouts, shells, and themes with Fractalstyler2.
+updated: 2026-08-30
 ---
 
 # Agent Command Registry
 
-Each entry is a **command**: a reusable prompt that directs an AI coding agent to perform standard design system tasks with `fractalstyler2`. `AGENTS.md` routes user requests to a command body. Hosts may wire these as slash commands (e.g. `/fs2:page`) or execute them directly during pairing sessions.
+Each entry is a **command**: a reusable prompt directing an AI coding agent to perform standard design system tasks with `fractalstyler2`. Hosts can execute these directly during pairing sessions or wire them as IDE slash commands.
 
-**Every command inherits the [Golden Rules & Invariants](#golden-rules).**
+**Every command inherits the [Golden Rules & UI Invariants](#golden-rules--ui-invariants).**
 
 ---
 
 ## Command Index
 
-| Command | Use when the user wants to… | Primary Docs |
-|---|---|---|
-| [`fs2:init`](#fs2init) | Scaffold SASS design system into a project | [03. Getting Started](../03-getting-started.md), [README](../../README.md) |
-| [`fs2:page`](#fs2page) | Build a whole page, route, or marketing shell | [03](../03-getting-started.md), [07](../07-components-and-layouts.md), [08](../08-recipes.md) |
-| [`fs2:component`](#fs2component) | Build a reusable component block with Svelte 5 runes | [04. Fractals Reference](../04-fractals-reference.md), [07](../07-components-and-layouts.md) |
-| [`fs2:layout`](#fs2layout) | Build a responsive page-layout template | [04](../04-fractals-reference.md), [07](../07-components-and-layouts.md) |
-| [`fs2:fractal`](#fs2fractal) | Add a new atom, molecule, or macro recipe mixin | [02. Structure](../02-structure.md), [04](../04-fractals-reference.md), [DEVELOPERS](../../DEVELOPERS.md) |
-| [`fs2:theme`](#fs2theme) | Tune tokens or create a named theme | [05. Tokens & Theming](../05-tokens-and-theming.md) |
-| [`fs2:refactor`](#fs2refactor) | Convert legacy CSS or utility-soup to fractal recipes | [01](../02-getting-started.md), [04](../04-fractals-reference.md), [06](../06-utilities.md) |
-| [`fs2:review`](#fs2review) | Audit markup and SASS for fractal idiom and UI invariants | [DESIGN.md](../../DESIGN.md), [01](../02-getting-started.md), [02](../02-structure.md) |
+| Command | Use when the user wants to… | Primary Documentation |
+|:---|:---|:---|
+| [`fs2:init`](#fs2init) | Scaffold SASS design system into a project | [02. Getting Started](../02-getting-started.md) |
+| [`fs2:page`](#fs2page) | Build a whole page, route, or marketing shell | [08. Shells & Canonical Markups](../08-shells-and-markups.md) |
+| [`fs2:component`](#fs2component) | Build a reusable component block with Svelte 5 runes | [06. Containers](../06-containers.md), [09. Visuals](../09-visuals-and-interactions.md) |
+| [`fs2:layout`](#fs2layout) | Build a responsive page-layout template or grid | [07. Layouts & Grids](../07-layouts.md) |
+| [`fs2:preset`](#fs2preset) | Tune Layout, Shape, Color, or Motion presets | [10. Presets & Runtime Tuning](../10-presets.md) |
+| [`fs2:refactor`](#fs2refactor) | Convert legacy CSS or utility soup to fractal recipes | [12. Agent Plugin & Skills](../12-agent-plugin.md) |
+| [`fs2:review`](#fs2review) | Audit markup and SASS for fractal idiom and UI invariants | [04. Tokens](../04-tokens.md), [08. Shells](../08-shells-and-markups.md) |
 
 ---
 
@@ -30,15 +33,14 @@ Each entry is a **command**: a reusable prompt that directs an AI coding agent t
 
 Applied to every command:
 
-1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 30 token contract in `_00_tokens.sass`.
-2. **Never hardcode values that tokens cover**: Route through resolvers (`+gap(sm)` / `.gap-sm`, `+radius(sm)`, `+bg(surface)`). Literals (`.gap-18`) are the sanctioned opt-out.
-3. **Compose fractals; avoid raw CSS**: In component `<style lang="sass">` blocks, compose existing atom/molecule mixins rather than writing ad-hoc CSS walls.
-4. **Reading Column Max Columns Law**: Any grid placed inside a reading column (`.docs-main`, `.center-column`, or container $\le 760\text{px}$) must **never exceed 2 columns** (`.grid-2` or `cols={2}`). 3 and 4-column grids are strictly reserved for full-width views (`.app-main`).
+1. **Strict 30-Token Contract**: Never introduce foreign CSS variables (`--card`, `--primary`, `--border-strong`). All surfaces, ink, borders, brand, and status feedback must resolve from the 30-token contract in `_00_tokens.sass`.
+2. **Never hardcode values that tokens cover**: Route through token-scale classes (`.gap-sm`, `.pad-md`, `.radius-8`, `.surface`, `.text-primary`). Exact pixel literals (`.gap-12`, `.pad-16`) are the sanctioned opt-out.
+3. **Physical Alignment Law**: Always use `.xleft`/`.xcenter`/`.xright` for horizontal alignment and `.ytop`/`.ycenter`/`.ybot` for vertical alignment.
+4. **Reading Column Max Columns Law**: Any grid placed inside a reading column (`.prose`, `.content-shell`, or container $\le 760\text{px}$) must **never exceed 2 columns** (`.grid-2` or `.card-grid`). 3, 4, and 6-column grids are strictly reserved for full-width views.
 5. **Partition Breathing Room**: Every divider line (`border-top` or `border-bottom`) that partitions content MUST have reciprocal padding (`var(--space-xs)` or `var(--space-sm)`). Content text or action chips must never touch a divider line directly.
-6. **Card Containment (Zero Overflow)**: Multiple-button rows, tag collections, or badge clusters within cards must use `.row.wrap` or `.cluster`. Control components (`.switch-track`, `.avatar`, `.is-icon`) must specify `flex-shrink: 0`.
-7. **Form Control Optical Baseline**: `<select>` and `<input>` must use `=control`/`=select`/`.select` with optical line-height (`1.2`) and 28px chevron padding to prevent vertical glyph clipping. Never apply raw `.input` to `<select>`.
-8. **Visual toggles ride classes; semantics stay native**: `.open`, `.active`, `.elevated` for JS-toggled looks (never BEM `--variant` classes); `[disabled]`, `[aria-expanded='true']`, `[aria-current='page']` stay attributes. html-level `data-*` is the themer runtime.
-9. **Zero-CSS Mixin Isolation**: Component styles must `@use '$lib/styles/fractals' as *` (which emits 0 bytes CSS), never `index.sass`.
+6. **Card Containment (Zero Overflow)**: Multiple-button rows, tag collections, or badge clusters within cards must use `.row.wrap`. Fixed controls (`.switch-track`, `.avatar`, `.button.is-icon`) must specify `flex-shrink: 0` (`.shrink-0`).
+7. **Form Control Optical Baseline**: `<select>` and `<input>` must use `.select` / `.input` with optical line-height (`1.5`) and standard focus rings (`var(--ring)`). Never apply raw `.input` to `<select>`.
+8. **Visual Toggles Ride Classes**: `.open`, `.active`, `.checked` for JS-toggled looks; native HTML attributes (`disabled`, `aria-expanded`, `aria-selected`) retain their semantic roles.
 
 ---
 
@@ -48,87 +50,55 @@ Applied to every command:
 >
 > **Procedure:**
 > 1. Run `npx fractalstyler2 init [dest]` (default destination: `src/lib/styles`).
-> 2. Ensure `sass` is installed in `devDependencies`.
+> 2. Ensure `sass` is installed in `devDependencies` (`pnpm add -D sass`).
 > 3. Verify `import '$lib/styles/index.sass'` in `src/routes/+layout.svelte`.
-> 4. Verify `@use '$lib/styles/fractals' as *` in component `<style lang="sass">` blocks.
+> 4. Verify that the preprocessor is enabled in `vite.config.ts`.
 
 ---
 
 ## fs2:page
 
-> **Goal:** Build a complete page or route from existing fractals, blocks, and layouts.
+> **Goal:** Build a complete page or route using canonical shells and layout markups.
 >
 > **Procedure:**
-> 1. Select a layout shell: `.app-shell` (app chrome), `.holy-grail` (nav+main+aside), `.docs` (docs), or `.box` (landing/marketing).
-> 2. Structure sections with layout fractals — `.grid-4`/`.grid-3` for full-width pages, `.grid-2`/`.card-grid` for docs and reading views, `.hero` for leads.
-> 3. Populate with shipped blocks (`.card`, `.panel`, `.button`, `.badge`, `.select`).
-> 4. Author bespoke component pieces inline via `fs2:component`.
-> 5. Keep markup semantic and clean; use utility classes for layout flow and one-off spacing.
+> 1. Select a layout shell: `.app-shell` (desktop/web app), `.page-split` (master-detail with sidebar), or `.page-shell` (standard content page).
+> 2. Structure content sections with layout fractals — `.grid-4`/`.grid-3` for full-width dashboards, `.grid-2`/`.card-grid` for reading views, `.hero` for leads.
+> 3. Populate with canonical components (`.card`, `.field`, `.button`, `.badge`, `.select`).
+> 4. Keep markup semantic and clean; use utility classes for layout flow and one-off spacing.
 
 ---
 
 ## fs2:component
 
-> **Goal:** Author a reusable component block as a fractal recipe.
+> **Goal:** Author a reusable component block following the fractal composition pattern.
 >
 > **Procedure:**
-> 1. Start from `+surface(...)` for materials (cards, panels) or `+stack/+cluster` for flow.
-> 2. Add skin, spacing, and typography via atoms (`+bg`, `+ink`, `+pad`, `+type`).
-> 3. Express variants and states with `&[data-*]` and `&[aria-*]`.
-> 4. Anchor footers with `=partition(top, sm)` or `margin-top: auto; padding-top: var(--space-xs); border-top: 1px solid var(--border)`.
-> 5. Import pure mixins: `@use '$lib/styles/fractals' as *`.
->
-> **Example Skeleton:**
-> ```sass
-> .feature-card
-> 	+surface(surface, md, 6)
-> 	+box(stretch, start)
-> 	+gap(sm)
-> 	height: 100%
-> 	&.elevated
-> 		+shadow(md)
-> 	> footer
-> 		+partition(top, sm)
-> 		+row(between, center)
-> 		+wrap
-> ```
+> 1. Start from `.surface` / `.card` for container materials, or `.box` / `.row` for layout flow.
+> 2. Add skin, spacing, and typography via atoms (`.bg`, `.surface`, `.text-primary`, `.pad-md`, `.gap-sm`).
+> 3. Express variants and states with `.open`, `.active`, `[aria-expanded]`, and `[disabled]`.
+> 4. In projects with strict stylesheet separation, place custom component rules in `src/lib/styles/_08_own.sass`.
 
 ---
 
 ## fs2:layout
 
-> **Goal:** Build a page-layout template (structural, skin-free).
+> **Goal:** Build a page-layout template or grid stepping pattern.
 >
 > **Procedure:**
-> 1. Mobile-first single-column base using `+box` or `+grid`.
-> 2. Reshape at breakpoints with `+at(md/lg/xl)` using `grid-template-columns` or `+cols`.
-> 3. Keep layouts skin-free — no colors, background fills, or borders (that is the block's job).
->
-> **Output:** A template in `src/lib/styles/_10_layouts.sass`.
+> 1. Mobile-first single-column base using `.box` or `.grid-1`.
+> 2. Reshape at breakpoints following the Gridding Golden Rules ($3\to1$, $4\to2\to1$, $6\to3\to2\to1$).
+> 3. Keep layouts skin-free — no colors, background fills, or borders (that is the container's role).
 
 ---
 
-## fs2:fractal
+## fs2:preset
 
-> **Goal:** Add a new atom, molecule, or macro recipe mixin.
+> **Goal:** Configure or tune Layout, Shape, Color, or Motion preset axes.
 >
 > **Procedure:**
-> 1. Atom $\to$ `src/lib/styles/_04_atoms.sass`; Molecule $\to$ `_05_molecules.sass`; Macro Recipe $\to$ `_06_recipes.sass`.
-> 2. Route all values through resolvers (`space()`, `radius()`, `surface()`, `ink()`).
-> 3. If introducing a new scale keyword, add it to both `_00_tokens.sass` and `_01_config.sass`.
-> 4. Keep `templates/` in sync.
-> 5. Document in `docs/04-fractals-reference.md`.
-
----
-
-## fs2:theme
-
-> **Goal:** Add a named theme or tune token scales.
->
-> **Procedure:**
-> 1. Named theme $\to$ add a `[data-theme='name']` block redefining only the token variables that differ.
-> 2. Scale tuning $\to$ edit values in `_00_tokens.sass`. Adding a new keyword requires adding it to the list in `_01_config.sass`.
-> 3. Preserve `:root` light palette as marker-free (the SSR/no-JS contract).
+> 1. Apply root data attributes (`data-layout`, `data-shape`, `data-color`, `data-motion`) on `<html>`.
+> 2. Use `setPreset(axis, value)` from `fractalstyler2` to persist settings across sessions.
+> 3. Ensure `getPresetScript()` is injected into `<svelte:head>` for zero-flicker rendering.
 
 ---
 
@@ -137,9 +107,9 @@ Applied to every command:
 > **Goal:** Convert legacy CSS or utility-soup markup into clean fractal recipes.
 >
 > **Procedure:**
-> 1. Map raw CSS declarations to fractals (`display: flex; flex-direction: column` $\to$ `+box`, `border-radius: 6px` $\to$ `+radius(6)`).
-> 2. Collapse repetitive markup class strings (`class="box gap-sm pad-md bg-surface border radius-6..."`) into a single semantic component class.
-> 3. Replace magic numbers with standard tokens (`space(sm)`, `radius(4)`).
+> 1. Map raw CSS declarations to fractals (`display: flex; flex-direction: column` $\to$ `.box`, `border-radius: 8px` $\to$ `.radius-8`).
+> 2. Collapse repetitive markup class strings into clean semantic classes or standard atoms.
+> 3. Replace magic numbers with standard fluid tokens (`.gap-sm`, `.pad-md`).
 > 4. Verify visual fidelity before and after refactoring.
 
 ---
@@ -149,12 +119,9 @@ Applied to every command:
 > **Goal:** Audit code for fractal-idiom compliance and UI invariants.
 >
 > **Checklist:**
-> - [ ] **21-Token Contract**: Zero references to foreign tokens (`--card`, `--primary`, `--border-strong`).
-> - [ ] **Reading Column Law**: No 3 or 4-column grids inside `.docs-main` or reading views.
-> - [ ] **Partition Breathing Room**: Every `border-top` divider has matching `padding-top: var(--space-xs)` / `var(--space-sm)`.
-> - [ ] **Card Containment**: Action rows and tag clusters inside cards use `.row.wrap` or `.cluster`. Controls have `flex-shrink: 0`.
-> - [ ] **Form Control Optical Baseline**: `<select>` uses `.select` (never raw `.input`).
-> - [ ] **Pure Mixin Isolation**: Components `@use '$lib/styles/fractals' as *` (never `index.sass`).
-> - [ ] **Responsive Visibility**: Mobile drawer triggers use `.hide-desktop`.
-> - [ ] **Scale Symmetry**: Any new scale keyword exists in both `_00_tokens.sass` and `_01_config.sass`.
-> - [ ] **Clean Build**: `npx sass src/lib/styles/index.sass /tmp/check.css` passes with zero errors and zero warnings.
+> - [ ] **30-Token Contract**: Zero references to foreign tokens (`--card`, `--primary`, `--border-strong`).
+> - [ ] **Reading Column Law**: No 3 or 4-column grids inside `.prose` or reading views ($\le 760\text{px}$).
+> - [ ] **Partition Breathing Room**: Every `border-top` divider has reciprocal `padding-top: var(--space-xs)` / `var(--space-sm)`.
+> - [ ] **Card Containment**: Action rows and tag clusters inside cards use `.row.wrap`. Fixed controls have `.shrink-0`.
+> - [ ] **Form Control Optical Baseline**: `<select>` uses `.select` with optical alignment.
+> - [ ] **Clean Build**: `pnpm build` passes with zero errors and zero warnings.

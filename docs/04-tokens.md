@@ -1,15 +1,20 @@
 ---
 title: Tokens & Theming
-description: Fluid Utopia scales, the strict 21-variable color contract, concentric radii, and light/dark modes.
+description: Fluid Utopia scales, the strict color contract, tokens that scale and modulate across the layers.
 ---
 
-# Tokens & Theming in fractalstyler2
+All literal values in `fractalstyler2` live inside `_00_tokens.sass`. Components and mixins never hardcode hex colors, arbitrary pixel font sizes, or ad-hoc variables — they strictly resolve from the centralized token scale. A few principles have guided the creation of this tokens set, apart from the underlying fractal genes. 
 
-All literal values in `fractalstyler2` live inside `_00_tokens.sass`. Components and mixins never hardcode hex colors, arbitrary pixel font sizes, or ad-hoc variables — they strictly resolve from the centralized token scale.
+1. Clamps and modular scales are great, doubly so when they work smooth. But does any of us really want to do the mathematics of these things? And should we? If modularity is so great, why cant there be drop-in-and-use systems? Utopia provides such templates, and we use them.
+=> for font sizes, and all dimensions, you don't really even have to get into config at all. Just pick and use.
 
----
+2. A visual language makes itself "felt" by the same syntax shinging through across different pages and components. And the "shine" of UI design often lies in how things like border-radius, shadow, transition are applied. And these exist at token level, so that they bloom through to all layers.
 
-## 1. The Full 30-Token Semantic Contract
+3. Colors! If there is no color coherence, there is no design. But very few among us are happy "receiving" a palette and using it for all posterity! We like play, and we like having space to play. Color tokens are set on the principle of scaffold + harness we saw in the introduction. And why be a closed system? The tokens are set such that you can steal themes from elsewhere too, like ShadCN, and use here frictionless.
+
+4. Presets are nice, aren't they? For roundedness vs sharpness - shape, compactness vs. breathing space, clean spaces vs color contrast, and heavy motion vs vibrancy and spring -> four preset families help you set quick character to your styling. 
+
+## The 30 Colors
 
 The system defines 30 semantic CSS custom properties across 6 core categories. Every theme in `fractalthemer` maps 1:1 onto these exact token variables:
 
@@ -37,70 +42,8 @@ The system defines 30 semantic CSS custom properties across 6 core categories. E
 | | `--info`, `--info-hover` | Information callouts, notifications | `#3B82F6`, `#2563EB` | `#60A5FA`, `#93C5FD` |
 | | `--feedback-error` | Form validation error text and outlines | `#DC2626` | `#F87171` |
 
----
 
-## 2. Universal Token Resolver (`tok()`)
-
-`fractalstyler2` provides a single universal Sass function `@function tok($group, $v)` in `_01_config.sass` that powers all domain-specific resolvers:
-
-```sass
-// Universal Token Resolver in _01_config.sass
-@function tok($group, $v)
-	@if $v == null
-		@return null
-	@if meta.type-of($v) == number and math.is-unitless($v)
-		@return #{$v}px
-	@if meta.type-of($v) == string and not (math.unit($v) != '')
-		@return var(--#{$group}-#{$v})
-	@return $v
-
-// Domain helper functions:
-@function space($v)    // space(md) -> var(--space-md) | space(16) -> 16px
-@function radius($v)   // radius(4) -> var(--radius-4) | radius(full) -> var(--radius-full)
-@function text-size($v)// text-size(sm) -> var(--text-sm)
-@function shadow($v)   // shadow(md) -> var(--shadow-md)
-@function surface($v)  // surface(raised) -> var(--bg-raised)
-@function ink($v)      // ink(primary) -> var(--text-primary)
-```
-
-### Usage Example in Custom Components
-```sass
-@use 'fractalstyler2/styles' as *
-
-.my-custom-panel
-	background: surface(raised)      // resolves to var(--bg-raised)
-	color: ink(primary)              // resolves to var(--text-primary)
-	padding: space(md) space(lg)       // resolves to var(--space-md) var(--space-lg)
-	border-radius: radius(6)         // resolves to var(--radius-6)
-	box-shadow: shadow(md)           // resolves to var(--shadow-md)
-```
-
----
-
-## 3. Concentric Geometric Radius Hierarchy
-
-The system strictly enforces concentric nesting: child elements inside containers must have proportionally smaller corner radii to avoid optical corner collisions.
-
-```
-Outer Modal Dialog (radius-6 / 6px)
-  └── Inner Input Control (radius-4 / 4px)
-        └── Keycap / Chip (radius-3 / 3px)
-```
-
-- `--radius-0`: `0`
-- `--radius-2`: `2px` (Micro tags, dots)
-- `--radius-3`: `3px` (Keycaps, mini chips)
-- `--radius-4`: `4px` (Buttons, form inputs, select boxes)
-- `--radius-6`: `6px` (Cards, panels, modal dialogs)
-- `--radius-8`: `8px`
-- `--radius-12`: `12px`
-- `--radius-16`: `16px`
-- `--radius-24`: `24px`
-- `--radius-full`: `9999px` (Pills, circular avatars)
-
----
-
-## 4. Fluid Typography & Spacing (Utopia Curves)
+## The Fluid Scales
 
 All type and space scales use fluid viewport formulas interpolating smoothly between 360px (mobile) and 1240px (desktop):
 
@@ -129,9 +72,9 @@ All type and space scales use fluid viewport formulas interpolating smoothly bet
 --space-3xl: clamp(6.75rem, 6.4432rem + 1.3636vw, 7.5rem) // 108px - 120px
 ```
 
----
+And here's how things get fractal - every token also exists as a class! Use `.text-4xl` and you know what you get. Set a `.gap-2xs` and it follows `--space-2xs`, as do `pad-2xs` and others.
 
-## 5. Seamless Integration with `fractalthemer`
+## The Themes and Backgrounds
 
 `fractalstyler2` provides the static CSS contract and mixin scaffolding; `fractalthemer` provides the dynamic runtime engine.
 
@@ -144,3 +87,5 @@ When `fractalthemer` is installed, `themeState.apply(themeId)` dynamically write
 - Preset color families (`theme-night-dark`, `theme-frozen-dark`, `theme-nord-dark`, etc.)
 - User-customized accent colors (`--theme-color`, `--theme-color-alt`)
 - GPU Atmospheric Shaders (`[data-bg-style='aura']`, `[data-bg-style='gradient']`, `[data-bg-style='pattern']`)
+
+[Next - Dimensions & Spacing](./05-dimensions.md)

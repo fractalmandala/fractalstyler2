@@ -1,39 +1,47 @@
 ---
-title: fractalstyler2 Documentation
-description: Index of all user guides — philosophy, architecture, reference, tokens, and design laws.
+id: readme
+title: Fractalstyler2 Documentation
+type: design
+tags: [documentation, index, fractalstyler2, design-system, tokens, sveltekit]
+summary: Master index of all Fractalstyler2 documentation chapters, covering philosophy, tokens, dimensions, containers, layouts, shells, presets, and MCP agent tooling.
+updated: 2026-08-30
 ---
 
-# fractalstyler2 Documentation
+# Fractalstyler2 Documentation
 
-Welcome to the **fractalstyler2** design system documentation. Every style unit in this system is a SASS mixin ("a fractal"), and every component and page layout is a composable recipe of smaller fractals.
+Welcome to the **Fractalstyler2** design system documentation. Every style unit in this system is a modular fractal: unitary tokens, dimensions, and container classes that compose into higher layers while retaining mathematical harmony and responsiveness.
 
-Available as a **shadcn-style scaffolder** (`npx fractalstyler2 init`) and as a **direct package import** (`import 'fractalstyler2/styles'`).
+Available as a **scaffolder** (`npx fractalstyler2 init`) and as a **direct package dependency** (`import 'fractalstyler2/styles'`).
 
 ---
 
-## Complete Guide Index
+## Documentation Index
 
 | Chapter | Document | What It Teaches |
-|---|---|---|
-| **01** | [Philosophy](02-getting-started.md) | The fractal model, self-similarity, dual consumption, and why CUBE CSS works |
-| **02** | [Structure & Hierarchy](02-structure.md) | File anatomy, the canonical 12-file numbered scale, and cascade rules |
-| **03** | [Getting Started](03-getting-started.md) | CLI scaffolding, SvelteKit project setup, and your first component |
-| **04** | [Fractals Reference](04-fractals-reference.md) | Complete manual for every atom (`+box`, `+row`, `+bg`) and molecule (`+stack`, `+surface`) |
-| **05** | [Tokens & Theming](05-tokens-and-theming.md) | Fluid Utopia scales, the strict 21-variable contract, and light/dark modes |
-| **06** | [Utilities Reference](06-utilities.md) | 1:1 markup classes, directional padding/margin (`.pad-top-*`), and `.hide-desktop` |
-| **07** | [Components & Layouts](07-components-and-layouts.md) | Built-in blocks (`.card`, `.select`, `.badge`) and layouts (`.docs`, `.card-grid`) |
-| **08** | [Recipes & Patterns](08-recipes.md) | Step-by-step practical component builds: pricing card, modal dialog, and forms |
-| **09** | [Migration from v1](09-migration-from-v1.md) | Upgrading from unnumbered partials to the numbered hierarchy |
-| **10** | [MCP Server](10-mcp-server.md) | Model Context Protocol server for Antigravity, OpenCode, and Claude |
-| **11** | [Agent Plugin Spec](11-agent-plugin.md) | agent-plugins.org v1.0.0 architecture and automated tool integration |
-| **Design** | [DESIGN.md](../DESIGN.md) | Golden UI invariants, Reading Column Law, Partition Law, and Card Containment |
+|:---|:---|:---|
+| **01** | [Introduction](01-introduction.md) | The fractal mental model ($L0 \to L5$), philosophy, and design principles. |
+| **02** | [Getting Started](02-getting-started.md) | Installation, SvelteKit configuration, and Fractalthemer integration. |
+| **03** | [Structure & Hierarchy](03-structure.md) | Directory anatomy, the canonical numbered physical scale, and cascade order. |
+| **04** | [Tokens & Theming](04-tokens.md) | The 30 semantic colors, fluid Utopia type and space scales, and dark/light modes. |
+| **05** | [Dimensions & Spacing](05-dimensions.md) | Level 1 space families (gaps, pads, margins), literal pixel utilities, and `-mob`/`-desk` bands. |
+| **06** | [Containers & Flow](06-containers.md) | Level 2 `.box`, `.row`, and `.grid` primitives with strict physical X/Y axis alignment. |
+| **07** | [Layouts & Grids](07-layouts.md) | Level 3 gridding golden rules ($3\to1, 4\to2\to1, 6\to3\to2\to1$), `.card-grid`, `.prose`, frames, and reels. |
+| **08** | [Shells & Canonical Markups](08-shells-and-markups.md) | Level 4 application shells, role-bound sidebars, mobile disclosure physics, and overlays. |
+| **09** | [Visuals & Interactions](09-visuals-and-interactions.md) | Level 5 bare surfaces, text inks, borders, typography, button quartet, and form inputs. |
+| **10** | [Presets & Runtime Tuning](10-presets.md) | The 4 preset axes (Layout, Shape, Color, Motion), Svelte 5 runtime state, and UI pickers. |
+| **11** | [MCP Server](11-mcp-server.md) | Model Context Protocol server tools (`compile_fractals`, `snap_to_tokens`, `validate_recipe`). |
+| **12** | [Agent Plugin & Coding Skills](12-agent-plugin.md) | `agent-plugins.org` architecture, bundled agent skills (`fractal-styler`, `style-migration`), and agent golden rules. |
+| **13** | [Zero-SASS Cookbook & Recipe Gallery](13-cookbook.md) | Real-world UI patterns (segmented controls, tabs, modals, search) built with pure Fractalstyler2. |
 
 ---
 
-## The One-Paragraph Summary
+## The Core Heuristic
 
-A fractal is a mixin: `+box`, `+gap(md)`, `+surface(...)`. You consume a fractal two ways:
-1. **Composed into a Svelte component**: `.card { +surface(surface, sm, 6) +stack(sm) }`
-2. **Projected to a class in markup**: `<div class="box gap-sm pad-md bg-surface radius-6">...</div>`
+> **Tokens (L0)** $\rightarrow$ **Dimensions (L1)** $\rightarrow$ **Containers (L2)** $\rightarrow$ **Layouts (L3)** $\rightarrow$ **Shells (L4)** $\rightarrow$ **Visuals & Interactions (L5)**
 
-Atoms compose into molecules, molecules into components, components into layouts. All numeric values pass through resolvers (`space(md)` $\to$ `var(--space-md)`, `space(18)` $\to$ `18px`), creating a single shared vocabulary between CSS and markup with zero bloat.
+1. **Tokens (L0)** define fluid scales (`--space-sm`, `--text-lg`) and 30 semantic colors (`--bg-surface`, `--text-primary`, `--theme-color`).
+2. **Dimensions (L1)** spread out space with 17 role-split families (`.gap-sm`, `.pad-md`, `.marg-xs`, `.radius-8`).
+3. **Containers (L2)** establish flow with `.box`, `.row`, `.grid` and physical alignment (`.xcenter`, `.ycenter`, `.xbetween`).
+4. **Layouts (L3)** enforce harmonious reflow with `.grid-1` through `.grid-6`, `.card-grid`, and `.prose`.
+5. **Shells (L4)** provide responsive application frames (`.app-shell`, `.app-header`, `.app-main`, `.sidebar-left`, `.sidebar-right`).
+6. **Visuals (L5)** complete the look with surfaces (`.surface`, `.raised`), typography, buttons (`.button.primary`), and interactive controls.
