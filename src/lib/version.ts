@@ -1,2 +1,2 @@
 // Generated from package.json by scripts/update-registry.js — do not edit.
-export const version = '0.7.0';
+export const version = '0.7.1';

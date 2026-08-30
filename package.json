@@ -1,6 +1,6 @@
 {
 	"name": "fractalstyler2",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"description": "A composition styling system, shipped as plain CSS and as editable SASS. The class registry is the public API: compose in markup, write no stylesheet.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
@@ -38,19 +38,37 @@
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
 		},
-		"./styles": "./dist/styles/index.sass",
+		"./styles": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/index.sass"
+		},
 		"./styles/*": "./dist/styles/*",
-		"./tokens": "./dist/styles/_00_tokens.sass",
+		"./tokens": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/_00_tokens.sass"
+		},
 		"./mcp": "./dist/mcp/server.js",
 		"./package.json": "./package.json",
-		"./themes": "./dist/styles/_00_themes.sass",
+		"./themes": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/_00_themes.sass"
+		},
 		"./presets": {
 			"types": "./dist/presets.core.d.ts",
 			"default": "./dist/presets.core.js"
 		},
-		"./css": "./dist/css/fractalstyler.css",
-		"./css/min": "./dist/css/fractalstyler.min.css",
-		"./styles/presets": "./dist/styles/_00_presets.sass"
+		"./css": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/css/fractalstyler.css"
+		},
+		"./css/min": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/css/fractalstyler.min.css"
+		},
+		"./styles/presets": {
+			"types": "./dist/asset.d.ts",
+			"default": "./dist/styles/_00_presets.sass"
+		}
 	},
 	"peerDependencies": {
 		"svelte": "^5.0.0"
