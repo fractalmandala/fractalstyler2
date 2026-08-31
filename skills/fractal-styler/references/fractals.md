@@ -189,8 +189,8 @@ Flow and alignment. x* is ALWAYS horizontal, y* is ALWAYS vertical, in every con
 | `.absolute` | .absolute component / container | `_03_containers.sass` |
 | `.fixed` | .fixed component / container | `_03_containers.sass` |
 | `.sticky` | .sticky component / container | `_03_containers.sass` |
-| `.scroll-y` | .scroll-y component / container | `_03_containers.sass` |
-| `.scroll-x` | .scroll-x component / container | `_03_containers.sass` |
+| `.scroll-y` | Vertical scroll inside a bounded height; needs an .h-* or a constraining flex parent | `_03_containers.sass` |
+| `.scroll-x` | Horizontal scroll inside a bounded width; .reel adds snap points | `_03_containers.sass` |
 
 ---
 

@@ -49,6 +49,11 @@ function extractStylesData() {
 	}
 
 	// Helper to add registry entry
+	// A class documents itself with a trailing `// …` on its selector line.
+	// That comment is the registry description an agent greps, so strip the
+	// marker rather than shipping "// Vertical scroll…" as the text.
+	const stripComment = (s) => s.trim().replace(/^\/\/\s*/, '').trim();
+
 	const addEntry = (cls, layer, prop, file, desc, example) => {
 		registry.push({
 			class: cls,
@@ -132,7 +137,7 @@ function extractStylesData() {
 				const match = line.match(/^(\.[a-zA-Z0-9_-]+)/);
 				if (match) {
 					currentParent = match[1];
-					const desc = trimmed.replace(currentParent, '').trim();
+					const desc = stripComment(trimmed.replace(currentParent, ''));
 					addEntry(currentParent, layer, '', file, desc || `${currentParent} component / container`);
 				}
 			}
@@ -141,7 +146,7 @@ function extractStylesData() {
 				const match = line.match(/&(\.[a-zA-Z0-9_-]+)/);
 				if (match && currentParent) {
 					const subClass = `${currentParent}${match[1]}`;
-					const desc = trimmed.replace(/^&\.[a-zA-Z0-9_-]+/, '').trim();
+					const desc = stripComment(trimmed.replace(/^&\.[a-zA-Z0-9_-]+/, ''));
 					addEntry(subClass, layer, '', file, desc || `Modifier for ${currentParent}`);
 				}
 			}

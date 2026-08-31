@@ -170,8 +170,8 @@ Format: `CLASS_NAME | LAYER | CSS PROPERTY / BEHAVIOR | FILE SOURCE | EXAMPLE`
 .absolute                | L2 | .absolute component / container                            | _03_containers.sass    | <div class="absolute">
 .fixed                   | L2 | .fixed component / container                               | _03_containers.sass    | <div class="fixed">
 .sticky                  | L2 | .sticky component / container                              | _03_containers.sass    | <div class="sticky">
-.scroll-y                | L2 | .scroll-y component / container                            | _03_containers.sass    | <div class="scroll-y">
-.scroll-x                | L2 | .scroll-x component / container                            | _03_containers.sass    | <div class="scroll-x">
+.scroll-y                | L2 | Vertical scroll inside a bounded height; needs an .h-* or a constraining flex parent | _03_containers.sass    | <div class="scroll-y">
+.scroll-x                | L2 | Horizontal scroll inside a bounded width; .reel adds snap points | _03_containers.sass    | <div class="scroll-x">
 .grid-1                  | L3 | .grid-1 component / container                              | _04_layouts.sass       | <div class="grid-1">
 .grid-2                  | L3 | .grid-2 component / container                              | _04_layouts.sass       | <div class="grid-2">
 .grid-3                  | L3 | .grid-3 component / container                              | _04_layouts.sass       | <div class="grid-3">

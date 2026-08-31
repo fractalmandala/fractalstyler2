@@ -51,6 +51,53 @@ type: {project/site name}
 - If you see a doc without frontmatter, add it.
 - **"Done"** always means that for any fix/feature/mod the docs have been updated, the registry is regenerated via `pnpm registry`, package version has been bumped if applicable, and the build passes cleanly (`pnpm check && pnpm build`).
 
+### Adding a class to the system
+
+1. **Put it in the partial that owns its layer.** The layer is the file, not a
+   label you choose:
+
+   | File | Layer |
+   |:---|:---|
+   | `_00_tokens.sass`, `_01_config.sass` | L0 tokens |
+   | `_02_dimensions.sass` | L1 dimensions |
+   | `_03_containers.sass` | L2 containers |
+   | `_04_layouts.sass` | L3 layouts |
+   | `_05_shells.sass` | L4 shells |
+   | `_06_visuals.sass`, `_07_interactions.sass` | L5 visuals |
+   | `_08_own.sass` | **not the system** — third-party overrides only |
+
+2. **Document it on the selector line.** A trailing `// …` comment becomes the
+   description in `registry.json`, `REGISTRY.md`, and the skill reference an
+   agent greps. Without it the class is indexed with a useless placeholder
+   (`.foo component / container`) and an agent finding it learns nothing.
+
+   ```sass
+   .scroll-y // Vertical scroll inside a bounded height; needs an .h-*
+   	overflow-y: auto
+   ```
+
+   The same works for `&.modifier` variants.
+
+3. **Run `pnpm registry`.** Plain classes, `&.modifier` variants, and indented
+   child classes are discovered automatically. It rewrites `REGISTRY.md`,
+   `docs/REGISTRY.md`, `registry.json`, `src/lib/themes.ts`, `src/lib/version.ts`,
+   both `skills/fractal-styler/references/*.md`, and syncs `plugin.json`'s version.
+
+4. **Loop-generated and wildcard families are invisible to the parser.** A class
+   emitted by an `@each` (`.gap-*`, `.frame-16-9`) never appears as a literal
+   selector line, so it needs a hand-written `addEntry(...)` in
+   `scripts/update-registry.js` alongside the existing ones.
+
+5. **Run `pnpm check`.** `validate-deck.js` compiles the SASS fresh, so no build
+   step is needed first — but it means a class you have not actually defined
+   will fail wherever a doc mentions it.
+
+6. **Walk the surface pass below**, and add the class to the doc chapter that
+   owns its layer. The validator checks that a documented class *exists*; only
+   the table below catches a class that exists and is documented nowhere.
+
+---
+
 ### The surface pass (fractalstyler2)
 
 Every substantive change to the system leaks into surfaces that describe it.

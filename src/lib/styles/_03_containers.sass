@@ -109,12 +109,12 @@
 // widget. Without these the only way to express it was a hand-written rule,
 // which is the escape hatch the registry exists to avoid.
 // Pair with a height: .scroll-y needs one to have anything to scroll against.
-.scroll-y
+.scroll-y // Vertical scroll inside a bounded height; needs an .h-* or a constraining flex parent
 	overflow-y: auto
 	overflow-x: hidden
 	overscroll-behavior: contain
 
-.scroll-x
+.scroll-x // Horizontal scroll inside a bounded width; .reel adds snap points
 	overflow-x: auto
 	overflow-y: hidden
 	overscroll-behavior: contain

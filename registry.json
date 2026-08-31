@@ -1260,7 +1260,7 @@
     "layer": "L2",
     "property": "",
     "file": "_03_containers.sass",
-    "description": ".scroll-y component / container",
+    "description": "Vertical scroll inside a bounded height; needs an .h-* or a constraining flex parent",
     "example": "<div class=\"scroll-y\">"
   },
   {
@@ -1268,7 +1268,7 @@
     "layer": "L2",
     "property": "",
     "file": "_03_containers.sass",
-    "description": ".scroll-x component / container",
+    "description": "Horizontal scroll inside a bounded width; .reel adds snap points",
     "example": "<div class=\"scroll-x\">"
   },
   {
