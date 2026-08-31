@@ -35,6 +35,7 @@ Available three ways, all from one source:
 | **11** | [MCP Server](11-mcp-server.md) | Model Context Protocol server tools (`compile_fractals`, `snap_to_tokens`, `validate_recipe`). |
 | **12** | [Agent Plugin & Coding Skills](12-agent-plugin.md) | `agent-plugins.org` architecture, the bundled `fractal-styler` skill, and agent golden rules. |
 | **13** | [Zero-SASS Cookbook & Recipe Gallery](13-cookbook.md) | Real-world UI patterns (segmented controls, tabs, modals, search) built with pure Fractalstyler2. |
+| **14** | [API Reference](14-api.md) | Every export: entry points, the preset/mode/theme runtime, the reactive mirror, shells, and the six pickers. |
 
 ---
 

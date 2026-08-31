@@ -231,7 +231,7 @@ paint:
 
 ```svelte
 <svelte:head>
-  {@html `<script>${getPresetScript()}</script>`}
+  {@html `<script>${getPresetScript()}<\/script>`}
 </svelte:head>
 ```
 

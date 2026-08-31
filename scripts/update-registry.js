@@ -314,8 +314,30 @@ fs.writeFileSync(path.join(rootDir, 'registry.json'), JSON.stringify(registry, n
 // so it also owns the list — no hand-maintained copy to drift.
 const themesSass = fs.readFileSync(path.join(stylesDir, '_00_themes.sass'), 'utf8');
 const themeIds = [...themesSass.matchAll(/^\.(theme-[\w-]+)/gm)].map((m) => m[1]);
+
+// Mode comes from the palette's own --bg, not from its name. Deriving it with
+// id.includes('-dark') mislabelled theme-catppuccin-mocha and theme-onedark-pro
+// as light — both are dark palettes whose ids simply lack the suffix.
+function blockOf(id) {
+	const start = themesSass.indexOf(`\n.${id}\n`);
+	if (start === -1) return '';
+	const rest = themesSass.slice(start + 1);
+	const end = rest.search(/\n(?=\S)/);
+	return end === -1 ? rest : rest.slice(0, end);
+}
+function modeOf(id) {
+	const hex = blockOf(id).match(/^\t--bg:\s*(#[0-9a-fA-F]{3,6})\s*$/m)?.[1];
+	if (!hex) return id.includes('-dark') ? 'dark' : 'light'; // no --bg: fall back to the name
+	let h = hex.slice(1);
+	if (h.length === 3) h = [...h].map((c) => c + c).join('');
+	const lin = [0, 2, 4]
+		.map((i) => parseInt(h.slice(i, i + 2), 16) / 255)
+		.map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+	const luminance = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+	return luminance < 0.5 ? 'dark' : 'light';
+}
 const themeEntries = themeIds
-	.map((id) => `\t{ id: '${id}', mode: '${id.includes('-dark') ? 'dark' : 'light'}' }`)
+	.map((id) => `\t{ id: '${id}', mode: '${modeOf(id)}' }`)
 	.join(',\n');
 fs.writeFileSync(
 	path.join(rootDir, 'src', 'lib', 'themes.ts'),

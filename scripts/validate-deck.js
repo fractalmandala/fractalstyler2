@@ -196,6 +196,27 @@ for (const file of readdirSync(join(root, 'src/lib/styles')).filter((f) => f.end
 	})
 }
 
+// ── code examples that would not compile ───────────────────────────────────
+// Snippets pass every other check while being syntactically broken. This one
+// exists because a retyped example dropped the backslash in `<\/script>`,
+// which closes the script element early and breaks the consuming project.
+const SNIPPET_TRAPS = [
+	{
+		re: /`[^`]*<script>[^`]*<\/script>/,
+		why: 'unescaped </script> inside a template literal — closes the tag early; write <\\/script>'
+	}
+]
+for (const file of files.filter((f) => f.endsWith('.md'))) {
+	const rel = file.replace(root + '/', '')
+	readFileSync(file, 'utf8')
+		.split('\n')
+		.forEach((line, i) => {
+			for (const { re, why } of SNIPPET_TRAPS) {
+				if (re.test(line)) problems.push(`${rel}:${i + 1}  →  ${why}`)
+			}
+		})
+}
+
 // ── stated counts vs reality ───────────────────────────────────────────────
 // "30 semantic tokens" was stated in nine places; there are 31 colour tokens.
 // Numbers in prose drift silently, so derive the truth and assert it.

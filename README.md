@@ -89,7 +89,7 @@ In your root layout (`src/routes/+layout.svelte`):
 </script>
 
 <svelte:head>
-  {@html `<script>${getPresetScript()}</script>`}
+  {@html `<script>${getPresetScript()}<\/script>`}
 </svelte:head>
 
 {@render children()}
@@ -144,6 +144,7 @@ pnpm registry
 | **11** | [**`11-mcp-server.md`**](./docs/11-mcp-server.md) | Model Context Protocol server tools and agent connection configs. |
 | **12** | [**`12-agent-plugin.md`**](./docs/12-agent-plugin.md) | `agent-plugins.org` spec, the bundled `fractal-styler` skill. |
 | **13** | [**`13-cookbook.md`**](./docs/13-cookbook.md) | The Zero-SASS Recipe Gallery: real-world UI patterns composed in HTML. |
+| **14** | [**`14-api.md`**](./docs/14-api.md) | Complete API reference: entry points, runtime functions, reactive state, and components. |
 | **Registry** | [**`REGISTRY.md`**](./REGISTRY.md) | Comprehensive, grepable class dictionary and token table. |
 
 ---

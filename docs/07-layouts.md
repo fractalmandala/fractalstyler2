@@ -84,7 +84,7 @@ The `.prose` layout sets an optimal typographic reading measure (bounded to $\le
 
 ## 4. Media Aspect-Ratio Frames (`.frame-*`)
 
-Frame presets provide aspect-ratio bounding boxes for images, videos, and embedded previews, ensuring child media covers the container without layout shift:
+Frame presets provide aspect-ratio bounding boxes for images, videos, and embedded previews, ensuring child media — images, video, iframes and inline SVG — covers the container without layout shift:
 
 ```html
 <!-- 16:9 Video Embed -->

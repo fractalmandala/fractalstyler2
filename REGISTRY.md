@@ -1,7 +1,7 @@
 # Fractalstyler2 — Complete Class & Token Registry
 
 Status: **LOCKED & CANONICAL**  
-Updated: **2026-08-30**  
+Updated: **2026-08-31**  
 Architecture: **L0 (Tokens) $\rightarrow$ L1 (Dimensions) $\rightarrow$ L2 (Containers) $\rightarrow$ L3 (Layouts) $\rightarrow$ L4 (Shells) $\rightarrow$ L5 (Visuals & Interactions)**
 
 This document is the **single, definitive, grepable master registry** for all CSS classes, tokens, modifiers, and canonical markup structures in `fractalstyler2`.

@@ -99,7 +99,7 @@ setPreset('layout', 'tight');
 ```svelte
 <!-- src/routes/+layout.svelte or src/app.html -->
 <svelte:head>
-  {@html `<script>${getPresetScript()}</script>`}
+  {@html `<script>${getPresetScript()}<\/script>`}
 </svelte:head>
 ```
 
@@ -109,7 +109,9 @@ The script runs synchronously before first paint, reading `localStorage` and sta
 
 ## UI Picker Components
 
-Fractalstyler2 ships four ready-to-use Svelte 5 picker components:
+Fractalstyler2 ships six ready-to-use Svelte 5 picker components — one per
+preset axis, plus the two theming controls. Each takes a `class` prop and calls
+`initPresets()` itself, so a lone picker works with no other setup.
 
 ```svelte
 <script lang="ts">
@@ -117,7 +119,9 @@ Fractalstyler2 ships four ready-to-use Svelte 5 picker components:
     ShapePicker,
     LayoutPicker,
     ColorPicker,
-    MotionPicker
+    MotionPicker,
+    ModeToggle,
+    ThemePicker
   } from 'fractalstyler2';
 </script>
 
@@ -141,7 +145,19 @@ Fractalstyler2 ships four ready-to-use Svelte 5 picker components:
     <span class="text-sm weight-500">Motion</span>
     <MotionPicker />
   </div>
+
+  <div class="row ycenter xbetween">
+    <span class="text-sm weight-500">Mode</span>
+    <ModeToggle />
+  </div>
+
+  <ThemePicker label="Palette" />
 </div>
 ```
+
+`ModeToggle` flips light/dark and persists it. `ThemePicker` is a `<select>`
+over all 41 palettes, with a "None — follow mode" option. Both are covered in
+full, along with every runtime function they call, in
+[14 - API Reference](./14-api.md).
 
 [Next - MCP](./11-mcp-server.md)

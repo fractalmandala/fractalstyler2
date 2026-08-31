@@ -9,42 +9,90 @@ import {
 	presetDefaults,
 	initPresets as coreInit,
 	setPreset as coreSet,
+	setMode as coreSetMode,
+	setTheme as coreSetTheme,
+	toggleMode as coreToggleMode,
+	toggleThemeMode as coreToggleThemeMode,
 	onPresetChange,
+	onModeChange,
+	getMode,
+	getTheme,
 	presetState,
+	type Mode,
 	type PresetAxis
 } from './presets.core.js';
 
+// Re-exported unchanged. Everything that MUTATES state is wrapped below so the
+// reactive mirror stays in step; everything else passes straight through.
 export {
 	presetAxes,
 	presetDefaults,
 	getPreset,
+	getMode,
+	isDark,
+	getTheme,
+	twinTheme,
 	cyclePreset,
 	getPresetScript,
-	setMode,
-	toggleMode,
-	setTheme,
-	getTheme,
-	toggleThemeMode,
+	onModeChange,
+	onPresetChange,
 	themes,
 	themeIds,
+	type Mode,
 	type ThemeMeta,
-	onPresetChange,
 	type PresetAxis
 } from './presets.core.js';
 
-/** Reactive mirror of presetState, for pickers and any $derived reading it. */
-export const presets = $state<Record<PresetAxis, string>>({ ...presetDefaults });
+/**
+ * Reactive mirror of the whole runtime — the four preset axes plus `mode` and
+ * `theme`. Read it straight in a template:
+ *
+ *   {#if presets.mode === 'dark'} … {/if}
+ *
+ * It stays correct however the change was made: a picker, setTheme(), the OS
+ * preference at load, or another component entirely.
+ */
+export const presets = $state<
+	Record<PresetAxis, string> & { mode: Mode; theme: string | null }
+>({ ...presetDefaults, mode: 'light', theme: null });
 
 // Keep the mirror in step with the core, however the core was driven.
 onPresetChange((axis, value) => {
 	presets[axis] = value;
 });
+onModeChange((mode) => {
+	presets.mode = mode;
+	presets.theme = getTheme();
+});
+
+function sync(): void {
+	for (const axis of Object.keys(presetAxes) as PresetAxis[]) presets[axis] = presetState[axis];
+	presets.mode = getMode();
+	presets.theme = getTheme();
+}
 
 export function initPresets(): void {
 	coreInit();
-	for (const axis of Object.keys(presetAxes) as PresetAxis[]) presets[axis] = presetState[axis];
+	sync();
 }
 
 export function setPreset(axis: PresetAxis, value: string): void {
 	coreSet(axis, value);
+}
+
+export function setMode(mode: Mode | null): void {
+	coreSetMode(mode);
+}
+
+export function toggleMode(): Mode {
+	const next = coreToggleMode();
+	return next;
+}
+
+export function setTheme(id: string | null): void {
+	coreSetTheme(id);
+}
+
+export function toggleThemeMode(): string | null {
+	return coreToggleThemeMode();
 }

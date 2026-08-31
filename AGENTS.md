@@ -61,7 +61,7 @@ of these before calling it done — the ones marked *generated* need only a
 | Surface | What goes stale |
 |:---|:---|
 | `README.md` | The tagline, the quick start, the layer summary |
-| `docs/01`–`13` | Whichever chapter owns the layer you touched |
+| `docs/01`–`14` | Whichever chapter owns the layer you touched; `14` for anything the package exports |
 | `docs/README.md`, root index tables | Chapter one-liners |
 | `AGENTS.md` | How the project is described to agents |
 | `skills/fractal-styler/SKILL.md` | The rules an agent is handed |

@@ -33,6 +33,7 @@ export type PresetAxis = keyof typeof presetAxes;
 
 export const STORAGE_KEY = 'fs2.presets';
 export const THEME_KEY = 'fs2.theme';
+export const MODE_KEY = 'fs2.mode';
 
 /** Current value of every axis. Read it; mutate through setPreset. */
 export const presetState: Record<PresetAxis, string> = { ...presetDefaults };
@@ -81,6 +82,8 @@ export function initPresets(): void {
 	try {
 		const savedTheme = localStorage.getItem(THEME_KEY);
 		if (savedTheme) setTheme(savedTheme);
+		const savedMode = localStorage.getItem(MODE_KEY);
+		if (savedMode === 'dark' || savedMode === 'light') setMode(savedMode);
 	} catch {
 		/* storage unavailable — defaults stand */
 	}
@@ -127,7 +130,7 @@ export function cyclePreset(axis: PresetAxis): string {
 export function getPresetScript(): string {
 	const axes = JSON.stringify(presetAxes).replaceAll('"', "'");
 	const defs = JSON.stringify(presetDefaults).replaceAll('"', "'");
-	return `(function(){try{var v=${axes};var d=${defs};var r=document.documentElement;var s=JSON.parse(localStorage.getItem('${STORAGE_KEY}')||'{}');for(var k in v){var val=s[k];if(val&&val!==d[k])r.setAttribute('data-'+k,val);}var t=localStorage.getItem('${THEME_KEY}');if(t){r.classList.add(t);r.setAttribute('data-mode',t.indexOf('-dark')>-1?'dark':'light');}}catch(e){}})();`;
+	return `(function(){try{var v=${axes};var d=${defs};var r=document.documentElement;var s=JSON.parse(localStorage.getItem('${STORAGE_KEY}')||'{}');for(var k in v){var val=s[k];if(val&&val!==d[k])r.setAttribute('data-'+k,val);}var t=localStorage.getItem('${THEME_KEY}');if(t){r.classList.add(t);r.setAttribute('data-mode',t.indexOf('-dark')>-1?'dark':'light');}var m=localStorage.getItem('${MODE_KEY}');if(m==='dark'||m==='light')r.setAttribute('data-mode',m);}catch(e){}})();`;
 }
 
 // ─── themes ────────────────────────────────────────────────────────────────
@@ -142,24 +145,26 @@ export function setTheme(id: string | null): void {
 	for (const t of themes) root.classList.remove(t.id);
 
 	if (!id) {
-		root.removeAttribute('data-mode');
 		try {
 			localStorage.removeItem(THEME_KEY);
 		} catch {
 			/* storage unavailable */
 		}
+		setMode(null);
 		return;
 	}
 
 	const theme = themes.find((t) => t.id === id);
 	if (!theme) return;
 	root.classList.add(theme.id);
-	root.setAttribute('data-mode', theme.mode);
 	try {
 		localStorage.setItem(THEME_KEY, theme.id);
 	} catch {
 		/* storage unavailable — the theme stays session-local */
 	}
+	// A palette carries its own mode; route through setMode so it persists and
+	// notifies like any other mode change.
+	setMode(theme.mode);
 }
 
 /** The active palette, or null when none is applied. */
@@ -169,29 +174,100 @@ export function getTheme(): string | null {
 	return themes.find((t) => root.classList.contains(t.id))?.id ?? null;
 }
 
-/** Swap to the light/dark counterpart of the active theme, if it has one. */
+/**
+ * The same palette in the opposite mode — `theme-sun-light` <-> `theme-sun-dark`.
+ * Null when the palette has no counterpart, which is most of them: only ids
+ * ending in `-light`/`-dark` can pair, and only 3 of the 41 actually do.
+ */
+export function twinTheme(id: string): string | null {
+	const meta = themes.find((t) => t.id === id);
+	if (!meta) return null;
+	const base = id.replace(/-(light|dark)$/, '');
+	if (base === id) return null; // no mode suffix — nothing to pair on
+	const want = meta.mode === 'dark' ? 'light' : 'dark';
+	return themes.find((t) => t.id === `${base}-${want}`)?.id ?? null;
+}
+
+/**
+ * Swap to the light/dark counterpart of the active theme.
+ *
+ * With no theme applied this is just toggleMode(). With a theme that has a twin
+ * it swaps palettes. With a theme that has no twin it still flips the mode, but
+ * the palette's own colours outrank `[data-mode]` in the cascade, so nothing
+ * visibly changes — see docs/14-api.md.
+ *
+ * Returns the theme id that is active afterwards, or null when none is.
+ */
 export function toggleThemeMode(): string | null {
 	const active = getTheme();
 	if (!active) {
 		toggleMode();
 		return null;
 	}
-	const want = themes.find((t) => t.id === active)!.mode === 'dark' ? 'light' : 'dark';
-	const twin = themes.find((t) => t.mode === want);
-	if (twin) setTheme(twin.id);
-	return twin?.id ?? null;
+	const twin = twinTheme(active);
+	if (twin) {
+		setTheme(twin);
+		return twin;
+	}
+	toggleMode();
+	return active;
 }
 
-/** Set the colour mode marker. Light/dark is a mode, not a preset axis. */
-export function setMode(mode: 'light' | 'dark'): void {
+export type Mode = 'light' | 'dark';
+
+/**
+ * Set the colour mode. Persists, so it survives reload — light/dark is the most
+ * basic thing a user toggles and it has no business forgetting itself.
+ *
+ * Pass null to clear the choice and fall back to the OS preference.
+ */
+export function setMode(mode: Mode | null): void {
 	if (typeof document === 'undefined') return;
-	document.documentElement.setAttribute('data-mode', mode);
+	const root = document.documentElement;
+	if (mode === null) {
+		root.removeAttribute('data-mode');
+		try {
+			localStorage.removeItem(MODE_KEY);
+		} catch {
+			/* storage unavailable */
+		}
+	} else {
+		root.setAttribute('data-mode', mode);
+		try {
+			localStorage.setItem(MODE_KEY, mode);
+		} catch {
+			/* storage unavailable — the choice stays session-local */
+		}
+	}
+	for (const fn of modeListeners) fn(getMode());
 }
 
-export function toggleMode(): 'light' | 'dark' {
-	const current =
-		typeof document !== 'undefined' ? document.documentElement.getAttribute('data-mode') : null;
-	const next = current === 'dark' ? 'light' : 'dark';
+/** The active mode. Falls back to the OS preference when nothing is chosen. */
+export function getMode(): Mode {
+	if (typeof document === 'undefined') return 'light';
+	const attr = document.documentElement.getAttribute('data-mode');
+	if (attr === 'dark' || attr === 'light') return attr;
+	return typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches
+		? 'dark'
+		: 'light';
+}
+
+/** True when the page is currently rendering dark. */
+export function isDark(): boolean {
+	return getMode() === 'dark';
+}
+
+export function toggleMode(): Mode {
+	const next: Mode = getMode() === 'dark' ? 'light' : 'dark';
 	setMode(next);
 	return next;
+}
+
+type ModeListener = (mode: Mode) => void;
+const modeListeners = new Set<ModeListener>();
+
+/** Subscribe to mode changes — however they were made. Returns an unsubscribe. */
+export function onModeChange(fn: ModeListener): () => void {
+	modeListeners.add(fn);
+	return () => modeListeners.delete(fn);
 }

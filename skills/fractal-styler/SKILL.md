@@ -154,6 +154,14 @@ An absent attribute means that axis's default. Values are in
 `references/tokens.md`. Presets remap tokens only; they never require a markup
 change.
 
+To drive any of this from code — set a preset, toggle light/dark, apply one of
+the 41 palettes, or read what is currently active — use the package runtime
+rather than writing to `document.documentElement` yourself. It persists the
+choice and stamps it before first paint. `docs/14-api.md` is the complete
+reference; the short version is `initPresets()` once on mount, then
+`setPreset`, `toggleMode`, and `setTheme`. Prebuilt controls ship as
+`ModeToggle`, `ThemePicker`, and one picker per axis.
+
 ---
 
 ## MCP Tools

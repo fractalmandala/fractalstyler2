@@ -11,23 +11,6 @@
 import { version } from './version.js';
 export { version };
 
-export type Mode = 'light' | 'dark';
-
-/** Set the color mode by writing the [data-mode] marker on <html>. */
-export function setMode(mode: Mode): void {
-	if (typeof document === 'undefined') return;
-	document.documentElement.setAttribute('data-mode', mode);
-}
-
-/** Toggle between light and dark, returning the new mode. */
-export function toggleMode(): Mode {
-	const current =
-		typeof document !== 'undefined' ? document.documentElement.getAttribute('data-mode') : null;
-	const next: Mode = current === 'dark' ? 'light' : 'dark';
-	setMode(next);
-	return next;
-}
-
 // Design Token Metadata
 export const breakpoints = {
 	sm: '640px',
@@ -116,12 +99,23 @@ export type InkRole = (typeof inkRoles)[number];
 export {
 	presets,
 	presetAxes,
+	presetDefaults,
 	initPresets,
 	setPreset,
+	getPreset,
+	cyclePreset,
+	onPresetChange,
 	getPresetScript,
 	setTheme,
 	getTheme,
+	twinTheme,
 	toggleThemeMode,
+	setMode,
+	toggleMode,
+	getMode,
+	isDark,
+	onModeChange,
+	type Mode,
 	themes,
 	themeIds,
 	type ThemeMeta,
@@ -137,7 +131,10 @@ export { default as Hero } from './components/Hero.svelte';
 export { default as Accordion } from './components/Accordion.svelte';
 export { default as AccordionItem } from './components/AccordionItem.svelte';
 
+// Preset pickers — one per axis, plus the two theming controls.
 export { default as ShapePicker } from './components/ShapePicker.svelte';
 export { default as LayoutPicker } from './components/LayoutPicker.svelte';
 export { default as ColorPicker } from './components/ColorPicker.svelte';
 export { default as MotionPicker } from './components/MotionPicker.svelte';
+export { default as ModeToggle } from './components/ModeToggle.svelte';
+export { default as ThemePicker } from './components/ThemePicker.svelte';
