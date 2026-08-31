@@ -16,7 +16,7 @@ All literal values in live inside `_00_tokens.sass`. Components and mixins never
 
 ## The 31 Colours
 
-The system defines 31 semantic CSS custom properties across 6 core categories. All 41 built-in palettes map 1:1 onto these exact token variables — as does any theme you write yourself:
+The system defines 31 semantic CSS custom properties across 6 core categories. All 76 built-in palettes map 1:1 onto these exact token variables — as does any theme you write yourself:
 
 | Category | Token Variable | Purpose | Light Default | Dark Default |
 | :--- | :--- | :--- | :--- | :--- |
@@ -77,7 +77,7 @@ All type and space scales use fluid viewport formulas interpolating smoothly bet
 
 And here's how things get fractal - every token also exists as a class! Use `.text-4xl` and you know what you get. Set a `.gap-2xs` and it follows `--space-2xs`, as do `pad-2xs` and others.
 
-Fractalstyler2 owns the contract for themes with 41 palettes and runtime to apply them.
+Fractalstyler2 owns the contract for themes with 76 palettes and runtime to apply them.
 
 With JavaScript disabled or before hydration, `_00_tokens.sass` renders `=light-theme-tokens` by default, or `=dark-theme-tokens` when `@media (prefers-color-scheme: dark)` is active.
 

@@ -24,8 +24,8 @@ Two rules hold throughout:
 
 | Import | What you get | Needs |
 |:---|:---|:---|
-| `fractalstyler2/css` | Compiled stylesheet, 25.2 KB gzipped | nothing |
-| `fractalstyler2/css/min` | Minified build, 23.2 KB gzipped | nothing |
+| `fractalstyler2/css` | Compiled stylesheet, 28.8 KB gzipped | nothing |
+| `fractalstyler2/css/min` | Minified build, 26.8 KB gzipped | nothing |
 | `fractalstyler2/styles` | SASS entry — retune the generators | a SASS compiler |
 | `fractalstyler2/styles/*` | One partial, e.g. `styles/_02_dimensions.sass` | a SASS compiler |
 | `fractalstyler2/tokens` | `_00_tokens.sass` alone | a SASS compiler |
@@ -148,7 +148,7 @@ or `initPresets()` restoring a saved choice. Returns an unsubscribe.
 
 ## 4 · Themes
 
-41 palettes, each a class on `<html>`. Cascade order is
+76 palettes, each a class on `<html>`. Cascade order is
 `:root` → `[data-mode]` → `.theme-*` → presets, so **a palette outranks the
 mode**.
 
@@ -172,17 +172,30 @@ Returns `null` when there is no counterpart.
 Swaps to the active palette's counterpart. With no palette applied it is just
 `toggleMode()`. Returns the palette active afterwards, or `null` when none is.
 
-> **Know this before you build a UI on it.** Only **3 of the 41 palettes** have
-> a real light/dark twin: `sun`, `monochrono`, `dracula`. For the other 38,
-> `toggleThemeMode()` flips the mode, but the palette's own colours outrank
-> `[data-mode]` in the cascade — so **nothing visibly changes**. This is a gap
-> in the palette set, not in the function. Until the palettes are paired, prefer
-> `toggleMode()` for a general dark-mode button and reserve `toggleThemeMode()`
-> for apps that stay inside the three paired families.
+Every palette is paired, so this always has somewhere to go. Pairing is
+declared in `_00_themes.sass` rather than inferred from the name, which is what
+lets `theme-catppuccin-mocha` pair with `theme-catppuccin-latte`.
+
+The 35 generated counterparts are derived, not hand-picked — `scripts/generate-pairs.mjs`
+walks the lightness ramp measured from the three families that were paired by
+hand (`sun`, `monochrono`, `dracula`) and keeps each palette's own hue and
+chroma. Accents keep their hue rather than flipping it; `sun` and `monochrono`
+flip theirs by hand, but two of three families disagreeing is a signature, not
+a rule. Every generated palette clears 7:1 on primary text, 4.5:1 on secondary,
+and 3:1 on the accent.
+
+A derived counterpart is faithful to *its source*, not to an upstream project.
+`theme-gruvbox-light` comes out near-neutral because `theme-gruvbox-dark`'s
+ground is neutral grey — real Gruvbox Light is cream. Same for
+`theme-catppuccin-latte` and `theme-onelight-pro`: they are this system's
+counterpart to the dark palette it already had, not a port of the upstream
+light theme. Hand-edit the block if you want the authentic one — `pnpm pair` only adds
+counterparts that are missing and never rewrites an existing block, so edits
+there are safe.
 
 ### Constants
 
-`themes` — `readonly ThemeMeta[]`, i.e. `{ id, mode }`. `themeIds` — the ids alone.
+`themes` — `readonly ThemeMeta[]`, i.e. `{ id, mode, twin? }`. `themeIds` — the ids alone.
 
 ---
 
@@ -255,9 +268,9 @@ Every picker takes `class` and calls `initPresets()` itself.
 
 **`ModeToggle`** — sun/moon button, `aria-pressed` tracking the mode. Calls
 `toggleMode()` by default. Set `palettes` to call `toggleThemeMode()` instead,
-swapping to the active palette's twin — read the warning in §4 first.
+swapping to the active palette's twin. Every palette has one.
 
-**`ThemePicker`** — a native `<select>` over all 41 palettes in `.field` markup,
+**`ThemePicker`** — a native `<select>` over all 76 palettes in `.field` markup,
 with a "None — follow mode" option that calls `setTheme(null)`. `filter` takes
 `'all'` (default), `'light'`, or `'dark'`. `label` sets the visible
 `.field-label`; pass `''` to drop it and keep only the `aria-label`.

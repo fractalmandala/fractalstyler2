@@ -99,7 +99,7 @@ So Fractalstyler2 isn’t my system or *a* system. It’s actually your system, 
 
 A final point, on personal and subjective leanings. I have no idea why, with the elegant braces and semi-colons free existence of SASS, its not more common and why SCSS has wider adoption. If I recommend anything to people, I tell them - get onto SASS!
 
-But you won't, and that's entirely okay - because there is nothing to adopt. **Fractalstyler2 ships as plain CSS.** One file, one `<link>`, no build step, no preprocessor, no config. Everything in this documentation - every class, every token, all 41 themes, all four preset axes - works exactly the same either way. Themes and presets are classes and attributes, so they hold up with JavaScript disabled too.
+But you won't, and that's entirely okay - because there is nothing to adopt. **Fractalstyler2 ships as plain CSS.** One file, one `<link>`, no build step, no preprocessor, no config. Everything in this documentation - every class, every token, all 76 themes, all four preset axes - works exactly the same either way. Themes and presets are classes and attributes, so they hold up with JavaScript disabled too.
 
 SASS is not the product. It is how the stylesheet is *generated*, and the generators are the one thing taking the SASS path buys you: the literal ladder and the responsive seam are configurable before compiling. If you never want to retune those - and most people never will - take the CSS and never think about it again.
 

@@ -28,7 +28,7 @@ the generators — the literal ladder and the responsive seam — before compili
 Tokens (L0) ──► Dimensions (L1) ──► Containers (L2) ──► Layouts (L3) ──► Shells (L4) ──► Visuals (L5)
 ```
 
-1. **Tokens (L0)**: 31 semantic colour tokens, 41 themes, and fluid Utopia typography/space scales.
+1. **Tokens (L0)**: 31 semantic colour tokens, 76 paired themes, and fluid Utopia typography/space scales.
 2. **Dimensions (L1)**: 17 space families (`.gap-sm`, `.pad-md`, `.marg-xs`), negative margins (`.marg--sm`), literal pixel utilities (`.w-120`, `.radius-8`), and `-mob` / `-desk` bands.
 3. **Containers (L2)**: Flexible flow primitives (`.box`, `.row`, `.grid`) with strict physical X/Y axis alignment (`.xcenter`, `.ycenter`, `.xbetween`).
 4. **Layouts (L3)**: Gridding Golden Rules ($3\to1$, $4\to2\to1$, $6\to3\to2\to1$), `.card-grid`, reading measure `.prose`, and scroll-snap `.reel`.
@@ -132,7 +132,7 @@ pnpm registry
 | Chapter | Document | Scope & Contents |
 |:---|:---|:---|
 | **01** | [**`01-introduction.md`**](./docs/01-introduction.md) | Philosophy, $L0 \to L5$ mental model, and design invariants. |
-| **02** | [**`02-getting-started.md`**](./docs/02-getting-started.md) | Installation (CSS or SASS), CLI init, SvelteKit setup, and the 41 built-in themes. |
+| **02** | [**`02-getting-started.md`**](./docs/02-getting-started.md) | Installation (CSS or SASS), CLI init, SvelteKit setup, and the 76 built-in themes. |
 | **03** | [**`03-structure.md`**](./docs/03-structure.md) | Numbered physical scale (`_00` through `_08`) and cascade order. |
 | **04** | [**`04-tokens.md`**](./docs/04-tokens.md) | 30 semantic colors, fluid Utopia scales, and dark/light modes. |
 | **05** | [**`05-dimensions.md`**](./docs/05-dimensions.md) | 17 space families, the literal px ladder, and `-mob`/`-desk` bands. |

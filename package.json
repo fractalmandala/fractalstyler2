@@ -16,7 +16,8 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"validate:deck": "node scripts/validate-deck.js",
 		"css": "node scripts/build-css.js",
-		"version": "npm run registry && git add -A"
+		"version": "npm run registry && git add -A",
+		"pair": "node scripts/generate-pairs.mjs && node scripts/update-registry.js"
 	},
 	"files": [
 		"dist",

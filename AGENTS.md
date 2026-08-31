@@ -6,7 +6,7 @@ type: fractalstyler2
 
 > You cannot add ad-hoc CSS anywhere. Styles are added ONLY inside the system's designated files (`fractalstyler2` templates / the project's global SASS sections), always via fractal composition and existing tokens. No scoped `<style>` blocks anywhere, including components. 
 
-> All colors, spacing, radii, and shadows resolve from the shared 30-token vocabulary. Source of truth: `fractalstyler2` `_00_tokens.sass` for the contract, `_00_themes.sass` for the 41 palettes that fill it. Never invent token names, never use legacy aliases (`--theme`, `--theme-hover`), never hardcode a value a token covers.
+> All colors, spacing, radii, and shadows resolve from the shared 30-token vocabulary. Source of truth: `fractalstyler2` `_00_tokens.sass` for the contract, `_00_themes.sass` for the 76 palettes that fill it. Never invent token names, never use legacy aliases (`--theme`, `--theme-hover`), never hardcode a value a token covers.
 
 **You MUST understand and use the `fractalstyler2` styling system — it ships as plain CSS and as SASS, so never assume a preprocessor. Learn it here: [docs/README.md](./docs/README.md) and [REGISTRY.md](./REGISTRY.md).**
 
@@ -17,10 +17,10 @@ If you find existing violations of these rules, drop a comment to the user. The 
 1. `fractalsvelte` — website to front various SvelteKit projects, docs, and resources.
 2. `Fractalsvelte UI` — WIP components library at `/Users/amrit/fractalmandala/fractalcodex`.
 3. `Fractalstyler2` — CSS/SASS styling system at `/Users/amrit/fractalmandala/fractalstyler2`. [NPM](https://www.npmjs.com/package/fractalstyler2) and [GitHub](https://github.com/fractalmandala/fractalstyler2).
-4. `Fractalthemer` — OPTIONAL augment for Fractalstyler2: atmospheric auras, background patterns, gradients, a picker UI, and a custom-theme studio. The 41 palettes themselves live in `fractalstyler2`. At `/Users/amrit/fractalmandala/fractalthemer`. [NPM](https://www.npmjs.com/package/fractalthemer) and [GitHub](https://github.com/fractalmandala/fractalthemer).
+4. `Fractalthemer` — OPTIONAL augment for Fractalstyler2: atmospheric auras, background patterns, gradients, a picker UI, and a custom-theme studio. The 76 palettes themselves live in `fractalstyler2`. At `/Users/amrit/fractalmandala/fractalthemer`. [NPM](https://www.npmjs.com/package/fractalthemer) and [GitHub](https://github.com/fractalmandala/fractalthemer).
 
 Contract changes start and end in `fractalstyler2`: the token contract and the
-41 palettes both live there, so there is nothing to mirror for colour. Then run
+76 palettes both live there, so there is nothing to mirror for colour. Then run
 `pnpm tokens:generate` in `fractalcodex` if applicable, and check `fractalthemer`
 only if the change touches what its auras or picker read. A change in one repo
 usually means a version bump in another.

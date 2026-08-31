@@ -6,7 +6,7 @@
 	 * `filter` — narrow the list to one mode. `label` — set to '' to drop the
 	 * visible label; the select keeps an aria-label either way.
 	 *
-	 * A <select> rather than a button group: 41 palettes is past the point where
+	 * A <select> rather than a button group: 76 palettes is past the point where
 	 * a row of swatches stays usable, and the native control is keyboard- and
 	 * screen-reader-correct for free.
 	 */

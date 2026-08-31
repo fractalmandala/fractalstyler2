@@ -9,7 +9,7 @@ description: Compose UI components and page layouts with the fractalstyler2 clas
 entire public API.** You compose in markup; you do not author CSS.
 
 It ships as plain CSS and as editable SASS, from one source. Which one a
-project took changes nothing you do: the classes, tokens, 41 themes and four
+project took changes nothing you do: the classes, tokens, 76 themes and four
 preset axes are identical either way. Check for `fractalstyler.css` or a
 `src/lib/styles/` directory to know which you are in — and never assume a SASS
 toolchain exists.
@@ -155,7 +155,7 @@ An absent attribute means that axis's default. Values are in
 change.
 
 To drive any of this from code — set a preset, toggle light/dark, apply one of
-the 41 palettes, or read what is currently active — use the package runtime
+the 76 palettes, or read what is currently active — use the package runtime
 rather than writing to `document.documentElement` yourself. It persists the
 choice and stamps it before first paint. `docs/14-api.md` is the complete
 reference; the short version is `initPresets()` once on mount, then

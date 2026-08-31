@@ -632,6 +632,286 @@
     "example": "<html class=\"theme-amethyst-void-dark\" data-mode=\"dark\">"
   },
   {
+    "class": ".theme-dark-default",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-dark-default\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-himalaya-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-himalaya-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-editorial-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-editorial-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-space-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-space-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-molly-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-molly-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-malana-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-malana-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-coresync-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-coresync-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-studio-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-studio-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-matcha-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-matcha-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-sakura-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-sakura-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-nordic-frost-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-nordic-frost-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-desert-dune-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-desert-dune-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-lavender-mist-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-lavender-mist-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-botanical-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-botanical-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-clay-studio-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-clay-studio-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-solaris-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-solaris-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-cyberpunk-day-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-cyberpunk-day-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-copper-patina-dark",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in dark palette — pair with data-mode=\"dark\"",
+    "example": "<html class=\"theme-copper-patina-dark\" data-mode=\"dark\">"
+  },
+  {
+    "class": ".theme-lagoona-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-lagoona-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-frozen-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-frozen-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-night-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-night-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-inkworm-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-inkworm-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-fouram-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-fouram-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-wintercame-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-wintercame-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-console-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-console-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-catppuccin-latte",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-catppuccin-latte\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-nord-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-nord-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-gruvbox-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-gruvbox-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-onelight-pro",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-onelight-pro\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-rose-pine-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-rose-pine-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-midnight-emerald-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-midnight-emerald-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-obsidian-crimson-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-obsidian-crimson-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-synthwave-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-synthwave-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-deep-ocean-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-deep-ocean-light\" data-mode=\"light\">"
+  },
+  {
+    "class": ".theme-amethyst-void-light",
+    "layer": "L0",
+    "property": "22 colour tokens",
+    "file": "_00_themes.sass",
+    "description": "Built-in light palette — pair with data-mode=\"light\"",
+    "example": "<html class=\"theme-amethyst-void-light\" data-mode=\"light\">"
+  },
+  {
     "class": ".box",
     "layer": "L2",
     "property": "",

@@ -336,13 +336,34 @@ function modeOf(id) {
 	const luminance = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
 	return luminance < 0.5 ? 'dark' : 'light';
 }
+// Pairing is declared, not inferred. A `// twin: <id>` marker above a block
+// names its counterpart; the relation is symmetric. Ids that carry a
+// -light/-dark suffix and have a matching sibling pair on that instead, so the
+// three hand-made families need no marker. Declared markers are what let
+// theme-catppuccin-mocha pair with theme-catppuccin-latte, which no suffix
+// rule could ever find.
+const twinMap = {};
+for (const m of themesSass.matchAll(/^\/\/ twin: (theme-[\w-]+)\s*\n\.(theme-[\w-]+)/gm)) {
+	twinMap[m[2]] = m[1];
+	twinMap[m[1]] = m[2];
+}
+for (const id of themeIds) {
+	if (twinMap[id]) continue;
+	const base = id.replace(/-(light|dark)$/, '');
+	if (base === id) continue;
+	const sibling = `${base}-${id.endsWith('-light') ? 'dark' : 'light'}`;
+	if (themeIds.includes(sibling)) twinMap[id] = sibling;
+}
 const themeEntries = themeIds
-	.map((id) => `\t{ id: '${id}', mode: '${modeOf(id)}' }`)
+	.map((id) => {
+		const twin = twinMap[id] ? `, twin: '${twinMap[id]}'` : '';
+		return `\t{ id: '${id}', mode: '${modeOf(id)}'${twin} }`;
+	})
 	.join(',\n');
 fs.writeFileSync(
 	path.join(rootDir, 'src', 'lib', 'themes.ts'),
 	`// Generated from _00_themes.sass by scripts/update-registry.js — do not edit.\n` +
-		`export interface ThemeMeta {\n\tid: string;\n\tmode: 'light' | 'dark';\n}\n\n` +
+		`export interface ThemeMeta {\n\tid: string;\n\tmode: 'light' | 'dark';\n\t/** The same palette in the opposite mode, when one exists. */\n\ttwin?: string;\n}\n\n` +
 		`/** The ${themeIds.length} built-in palettes. Apply with setTheme(id).  */\n` +
 		`export const themes: readonly ThemeMeta[] = [\n${themeEntries}\n] as const;\n\n` +
 		`export const themeIds: readonly string[] = themes.map((t) => t.id);\n`,

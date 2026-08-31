@@ -156,7 +156,7 @@ preset axis, plus the two theming controls. Each takes a `class` prop and calls
 ```
 
 `ModeToggle` flips light/dark and persists it. `ThemePicker` is a `<select>`
-over all 41 palettes, with a "None — follow mode" option. Both are covered in
+over all 76 palettes, with a "None — follow mode" option. Both are covered in
 full, along with every runtime function they call, in
 [14 - API Reference](./14-api.md).
 

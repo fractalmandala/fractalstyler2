@@ -176,16 +176,12 @@ export function getTheme(): string | null {
 
 /**
  * The same palette in the opposite mode — `theme-sun-light` <-> `theme-sun-dark`.
- * Null when the palette has no counterpart, which is most of them: only ids
- * ending in `-light`/`-dark` can pair, and only 3 of the 41 actually do.
+ * Pairing is declared in `_00_themes.sass`, so it works for palettes whose
+ * names do not rhyme: `theme-catppuccin-mocha` <-> `theme-catppuccin-latte`.
+ * Null only when a palette genuinely has no counterpart.
  */
 export function twinTheme(id: string): string | null {
-	const meta = themes.find((t) => t.id === id);
-	if (!meta) return null;
-	const base = id.replace(/-(light|dark)$/, '');
-	if (base === id) return null; // no mode suffix — nothing to pair on
-	const want = meta.mode === 'dark' ? 'light' : 'dark';
-	return themes.find((t) => t.id === `${base}-${want}`)?.id ?? null;
+	return themes.find((t) => t.id === id)?.twin ?? null;
 }
 
 /**

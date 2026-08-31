@@ -1,7 +1,7 @@
 # Fractalstyler2 — Class Reference
 
 GENERATED FILE — do not edit. Emitted by `scripts/update-registry.js` from the
-parsed stylesheet. 250 classes across 89 tokens.
+parsed stylesheet. 285 classes across 89 tokens.
 
 **The classes below are the entire public API.** The system defines no
 authoring mixins and no SASS functions — `+stack`, `+surface`, `space()` and
@@ -62,6 +62,41 @@ Raw values. Every token also exists as a class.
 | `.theme-synthwave-dark` | 22 colour tokens | `_00_themes.sass` |
 | `.theme-deep-ocean-dark` | 22 colour tokens | `_00_themes.sass` |
 | `.theme-amethyst-void-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-dark-default` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-himalaya-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-editorial-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-space-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-molly-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-malana-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-coresync-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-studio-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-matcha-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-sakura-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-nordic-frost-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-desert-dune-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-lavender-mist-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-botanical-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-clay-studio-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-solaris-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-cyberpunk-day-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-copper-patina-dark` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-lagoona-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-frozen-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-night-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-inkworm-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-fouram-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-wintercame-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-console-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-catppuccin-latte` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-nord-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-gruvbox-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-onelight-pro` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-rose-pine-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-midnight-emerald-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-obsidian-crimson-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-synthwave-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-deep-ocean-light` | 22 colour tokens | `_00_themes.sass` |
+| `.theme-amethyst-void-light` | 22 colour tokens | `_00_themes.sass` |
 
 ---
 

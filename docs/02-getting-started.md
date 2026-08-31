@@ -202,7 +202,8 @@ Should you use a class `sidebar-left` which you define as a flex in column direc
 
 ## Display Mode and Themes
 
-**41 palettes ship with the system** — 21 light, 19 dark. They are plain classes
+**76 palettes ship with the system** — 38 light, 38 dark, every one paired with
+its counterpart in the opposite mode. They are plain classes
 on `<html>`, so the simplest version needs no JavaScript at all:
 
 ```html

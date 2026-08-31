@@ -13,7 +13,7 @@ All stylesheets in live inside a single, unified directory (`src/lib/styles/`). 
 ```
 src/lib/styles/
 ├── _00_tokens.sass ──► Raw tokens set. Everything builds from these.
-├── _00_themes.sass ──► 41 curated palettes, each remapping that token set.
+├── _00_themes.sass ──► 76 curated palettes, each remapping that token set.
 ├── _00_presets.sass ──► The four preset axes, as pure token remaps.
 ├── _01_config.sass ──► Some base settings for body, html, responsiveness.
 ├── _02_dimensions.sass ──► Sets up a cascade of classes for gaps, pads, margins and more. 
