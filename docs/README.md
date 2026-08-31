@@ -47,7 +47,7 @@ reference the previews are judged against.
 
 | Spec | Language | Covers |
 |:---|:---|:---|
-| [Radius (Shape)](specs/specs-radius-preset.md) | `data-shape` | `round` / `curved` / `pro` / `sharp` — the three radius channels |
+| [Shape (Corner Radius)](specs/specs-shape-preset.md) | `data-shape` | `round` / `curved` / `pro` / `sharp` — the three radius channels |
 | [Layout (Density)](specs/specs-layout-preset.md) | `data-layout` | `tight` / `comfortable` / `sprawling` — gap and pad scales |
 | [Color (Tint)](specs/specs-color-preset.md) | `data-color` | `clean` / `general` / `vibrant` — the surface ladder |
 | [Motion (Energy)](specs/specs-motion-preset.md) | `data-motion` | `reduced` / `heavy` / `active` / `springy` — durations and curves |

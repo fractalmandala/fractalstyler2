@@ -1,13 +1,17 @@
 ---
-id: specs-radius-preset
-title: Spec — Radius (Shape) Preset
+id: specs-shape-preset
+title: Spec — Shape (Corner Radius) Preset
 type: spec
 tags: [spec, shape, radius, preset, corners, runtime]
-summary: Definition and technical specification of the Shape (Radius) preset language, channel tables, affected vocabulary, and proof surface on /previews/shape.
-updated: 2026-08-30
+summary: Definition and technical specification of the Shape preset language, channel tables, affected vocabulary, and proof surface on /previews/shape.
+updated: 2026-08-31
 ---
 
-# Spec — Radius (Shape) Preset
+# Spec — Shape (Corner Radius) Preset
+
+> The axis is named **shape** everywhere in the API — `data-shape`,
+> `presetAxes.shape`, `setPreset('shape', …)`, `ShapePicker`. "Radius" describes
+> what it remaps, not what it is called.
 
 Status: none claimed — the reviewer verifies. Definition of the shape preset language: what each preset does, and exactly which classes it reaches.  
 Registry basis: `REGISTRY.md` §Shape language + Amendment A2 (fs2 owns the preset runtime).  
