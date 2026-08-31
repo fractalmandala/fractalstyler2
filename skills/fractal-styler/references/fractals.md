@@ -1,7 +1,7 @@
 # Fractalstyler2 — Class Reference
 
 GENERATED FILE — do not edit. Emitted by `scripts/update-registry.js` from the
-parsed stylesheet. 285 classes across 89 tokens.
+parsed stylesheet. 287 classes across 89 tokens.
 
 **The classes below are the entire public API.** The system defines no
 authoring mixins and no SASS functions — `+stack`, `+surface`, `space()` and
@@ -189,6 +189,8 @@ Flow and alignment. x* is ALWAYS horizontal, y* is ALWAYS vertical, in every con
 | `.absolute` | .absolute component / container | `_03_containers.sass` |
 | `.fixed` | .fixed component / container | `_03_containers.sass` |
 | `.sticky` | .sticky component / container | `_03_containers.sass` |
+| `.scroll-y` | .scroll-y component / container | `_03_containers.sass` |
+| `.scroll-x` | .scroll-x component / container | `_03_containers.sass` |
 
 ---
 

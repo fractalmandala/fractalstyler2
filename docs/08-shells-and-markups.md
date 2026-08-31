@@ -188,8 +188,8 @@ Fractalstyler2 includes native classes for drawers, modals, popovers, and accord
   <button class="button">Options ▾</button>
   <div class="popover" class:open={isMenuOpen}>
     <div class="box pad-2xs gap-3xs">
-      <button class="button ghost text-xs wfull xleft">Duplicate</button>
-      <button class="button ghost text-xs wfull xleft text-danger">Delete</button>
+      <button class="button ghost row text-xs wfull xleft">Duplicate</button>
+      <button class="button ghost row text-xs wfull xleft text-danger">Delete</button>
     </div>
   </div>
 </div>

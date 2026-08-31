@@ -62,6 +62,7 @@ of these before calling it done — the ones marked *generated* need only a
 |:---|:---|
 | `README.md` | The tagline, the quick start, the layer summary |
 | `docs/01`–`14` | Whichever chapter owns the layer you touched; `14` for anything the package exports |
+| `docs/specs/*` | The spec for whichever language moved — these are what a reviewer checks against |
 | `docs/README.md`, root index tables | Chapter one-liners |
 | `AGENTS.md` | How the project is described to agents |
 | `skills/fractal-styler/SKILL.md` | The rules an agent is handed |

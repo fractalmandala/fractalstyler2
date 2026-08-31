@@ -103,3 +103,18 @@
 	position: fixed
 .sticky
 	position: sticky
+
+// Scroll containers. A panel that has to hold more than fits — a long option
+// list, a code block, a table — is a composition primitive, not a bespoke
+// widget. Without these the only way to express it was a hand-written rule,
+// which is the escape hatch the registry exists to avoid.
+// Pair with a height: .scroll-y needs one to have anything to scroll against.
+.scroll-y
+	overflow-y: auto
+	overflow-x: hidden
+	overscroll-behavior: contain
+
+.scroll-x
+	overflow-x: auto
+	overflow-y: hidden
+	overscroll-behavior: contain

@@ -106,4 +106,34 @@ Fractalstyler2 includes lightweight layout flow modifiers to control wrapping, e
 | `.fixed` | `position: fixed` | Positions element relative to viewport |
 | `.sticky` | `position: sticky` | Sticks element during scrolling |
 
+---
+
+## 4. Scroll Containers
+
+A panel that has to hold more than fits — a long option list, a wide table, a
+code block — is a composition primitive, not a bespoke widget.
+
+| Class | CSS Definition | Purpose |
+|:---|:---|:---|
+| `.scroll-y` | `overflow-y: auto`, `overflow-x: hidden`, `overscroll-behavior: contain` | Vertical scroll inside a bounded height |
+| `.scroll-x` | `overflow-x: auto`, `overflow-y: hidden`, `overscroll-behavior: contain` | Horizontal scroll inside a bounded width |
+
+Both need a bound to scroll against — a `.h-*` on the element, or a flex parent
+that constrains it. Without one there is nothing to overflow and the class does
+nothing.
+
+```html
+<div class="box gap-2 scroll-y h-256">
+  <!-- 76 rows; the panel stays 256px tall -->
+</div>
+```
+
+`overscroll-behavior: contain` stops a scroll that reaches the end of this box
+from continuing into the page behind it — the behaviour you want in a popover
+or drawer, and the reason these are not just `overflow: auto`.
+
+For a horizontally scrolling strip with snap points, reach for
+[`.reel`](./07-layouts.md) instead; `.scroll-x` is the plain container without
+the snapping.
+
 [Next - Layouts](./07-layouts.md)

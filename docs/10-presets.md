@@ -151,13 +151,13 @@ preset axis, plus the two theming controls. Each takes a `class` prop and calls
     <ModeToggle />
   </div>
 
-  <ThemePicker label="Palette" />
+  <ThemePicker />
 </div>
 ```
 
-`ModeToggle` flips light/dark and persists it. `ThemePicker` is a `<select>`
-over all 76 palettes, with a "None — follow mode" option. Both are covered in
-full, along with every runtime function they call, in
+`ModeToggle` flips light/dark and persists it. `ThemePicker` opens a popover
+over all 76 palettes with a mode filter, search, and a Reset. Both are covered
+in full, along with every runtime function they call, in
 [14 - API Reference](./14-api.md).
 
 [Next - MCP](./11-mcp-server.md)

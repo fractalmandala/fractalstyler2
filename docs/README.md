@@ -39,6 +39,27 @@ Available three ways, all from one source:
 
 ---
 
+## Specs
+
+Per-language specifications: what each language does, exactly which classes it
+reaches, and the protocol a reviewer follows to verify it. These are the
+reference the previews are judged against.
+
+| Spec | Language | Covers |
+|:---|:---|:---|
+| [Radius (Shape)](specs/specs-radius-preset.md) | `data-shape` | `round` / `curved` / `pro` / `sharp` — the three radius channels |
+| [Layout (Density)](specs/specs-layout-preset.md) | `data-layout` | `tight` / `comfortable` / `sprawling` — gap and pad scales |
+| [Color (Tint)](specs/specs-color-preset.md) | `data-color` | `clean` / `general` / `vibrant` — the surface ladder |
+| [Motion (Energy)](specs/specs-motion-preset.md) | `data-motion` | `reduced` / `heavy` / `active` / `springy` — durations and curves |
+| [Theme and Mode](specs/specs-theme-mode.md) | `.theme-*`, `data-mode` | The 76 paired palettes, cascade order, and the pairing contract |
+
+## Agent references
+
+| Document | Contents |
+|:---|:---|
+| [Registry](agents/registry.md) | The grepable class dictionary agents are handed |
+
+
 ## The Core Heuristic
 
 > **Tokens (L0)** $\rightarrow$ **Dimensions (L1)** $\rightarrow$ **Containers (L2)** $\rightarrow$ **Layouts (L3)** $\rightarrow$ **Shells (L4)** $\rightarrow$ **Visuals & Interactions (L5)**

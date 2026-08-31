@@ -197,6 +197,9 @@ there are safe.
 
 `themes` — `readonly ThemeMeta[]`, i.e. `{ id, mode, twin? }`. `themeIds` — the ids alone.
 
+The full definition of both languages — cascade order, the pairing contract, and
+the protocol for verifying them — is [Spec — Theme and Mode](specs/specs-theme-mode.md).
+
 ---
 
 ## 5 · The reactive mirror (Svelte only)
@@ -254,7 +257,7 @@ Every picker takes `class` and calls `initPresets()` itself.
 | `ColorPicker` | 3 buttons | — |
 | `MotionPicker` | 4 buttons | — |
 | `ModeToggle` | 1 button | `palettes` |
-| `ThemePicker` | `<select>` | `filter`, `label` |
+| `ThemePicker` | popover panel | `filter`, `showModeToggle`, `trigger` |
 
 ```svelte
 <script>
@@ -262,7 +265,7 @@ Every picker takes `class` and calls `initPresets()` itself.
 </script>
 
 <ModeToggle />
-<ThemePicker filter="dark" label="Palette" />
+<ThemePicker filter="dark" />
 <ShapePicker class="gap-4" />
 ```
 
@@ -270,18 +273,121 @@ Every picker takes `class` and calls `initPresets()` itself.
 `toggleMode()` by default. Set `palettes` to call `toggleThemeMode()` instead,
 swapping to the active palette's twin. Every palette has one.
 
-**`ThemePicker`** — a native `<select>` over all 76 palettes in `.field` markup,
-with a "None — follow mode" option that calls `setTheme(null)`. `filter` takes
-`'all'` (default), `'light'`, or `'dark'`. `label` sets the visible
-`.field-label`; pass `''` to drop it and keep only the `aria-label`.
+**`ThemePicker`** — a popover over all 76 palettes: mode filter, search, a
+scrolling list, and a Reset that calls `setTheme(null)`. Closes on Escape and
+on click-outside.
 
-A `<select>` rather than a swatch row because 41 options is well past where a
-button group stays usable, and the native control is keyboard- and
-screen-reader-correct for free.
+Each row wears its own theme class, so the swatches inside it are that palette
+rendering itself rather than a hardcoded preview — change a palette in
+`_00_themes.sass` and its row updates with it.
+
+| Prop | Default | Effect |
+|:---|:---|:---|
+| `filter` | `'all'` | Which mode the list opens on — `'all'`, `'light'`, `'dark'`. The user can still switch it. |
+| `showModeToggle` | `true` | Renders a `ModeToggle` inside the panel. |
+| `trigger` | — | A snippet replacing the default palette-glyph button. |
+
+```svelte
+<ThemePicker filter="dark" showModeToggle={false}>
+	{#snippet trigger()}
+		<span class="text-xs">Theme</span>
+	{/snippet}
+</ThemePicker>
+```
+
+Like every component here it ships no stylesheet. The panel is `.popover`, the
+list is `.box.scroll-y.h-256`, and each row is a `.row` whose `.bg`/`.border`
+resolve from the theme class on that row.
 
 ---
 
-## 7 · Token metadata
+## 7 · Building your own controls
+
+The bundled pickers are conveniences. Everything they do is public, so a custom
+control is not a downgrade — it is the same API with your own markup.
+
+### In Svelte
+
+Read `presets`, write through the setters. Nothing else is needed: the mirror
+stays correct no matter who changes the value.
+
+```svelte
+<script lang="ts">
+	import { presets, presetAxes, setPreset, cyclePreset, initPresets } from 'fractalstyler2';
+	import { onMount } from 'svelte';
+	onMount(() => initPresets());
+</script>
+
+<!-- a segmented control over any axis -->
+<div class="row gap-2" role="group" aria-label="Density">
+	{#each presetAxes.layout as value}
+		<button
+			type="button"
+			class="button ghost text-xs"
+			class:active={presets.layout === value}
+			aria-pressed={presets.layout === value}
+			onclick={() => setPreset('layout', value)}
+		>
+			{value}
+		</button>
+	{/each}
+</div>
+```
+
+A one-button cycler, if you would rather not show every value:
+
+```svelte
+<button class="button ghost" onclick={() => cyclePreset('shape')}>
+	Corners: {presets.shape}
+</button>
+```
+
+### Without a framework
+
+`fractalstyler2/presets` is plain TypeScript. Subscribe instead of reading a
+mirror; the callbacks fire however the change was made.
+
+```js
+import { initPresets, setPreset, onPresetChange, onModeChange, toggleMode }
+	from 'fractalstyler2/presets';
+
+initPresets();
+
+document.querySelector('#dark').addEventListener('click', () => toggleMode());
+onModeChange((mode) => {
+	document.querySelector('#dark').textContent = mode === 'dark' ? '☀' : '☾';
+});
+
+onPresetChange((axis, value) => {
+	if (axis !== 'layout') return;
+	for (const el of document.querySelectorAll('[data-layout-value]')) {
+		el.classList.toggle('active', el.dataset.layoutValue === value);
+	}
+});
+```
+
+Both subscriptions return an unsubscribe function. Call it when your control
+goes away.
+
+### Rules that keep a custom control correct
+
+1. **Call `initPresets()` once**, on mount. It restores everything from storage.
+   Calling it again is harmless.
+2. **Never read `document.documentElement` into local state.** It is right at
+   the moment you read it and wrong the moment anything else changes. Use
+   `presets`, or `onModeChange` / `onPresetChange`.
+3. **Never write the attribute or class yourself.** `setPreset`, `setMode`, and
+   `setTheme` persist and notify; a raw `setAttribute` does neither, so the rest
+   of the page goes out of step.
+4. **Add `getPresetScript()` to `<head>`** or accept a flash of the default on
+   every load.
+5. **Compose the markup from the registry.** The bundled pickers ship no
+   stylesheet, and yours does not need one either — `.button.ghost`,
+   `.row`, `.popover`, and `.scroll-y` cover the shapes a control takes.
+
+---
+
+## 8 · Token metadata
 
 Constants describing the scales, for tooling that needs to enumerate them.
 They **describe** the stylesheet; they do not generate it.
@@ -305,7 +411,7 @@ fluid and does not use them — see [05](05-dimensions.md).
 
 ---
 
-## 8 · What is deliberately absent
+## 9 · What is deliberately absent
 
 - **No authoring mixins, no SASS functions.** Compose in markup. The SASS
   distribution exists so you can retune the generators, not to author against.

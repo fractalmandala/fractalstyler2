@@ -1256,6 +1256,22 @@
     "example": "<div class=\"sticky\">"
   },
   {
+    "class": ".scroll-y",
+    "layer": "L2",
+    "property": "",
+    "file": "_03_containers.sass",
+    "description": ".scroll-y component / container",
+    "example": "<div class=\"scroll-y\">"
+  },
+  {
+    "class": ".scroll-x",
+    "layer": "L2",
+    "property": "",
+    "file": "_03_containers.sass",
+    "description": ".scroll-x component / container",
+    "example": "<div class=\"scroll-x\">"
+  },
+  {
     "class": ".grid-1",
     "layer": "L3",
     "property": "",
