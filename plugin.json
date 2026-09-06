@@ -1,6 +1,6 @@
 {
   "name": "fractalstyler2",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Composition styling system and design token engine — plain CSS or SASS — for web projects and AI coding agents.",
   "author": {
     "name": "Amrit",

@@ -1,6 +1,6 @@
 {
 	"name": "fractalstyler2",
-	"version": "0.7.1",
+	"version": "0.8.0",
 	"description": "A composition styling system, shipped as plain CSS and as editable SASS. The class registry is the public API: compose in markup, write no stylesheet.",
 	"bin": {
 		"fractalstyler2": "./dist/cli.js",
